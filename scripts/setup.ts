@@ -4,8 +4,13 @@
  *
  * Personaliza una copia recién creada del template:
  *   1. Genera secrets aleatorios y crea `.dev.vars` desde `.dev.vars.example`.
- *   2. Renombra el proyecto (package.json, wrangler.toml, app/config/site.ts).
- *   3. Imprime los siguientes pasos (wrangler secret put, deploy…).
+ *   2. Renombra el proyecto COMPLETO a partir de un solo nombre:
+ *      package.json, wrangler.toml (worker prod + dev) y app/config/site.ts
+ *      (name, url, twitterHandle, link del repo).
+ *   3. Imprime los siguientes pasos (secrets de Cloudflare, deploy…).
+ *
+ * La identidad "vieja" se LEE de los archivos (no es un placeholder fijo), así
+ * funciona sin importar cómo se llame el template del que clonaste.
  *
  * Uso:
  *   bun run setup              # interactivo
@@ -42,14 +47,29 @@ function genSecret(): string {
 	return randomBytes(32).toString('hex')
 }
 
-function replaceInFile(relPath: string, replacements: Array<[string | RegExp, string]>) {
+/** Convierte un nombre visible a slug kebab-case sin acentos. */
+function toSlug(name: string): string {
+	return name
+		.trim()
+		.toLowerCase()
+		.normalize('NFD')
+		.replace(/[̀-ͯ]/g, '')
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '')
+}
+
+/** Escapa una cadena para usarla literal dentro de un RegExp. */
+function escapeRe(s: string): string {
+	return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+function readFile(relPath: string): string | null {
 	const path = join(ROOT, relPath)
-	if (!existsSync(path)) return
-	let content = readFileSync(path, 'utf8')
-	for (const [from, to] of replacements) {
-		content = content.replace(from, to)
-	}
-	writeFileSync(path, content)
+	return existsSync(path) ? readFileSync(path, 'utf8') : null
+}
+
+function writeFile(relPath: string, content: string) {
+	writeFileSync(join(ROOT, relPath), content)
 	ok(`Actualizado ${relPath}`)
 }
 
@@ -75,27 +95,78 @@ function createDevVars() {
 	ok('Creado .dev.vars con secrets aleatorios.')
 }
 
+function renameProject() {
+	const pkg = readFile('package.json')
+	const site = readFile('app/config/site.ts')
+	const wrangler = readFile('wrangler.toml')
+
+	// Identidad actual leída de los archivos (no placeholders fijos).
+	const oldSlug = pkg?.match(/"name":\s*"([^"]+)"/)?.[1] ?? 'app'
+	const oldDisplay = site?.match(/name:\s*'([^']+)'/)?.[1] ?? oldSlug
+
+	const displayName = ask('Nombre del proyecto (visible)', oldDisplay)
+	const slug = toSlug(ask('Slug (kebab-case, para worker/package)', toSlug(displayName)))
+
+	if (slug === oldSlug && displayName === oldDisplay) {
+		info('Nombre sin cambios — se omite el renombrado.')
+		return
+	}
+
+	// package.json — solo el campo name
+	if (pkg) {
+		writeFile(
+			'package.json',
+			pkg.replace(new RegExp(`("name":\\s*")${escapeRe(oldSlug)}(")`), `$1${slug}$2`)
+		)
+	}
+
+	// wrangler.toml — reemplaza todas las apariciones del slug viejo (cubre el
+	// worker de prod y el de dev "<slug>-dev", además de comentarios).
+	if (wrangler) {
+		writeFile('wrangler.toml', wrangler.split(oldSlug).join(slug))
+	}
+
+	// app/config/site.ts — name, url (cambia solo el subdominio), twitter y repo.
+	if (site) {
+		let next = site.replace(
+			new RegExp(`name:\\s*'${escapeRe(oldDisplay)}'`),
+			`name: '${displayName}'`
+		)
+
+		const oldUrl = site.match(/url:\s*'([^']+)'/)?.[1]
+		if (oldUrl) {
+			const suffix = oldUrl.replace(/^https?:\/\/[^./]+/, '') // ej: .claux.workers.dev
+			next = next.replace(`url: '${oldUrl}'`, `url: 'https://${slug}${suffix}'`)
+		}
+
+		const oldTwitter = site.match(/twitterHandle:\s*'([^']+)'/)?.[1]
+		if (oldTwitter) {
+			next = next.replace(
+				`twitterHandle: '${oldTwitter}'`,
+				`twitterHandle: '@${slug.replace(/-/g, '')}'`
+			)
+		}
+
+		// Link del repo: conserva el owner, cambia el nombre del repo por el slug.
+		const repo = site.match(/(https:\/\/github\.com\/[^/]+\/)([^'"]+)/)
+		if (repo) {
+			next = next.replace(`${repo[1]}${repo[2]}`, `${repo[1]}${slug}`)
+		}
+
+		writeFile('app/config/site.ts', next)
+	}
+
+	log(`\n${c.green}✓${c.reset} Proyecto renombrado a ${c.bold}${displayName}${c.reset} (${slug}).`)
+}
+
 function main() {
 	log(`\n${c.bold}${c.cyan}⚡ Ventura Stack — setup${c.reset}\n`)
 
 	// 1. Secrets + .dev.vars
 	createDevVars()
 
-	// 2. Renombrado del proyecto
-	const slug = ask('Nombre del proyecto (slug, kebab-case)', 'Ventura-stack')
-	const displayName = ask('Nombre visible (título del sitio)', 'Ventura Stack')
-	const url = ask('URL de producción', 'https://Ventura-stack.claux.workers.dev')
-
-	if (slug !== 'Ventura-stack') {
-		replaceInFile('package.json', [[/"name":\s*"Ventura-stack"/, `"name": "${slug}"`]])
-		replaceInFile('wrangler.toml', [[/^name = "Ventura-stack"/m, `name = "${slug}"`]])
-	}
-	if (displayName !== 'Ventura Stack' || url !== 'https://Ventura-stack.claux.workers.dev') {
-		replaceInFile('app/config/site.ts', [
-			[/name: 'Ventura Stack'/, `name: '${displayName}'`],
-			[/url: 'https:\/\/Ventura-stack\.claux\.workers\.dev'/, `url: '${url}'`],
-		])
-	}
+	// 2. Renombrado del proyecto (se omite en modo --yes / no interactivo)
+	if (!NON_INTERACTIVE) renameProject()
 
 	// 3. Siguientes pasos
 	log(`\n${c.bold}${c.green}Listo.${c.reset} Siguientes pasos:\n`)
@@ -107,10 +178,13 @@ function main() {
 		`  ${c.dim}3.${c.reset} ${c.bold}bun run dev${c.reset}            arranca el servidor de desarrollo`
 	)
 	log(
-		`\n  ${c.yellow}Producción:${c.reset} configura los secrets en Cloudflare:\n` +
-			`    ${c.dim}wrangler secret put HONEYPOT_SECRET${c.reset}\n` +
-			`    ${c.dim}wrangler secret put COOKIE_SECRET${c.reset}\n` +
-			`    ${c.dim}wrangler secret put SESSION_SECRET${c.reset}\n`
+		`\n  ${c.yellow}Deploy a Cloudflare:${c.reset}\n` +
+			`    ${c.dim}• Secrets en GitHub (Actions): CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID${c.reset}\n` +
+			`    ${c.dim}• Secrets del worker:${c.reset}\n` +
+			`        ${c.dim}wrangler secret put HONEYPOT_SECRET${c.reset}\n` +
+			`        ${c.dim}wrangler secret put COOKIE_SECRET${c.reset}\n` +
+			`        ${c.dim}wrangler secret put SESSION_SECRET${c.reset}\n` +
+			`    ${c.dim}• Si no existe .github/workflows/deploy.yml, agrégalo o corre 'bunx wrangler deploy'.${c.reset}\n`
 	)
 }
 
