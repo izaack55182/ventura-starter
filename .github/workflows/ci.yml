@@ -1,0 +1,38 @@
+name: ✅ CI (validación en PRs)
+
+# Valida (lint, typecheck, tests, build) los PRs hacia main o dev. No despliega:
+# el deploy lo hacen deploy.yml (push a main -> prod) y deploy-dev.yml (push a dev).
+
+on:
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  ci:
+    name: 🔍 Lint, Typecheck, Test & Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🍞 Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: 📦 Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: 🎨 Lint
+        run: bun run lint
+
+      - name: 🔍 Typecheck
+        run: bun run typecheck
+
+      - name: 🧪 Unit tests
+        run: bun run test
+
+      - name: 🏗️ Build
+        run: bun run build

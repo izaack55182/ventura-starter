@@ -1,0 +1,53 @@
+# dependencies (bun install)
+node_modules
+
+# output
+out
+dist
+build
+*.tgz
+*.tgz
+
+# code coverage
+coverage
+*.lcov
+
+# testing (Playwright)
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# logs
+logs
+_.log
+report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Cloudflare local secrets (usa .dev.vars.example como plantilla)
+.dev.vars
+
+# caches
+.eslintcache
+.cache
+*.tsbuildinfo
+
+# IntelliJ based IDEs
+.idea
+
+# Finder (MacOS) folder config
+.DS_Store
+
+# auto-generated
+.react-router/
+.wrangler/
+worker-configuration.d.ts
+
+# lockfile (using bun.lock)
+package-lock.json

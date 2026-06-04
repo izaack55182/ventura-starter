@@ -1,0 +1,95 @@
+name = "ventura-stack"
+compatibility_date = "2026-06-03"
+compatibility_flags = ["nodejs_compat"]
+main = "workers/app.ts"
+
+# ── Static Assets ─────────────────────────────────────────────────────────────
+# La plataforma sirve los assets ANTES que el Worker (gratis e ilimitado). Si no
+# hay asset en la ruta, cae al Worker (SSR de React Router). Esto elimina el bug
+# de entrega de assets que tenía el adaptador de Hono en Pages.
+[assets]
+directory = "./build/client"
+# run_worker_first = true   # actívalo solo si necesitas que el middleware corra
+                            # también sobre los assets (consume invocaciones).
+
+# ── Rate Limiting (binding nativo, sin costo ni cuota que se agote) ────────────
+[[ratelimits]]
+name = "GENERAL_RATE_LIMITER"
+namespace_id = "1001"
+  [ratelimits.simple]
+  limit = 1000
+  period = 60
+
+[[ratelimits]]
+name = "STRICT_RATE_LIMITER"
+namespace_id = "1002"
+  [ratelimits.simple]
+  limit = 100
+  period = 60
+
+# ── Cron Triggers ─────────────────────────────────────────────────────────────
+# En Workers los crons SÍ funcionan (a diferencia de Pages). Añade expresiones
+# cron aquí y exporta un handler `scheduled()` en workers/app.ts cuando los uses.
+[triggers]
+crons = []
+
+# ── D1 Database ───────────────────────────────────────────────────────────────
+# Crea la DB con: wrangler d1 create ventura-db-prod
+# Luego descomenta y rellena los IDs:
+#
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "ventura-db-prod"
+# database_id = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+# preview_database_id = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+# migrations_dir = "app/drizzle/migrations"
+
+# ── R2 Bucket ─────────────────────────────────────────────────────────────────
+# Crea el bucket con: wrangler r2 bucket create ventura-bucket
+# Luego descomenta:
+#
+# [[r2_buckets]]
+# binding = "R2_BUCKET"
+# bucket_name = "ventura-bucket"
+# jurisdiction = "eu"
+
+# ── Variables de entorno (no-secretas) ────────────────────────────────────────
+# [vars]
+# R2_PUBLIC_URL = "https://pub-XXXXXXXX.r2.dev"
+
+# ── Secrets ───────────────────────────────────────────────────────────────────
+# NUNCA van en wrangler.toml. En Workers se configuran con:
+#   wrangler secret put HONEYPOT_SECRET
+#   wrangler secret put COOKIE_SECRET
+#   wrangler secret put SESSION_SECRET
+#
+# HONEYPOT_SECRET es OBLIGATORIO en producción (ver app/utils/env.server.ts).
+# Para desarrollo local usa un archivo .dev.vars (no versionado).
+
+# ── Entorno DEV / STAGING ─────────────────────────────────────────────────────
+# La rama `main` despliega la config de arriba (worker "ventura-stack" = prod).
+# La rama `dev` despliega este entorno (worker "ventura-stack-dev" = staging).
+#
+# IMPORTANTE: con @cloudflare/vite-plugin el entorno se elige en BUILD time:
+#   CLOUDFLARE_ENV=dev bun run build && wrangler deploy
+# Wrangler valida que el deploy coincida con el build.
+#
+# Los bindings NO se heredan entre entornos, así que hay que RE-DECLARAR aquí los
+# ratelimits (y cualquier D1/R2/vars que actives). Las claves heredables
+# (main, compatibility_date, assets, triggers) se toman del nivel superior.
+[env.dev]
+name = "ventura-stack-dev"
+
+  [[env.dev.ratelimits]]
+  name = "GENERAL_RATE_LIMITER"
+  namespace_id = "1001"
+    [env.dev.ratelimits.simple]
+    limit = 1000
+    period = 60
+
+  [[env.dev.ratelimits]]
+  name = "STRICT_RATE_LIMITER"
+  namespace_id = "1002"
+    [env.dev.ratelimits.simple]
+    limit = 100
+    period = 60

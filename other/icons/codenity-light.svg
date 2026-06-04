@@ -1,0 +1,67 @@
+
+<svg width="2048" height="2048" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" fill="none">
+  
+  <g>
+      
+  <defs>
+    <!-- A. GRADIENTE CUERPO (Sutil) -->
+    <linearGradient id="landing-gen-frostBody" x1="0%" y1="0%" x2="100%" y2="100%">
+        <!-- Arriba Izq: Un poco más visible -->
+        <stop offset="0%" stop-color="black" stop-opacity="0.2" />
+        <!-- Centro: Muy transparente -->
+        <stop offset="50%" stop-color="black" stop-opacity="0.1" />
+        <!-- Abajo Der: Sutilmente más denso -->
+        <stop offset="100%" stop-color="black" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- B. FILTRO FROSTED -->
+<filter id="landing-gen-frostFilter" x="-100%" y="-100%" width="300%" height="300%" filterUnits="objectBoundingBox">        
+        <!-- 1. Sombra Suave (Drop Shadow) -->
+        <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="shadowBlur"/>
+        <feOffset in="shadowBlur" dx="0" dy="6" result="shadowOffset"/>
+        <feFlood flood-color="black" flood-opacity="0.2" result="shadowColor"/>
+        <feComposite in="shadowColor" in2="shadowOffset" operator="in" result="dropShadow"/>
+
+        <!-- 2. Borde / Rim Light (El contorno blanco característico) -->
+        <!-- Erosionamos el alpha para crear un borde interior nítido -->
+        <feMorphology operator="erode" radius="1" in="SourceAlpha" result="eroded"/>
+        <feComposite in="SourceAlpha" in2="eroded" operator="out" result="strokeMask"/>
+        
+        <!-- Color del borde: Blanco brillante si es dark, Gris oscuro si es light -->
+        <feFlood flood-color="#666" flood-opacity="0.5" result="strokeColor"/>
+        <feComposite in="strokeColor" in2="strokeMask" operator="in" result="rimLight"/>
+
+        <!-- 3. Brillo Especular Suave (Matte sheen) -->
+        <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blurMap"/>
+        <feSpecularLighting in="blurMap" surfaceScale="2" specularConstant="0.6" specularExponent="10" lighting-color="white" result="specular">
+            <fePointLight x="-100" y="-100" z="300" />
+        </feSpecularLighting>
+        <feComposite in="specular" in2="SourceAlpha" operator="in" result="specularSheen"/>
+
+        <!-- 4. Composición -->
+        <feMerge>
+            <feMergeNode in="dropShadow"/>    <!-- Sombra -->
+            <feMergeNode in="SourceGraphic"/> <!-- Cuerpo base -->
+            <feMergeNode in="specularSheen"/> <!-- Brillo superficie -->
+            <feMergeNode in="rimLight"/>      <!-- Borde nítido -->
+        </feMerge>
+    </filter>
+
+    <mask id="landing-gen-m2"><rect x="-1000" y="-1000" width="4000" height="4000" fill="white"/><path d="M 50 40 L 40 50" stroke="black" stroke-width="8" stroke-linecap="round"/></mask>
+    <mask id="landing-gen-m3"><rect x="-1000" y="-1000" width="4000" height="4000" fill="white"/><path d="M 60 20 L 30 50" stroke="black" stroke-width="10" stroke-linecap="round"/></mask>
+    <clipPath id="landing-gen-cp"><rect x="0" y="0" width="80" height="80" /></clipPath>
+  </defs>
+
+  <g clip-path="url(#landing-gen-cp)">
+      <!-- Barra Inferior -->
+      <path d="M 50 50 L 15 85" stroke="url(#landing-gen-frostBody)" stroke-width="6" stroke-linecap="round" mask="url(#landing-gen-m2)" filter="url(#landing-gen-frostFilter)" />
+      
+      <!-- Barra Intermedia -->
+      <path d="M 50 40 L 40 50" stroke="url(#landing-gen-frostBody)" stroke-width="4" stroke-linecap="round" mask="url(#landing-gen-m3)" filter="url(#landing-gen-frostFilter)" />
+      
+      <!-- Barra Superior -->
+      <path d="M 60 20 L 30 50" stroke="url(#landing-gen-frostBody)" stroke-width="6" stroke-linecap="round" filter="url(#landing-gen-frostFilter)" />
+  </g>
+  
+  </g>
+</svg>

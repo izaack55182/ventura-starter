@@ -1,0 +1,25 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Variables de entorno para DESARROLLO LOCAL (Cloudflare Workers)
+#
+# 1. Copia este archivo a `.dev.vars`  (está en .gitignore, NO se sube)
+# 2. Rellena los valores.
+#
+# En PRODUCCIÓN los secrets NO van aquí — se configuran con:
+#     wrangler secret put HONEYPOT_SECRET
+#     wrangler secret put COOKIE_SECRET
+#     wrangler secret put SESSION_SECRET
+# y las vars no-secretas en [vars] de wrangler.toml.
+# ──────────────────────────────────────────────────────────────────────────────
+
+# Entorno de la app: development | staging | production | preview
+APP_ENV=development
+NODE_ENV=development
+
+# Indexación por buscadores: "true" | "false"
+ALLOW_INDEXING=false
+
+# ── Secrets ───────────────────────────────────────────────────────────────────
+# Usa valores aleatorios largos. HONEYPOT_SECRET es OBLIGATORIO cuando APP_ENV=production.
+COOKIE_SECRET=dev_cookie_secret_change_me
+SESSION_SECRET=dev_session_secret_change_me
+HONEYPOT_SECRET=dev_honeypot_secret_change_me

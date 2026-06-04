@@ -1,0 +1,90 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.4.4/schema.json",
+	"vcs": {
+		"enabled": true,
+		"clientKind": "git",
+		"defaultBranch": "main",
+		"useIgnoreFile": true
+	},
+	"files": {
+		"includes": ["**", "!app/styles/tailwind.css"],
+		"ignoreUnknown": false
+	},
+	"formatter": {
+		"enabled": true,
+		"formatWithErrors": true,
+		"indentStyle": "tab",
+		"indentWidth": 2,
+		"lineEnding": "lf",
+		"lineWidth": 100,
+		"attributePosition": "auto"
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"suspicious": {
+				"recommended": true,
+				"noArrayIndexKey": "off",
+				"noExplicitAny": "warn",
+				"noAssignInExpressions": "warn",
+				"noConsole": "warn"
+			},
+			"style": {
+				"recommended": true,
+				"noNonNullAssertion": "warn",
+				"noParameterAssign": "warn"
+			},
+			"complexity": {
+				"recommended": true,
+				"noForEach": "warn"
+			},
+			"correctness": {
+				"recommended": true,
+				"noUnusedImports": "warn",
+				"noUnusedVariables": "warn",
+				"noUnusedFunctionParameters": "warn",
+				"useExhaustiveDependencies": "warn"
+			},
+			"security": {
+				"recommended": true
+			},
+			"performance": {
+				"recommended": true
+			},
+			"a11y": {
+				"recommended": true
+			},
+			"nursery": {
+				"recommended": true,
+				"noUndeclaredEnvVars": "warn"
+			}
+		}
+	},
+	"javascript": {
+		"formatter": {
+			"enabled": true,
+			"quoteStyle": "single",
+			"jsxQuoteStyle": "double",
+			"trailingCommas": "es5",
+			"semicolons": "asNeeded",
+			"arrowParentheses": "always",
+			"bracketSpacing": true,
+			"bracketSameLine": false,
+			"quoteProperties": "asNeeded"
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
+		}
+	}
+}

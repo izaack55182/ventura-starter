@@ -1,0 +1,18 @@
+# Lefthook — git hooks rápidos y en paralelo.
+# Instalación automática vía `bun run prepare` (script "prepare" en package.json).
+
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      # Lint + format con auto-fix solo sobre los archivos staged.
+      glob: "*.{js,jsx,ts,tsx,json,jsonc,css}"
+      run: bunx biome check --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      # Re-añade al stage lo que Biome haya arreglado, para que el commit lo incluya.
+      stage_fixed: true
+
+pre-push:
+  commands:
+    typecheck:
+      # Chequeo de tipos completo antes de publicar (wrangler types + typegen + tsc).
+      run: bun run typecheck
