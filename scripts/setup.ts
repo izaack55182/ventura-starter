@@ -13,8 +13,10 @@
  * funciona sin importar cómo se llame el template del que clonaste.
  *
  * Uso:
- *   bun run setup              # interactivo
- *   bun run setup --yes        # no interactivo (solo secrets + .dev.vars)
+ *   bun run setup                       # interactivo
+ *   bun run setup --name "Mi App"       # renombra sin prompts (scriptable)
+ *   bun run setup --name "Mi App" --slug mi-app
+ *   bun run setup --yes                 # solo secrets + .dev.vars (sin renombrar)
  *
  * Es idempotente: no sobrescribe `.dev.vars` si ya existe.
  */
@@ -63,6 +65,16 @@ function escapeRe(s: string): string {
 	return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
+/** Lee un flag de la forma `--name valor` o `--name=valor`. */
+function getArg(name: string): string | undefined {
+	const eq = process.argv.find((a) => a.startsWith(`--${name}=`))
+	if (eq) return eq.slice(name.length + 3)
+	const i = process.argv.indexOf(`--${name}`)
+	const next = process.argv[i + 1]
+	if (i !== -1 && next && !next.startsWith('--')) return next
+	return undefined
+}
+
 function readFile(relPath: string): string | null {
 	const path = join(ROOT, relPath)
 	return existsSync(path) ? readFileSync(path, 'utf8') : null
@@ -104,8 +116,12 @@ function renameProject() {
 	const oldSlug = pkg?.match(/"name":\s*"([^"]+)"/)?.[1] ?? 'app'
 	const oldDisplay = site?.match(/name:\s*'([^']+)'/)?.[1] ?? oldSlug
 
-	const displayName = ask('Nombre del proyecto (visible)', oldDisplay)
-	const slug = toSlug(ask('Slug (kebab-case, para worker/package)', toSlug(displayName)))
+	const argName = getArg('name')
+	const argSlug = getArg('slug')
+	const displayName = argName ?? ask('Nombre del proyecto (visible)', oldDisplay)
+	const slug = toSlug(
+		argSlug ?? argName ?? ask('Slug (kebab-case, para worker/package)', toSlug(displayName))
+	)
 
 	if (slug === oldSlug && displayName === oldDisplay) {
 		info('Nombre sin cambios — se omite el renombrado.')
@@ -165,8 +181,9 @@ function main() {
 	// 1. Secrets + .dev.vars
 	createDevVars()
 
-	// 2. Renombrado del proyecto (se omite en modo --yes / no interactivo)
-	if (!NON_INTERACTIVE) renameProject()
+	// 2. Renombrado del proyecto. Corre si es interactivo, o si se pasó --name
+	//    (permite renombrar sin prompts: bun run setup --name "Mi App").
+	if (!NON_INTERACTIVE || getArg('name')) renameProject()
 
 	// 3. Siguientes pasos
 	log(`\n${c.bold}${c.green}Listo.${c.reset} Siguientes pasos:\n`)
