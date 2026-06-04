@@ -1,4 +1,4 @@
-name = "ventura-stack"
+name = "ventura-starter"
 compatibility_date = "2026-06-03"
 compatibility_flags = ["nodejs_compat"]
 main = "workers/app.ts"
@@ -67,8 +67,8 @@ crons = []
 # Para desarrollo local usa un archivo .dev.vars (no versionado).
 
 # ── Entorno DEV / STAGING ─────────────────────────────────────────────────────
-# La rama `main` despliega la config de arriba (worker "ventura-stack" = prod).
-# La rama `dev` despliega este entorno (worker "ventura-stack-dev" = staging).
+# La rama `main` despliega la config de arriba (worker "ventura-starter" = prod).
+# La rama `dev` despliega este entorno (worker "ventura-starter-dev" = staging).
 #
 # IMPORTANTE: con @cloudflare/vite-plugin el entorno se elige en BUILD time:
 #   CLOUDFLARE_ENV=dev bun run build && wrangler deploy
@@ -78,7 +78,7 @@ crons = []
 # ratelimits (y cualquier D1/R2/vars que actives). Las claves heredables
 # (main, compatibility_date, assets, triggers) se toman del nivel superior.
 [env.dev]
-name = "ventura-stack-dev"
+name = "ventura-starter-dev"
 
   [[env.dev.ratelimits]]
   name = "GENERAL_RATE_LIMITER"

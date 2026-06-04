@@ -1,13 +1,14 @@
 import type { MetaFunction } from 'react-router'
 import { getMeta } from '@/utils/misc'
-import { BatteriesIncluded } from '../components/batteries-included'
-import { CTA } from '../components/cta'
-import { Deploy } from '../components/deploy'
 import { Hero } from '../components/hero'
-import { OrbitSection } from '../components/orbit-section'
-import { Runtime } from '../components/runtime'
-import { TerminalSection } from '../components/terminal-section'
-import { UseCases } from '../components/use-cases'
+// Secciones del template completo. Descomenta (y su import) para activarlas.
+// import { BatteriesIncluded } from '../components/batteries-included'
+// import { CTA } from '../components/cta'
+// import { Deploy } from '../components/deploy'
+// import { OrbitSection } from '../components/orbit-section'
+// import { Runtime } from '../components/runtime'
+// import { TerminalSection } from '../components/terminal-section'
+// import { UseCases } from '../components/use-cases'
 
 export async function loader() {
 	return {
@@ -20,13 +21,13 @@ export default function Home() {
 	return (
 		<>
 			<Hero />
-			<Runtime />
-			<UseCases />
-			<OrbitSection />
-			<BatteriesIncluded />
-			<Deploy />
-			<TerminalSection />
-			<CTA />
+			{/* <Runtime /> */}
+			{/* <UseCases /> */}
+			{/* <OrbitSection /> */}
+			{/* <BatteriesIncluded /> */}
+			{/* <Deploy /> */}
+			{/* <TerminalSection /> */}
+			{/* <CTA /> */}
 		</>
 	)
 }

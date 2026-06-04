@@ -1,5 +1,5 @@
 {
-	"name": "ventura-stack",
+	"name": "ventura-starter",
 	"type": "module",
 	"private": true,
 	"scripts": {

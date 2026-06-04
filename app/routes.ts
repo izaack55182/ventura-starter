@@ -1,10 +1,6 @@
 import { layout, prefix, type RouteConfig, route } from '@react-router/dev/routes'
-import { accountingRoutes } from './features/accounting/routes'
-import { analyticsRoutes } from './features/analytics/routes'
 import { coreRoutes } from './features/core/routes'
 import { crmRoutes } from './features/crm/routes'
-import { inventoryRoutes } from './features/inventory/routes'
-import { invoicingRoutes } from './features/invoicing/routes'
 // Importamos las rutas de las features
 import { marketingRoutes } from './features/marketing/routes'
 import { securityRoutes } from './features/security/routes'
@@ -22,13 +18,11 @@ export default [
 	...prefix('c', [
 		layout('routes/layout/layout-app.tsx', [
 			...coreRoutes,
+			// `crm` queda como módulo de referencia. Duplica su estructura para
+			// agregar nuevos módulos de negocio.
 			...crmRoutes,
 			...userRoutes,
 			...settingsRoutes,
-			...accountingRoutes,
-			...inventoryRoutes,
-			...invoicingRoutes,
-			...analyticsRoutes,
 		]),
 	]),
 

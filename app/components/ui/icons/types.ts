@@ -27,6 +27,8 @@ export const iconNames = [
 	'globe',
 	'git-branch',
 	'contact',
+	'codenity-light',
+	'codenity-dark',
 	'code',
 	'cloud-moon-rain',
 	'circle-check',

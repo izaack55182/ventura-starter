@@ -33,8 +33,6 @@ const NAV_SECTIONS: { title: string; items: NavItem[] }[] = [
 			{ label: 'Dashboard', href: '/c/dashboard', icon: 'layout-dashboard' },
 			{ label: 'Customers', href: '/c/customers', icon: 'users' },
 			{ label: 'Users', href: '/c/users', icon: 'shield' },
-			{ label: 'Accounting', href: '/c/accounting', icon: 'calculator' },
-			{ label: 'Analytics', href: '/c/analytics', icon: 'chart-spline' },
 		],
 	},
 	{
