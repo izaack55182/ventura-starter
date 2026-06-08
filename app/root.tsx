@@ -51,8 +51,6 @@ export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
 export const links: Route.LinksFunction = () => {
 	return [
 		{ rel: 'preload', href: iconsHref, as: 'image' },
-		{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-		{ rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' as const },
 		{ rel: 'icon', href: '/favicons/favicon.ico', sizes: '48x48' },
 		{ rel: 'apple-touch-icon', href: appleTouchIconAssetUrl },
 		{ rel: 'manifest', href: '/site.webmanifest', crossOrigin: 'use-credentials' } as const,

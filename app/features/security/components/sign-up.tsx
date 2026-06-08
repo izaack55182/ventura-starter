@@ -2,7 +2,6 @@ import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { Form, Link, type MetaFunction, redirect, useActionData, useNavigation } from 'react-router'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
-import { Field } from '@/components/forms'
 import { Button } from '@/components/ui/button'
 import { checkHoneypot } from '@/utils/honeypot.server'
 import { getMeta } from '@/utils/misc'
@@ -56,32 +55,6 @@ export default function Register() {
 
 			<Form method="post" {...getFormProps(form)} className="space-y-4">
 				<HoneypotInputs />
-				<Field
-					labelProps={{ children: 'Email' }}
-					inputProps={{
-						...getInputProps(fields.email, { type: 'email' }),
-						placeholder: 'm@example.com',
-						autoComplete: 'email',
-						autoFocus: true,
-					}}
-					errors={fields.email.errors}
-				/>
-				<Field
-					labelProps={{ children: 'Password' }}
-					inputProps={{
-						...getInputProps(fields.password, { type: 'password' }),
-						autoComplete: 'new-password',
-					}}
-					errors={fields.password.errors}
-				/>
-				<Field
-					labelProps={{ children: 'Confirm password' }}
-					inputProps={{
-						...getInputProps(fields.confirmPassword, { type: 'password' }),
-						autoComplete: 'new-password',
-					}}
-					errors={fields.confirmPassword.errors}
-				/>
 
 				<Button
 					type="submit"

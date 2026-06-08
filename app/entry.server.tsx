@@ -1,5 +1,5 @@
 import { isbot } from 'isbot'
-import { renderToReadableStream } from 'react-dom/server' /* O react-dom/server.bun dependiendo de tu runtime */
+import { renderToReadableStream } from 'react-dom/server'
 import type { AppLoadContext, EntryContext } from 'react-router'
 import { ServerRouter } from 'react-router'
 import { generateNonce, getContentSecurityPolicy } from '@/utils/csp.server'

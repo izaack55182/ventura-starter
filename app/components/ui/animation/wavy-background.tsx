@@ -1,5 +1,5 @@
 // CORE
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 // UTILS
 import { createNoise3D, type NoiseFunction3D } from 'simplex-noise'
 import { cn } from '@/utils/misc'
@@ -48,6 +48,10 @@ export const WavyBackground = ({
 	if (!noiseRef.current) noiseRef.current = createNoise3D()
 	const canvasRef = useRef<HTMLCanvasElement>(null)
 	const stateRef = useRef({ nt: 0, animId: 0 })
+	// `false` hasta que el canvas pinta su primer frame. Sirve para hacer el
+	// crossfade: placeholder visible -> canvas visible. Empieza en false también
+	// en SSR, así el HTML llega con el gradiente estático ya pintado (sin hueco).
+	const [ready, setReady] = useState(false)
 
 	// Paleta por defecto: degradado violeta -> amarillo (borde sup-izq a inf-der).
 	const ribbonColors = colors ?? [
@@ -58,6 +62,20 @@ export const WavyBackground = ({
 		'#fb923c', // naranja
 		'#fde047', // amarillo
 	]
+
+	// Placeholder estático: aproxima la cinta con un linear-gradient en la MISMA
+	// diagonal (abajo-izq -> arriba-der; las bandas varían en la perpendicular ->
+	// `to bottom right`). Va en el HTML del SSR, así el fondo se ve al instante y
+	// el canvas animado hace crossfade encima al hidratar (cero pop-in).
+	const half = (ribbonWidth * 100) / 2
+	const start = 50 - half
+	const stops = ribbonColors
+		.map((color, i) => {
+			const p = start + (i / Math.max(1, ribbonColors.length - 1)) * (half * 2)
+			return `${color} ${p.toFixed(1)}%`
+		})
+		.join(', ')
+	const placeholderGradient = `linear-gradient(to bottom right, transparent ${(start - 3).toFixed(1)}%, ${stops}, transparent ${(50 + half + 3).toFixed(1)}%)`
 
 	// Guardamos los props en un ref para que el loop de animación los lea sin
 	// necesidad de reiniciar el efecto (un reinicio dispara resize(), que borra
@@ -255,8 +273,18 @@ export const WavyBackground = ({
 		paintFrame()
 		sync()
 
+		// Tras pintar el primer frame, activa el crossfade (canvas in, placeholder
+		// out). Doble rAF para asegurar que el frame ya está en pantalla antes de
+		// disparar la transición de opacidad.
+		let fadeRaf2 = 0
+		const fadeRaf1 = requestAnimationFrame(() => {
+			fadeRaf2 = requestAnimationFrame(() => setReady(true))
+		})
+
 		return () => {
 			stop()
+			cancelAnimationFrame(fadeRaf1)
+			cancelAnimationFrame(fadeRaf2)
 			clearTimeout(scrollIdle)
 			io.disconnect()
 			window.removeEventListener('scroll', onScroll)
@@ -270,6 +298,19 @@ export const WavyBackground = ({
 
 	return (
 		<div className={cn('relative h-full w-full overflow-hidden', containerClassName)}>
+			{/* Placeholder estático (presente en el SSR): visible al instante y se
+			    desvanece cuando el canvas ya pintó su primer frame. */}
+			<div
+				aria-hidden
+				className={cn(
+					'absolute inset-0 h-full w-full transition-opacity duration-700 ease-out',
+					ready ? 'opacity-0' : 'opacity-100'
+				)}
+				style={{ backgroundImage: placeholderGradient }}
+			/>
+			{/* El canvas va SIEMPRE visible: está vacío (transparente) hasta que pinta
+			    su primer frame, así que no hay nada que ocultar. La animación nunca
+			    queda atrapada en opacity-0. */}
 			<canvas ref={canvasRef} className="absolute inset-0 h-full w-full transform-gpu" />
 			{children ? <div className={cn('relative z-10', className)}>{children}</div> : null}
 		</div>

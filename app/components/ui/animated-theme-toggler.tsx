@@ -9,7 +9,7 @@ interface AnimatedThemeSwitcherProps {
 	className?: string
 }
 
-export const ThemeToggleButton = ({
+const ThemeToggleButton = ({
 	colorScheme,
 	resolvedTheme,
 	onChange,
@@ -43,7 +43,7 @@ export const ThemeToggleButton = ({
 	)
 }
 
-export const ThemeSystemButton = ({
+const ThemeSystemButton = ({
 	colorScheme,
 	resolvedTheme,
 	onChange,
@@ -62,7 +62,7 @@ export const ThemeSystemButton = ({
 	)
 }
 
-// Componente completo (por si se necesita fuera del dock)
+// Switcher completo (toggle claro/oscuro + botón "system"). Único export del módulo.
 export const AnimatedThemeSwitcher = ({
 	colorScheme,
 	resolvedTheme,

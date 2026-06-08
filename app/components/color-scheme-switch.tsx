@@ -5,47 +5,13 @@ import { href, useFetcher } from 'react-router'
 import { useColorScheme, useTheme } from '@/routes/resource/color-scheme'
 
 // COMPONENTS
-import {
-	AnimatedThemeSwitcher,
-	ThemeSystemButton,
-	ThemeToggleButton,
-} from './ui/animated-theme-toggler'
-export function ColorSchemeSwitchManual() {
-	const fetcher = useFetcher()
-	const colorScheme = useColorScheme()
-	const theme = useTheme()
+import { AnimatedThemeSwitcher } from './ui/animated-theme-toggler'
 
-	const submitColorScheme = (value: 'light' | 'dark' | 'system') => {
-		fetcher.submit({ colorScheme: value }, { action: href('/r/color-scheme'), method: 'POST' })
-	}
-
-	return (
-		<ThemeToggleButton
-			colorScheme={colorScheme}
-			resolvedTheme={theme}
-			onChange={submitColorScheme}
-		/>
-	)
-}
-
-export function ColorSchemeSwitchSystem() {
-	const fetcher = useFetcher()
-	const colorScheme = useColorScheme()
-	const theme = useTheme()
-
-	const submitColorScheme = (value: 'light' | 'dark' | 'system') => {
-		fetcher.submit({ colorScheme: value }, { action: href('/r/color-scheme'), method: 'POST' })
-	}
-
-	return (
-		<ThemeSystemButton
-			colorScheme={colorScheme}
-			resolvedTheme={theme}
-			onChange={submitColorScheme}
-		/>
-	)
-}
-// Al final de color-scheme-switch.tsx, agrega:
+/**
+ * Conecta los botones de tema (presentación) con el motor del Epic Stack:
+ * lee la preferencia/tema resuelto vía hooks y persiste el cambio enviando
+ * un POST optimista a la resource route `/r/color-scheme`.
+ */
 export function ColorSchemeSwitch() {
 	const fetcher = useFetcher()
 	const colorScheme = useColorScheme()

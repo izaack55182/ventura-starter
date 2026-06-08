@@ -2,10 +2,7 @@ import { index, layout, prefix, route } from '@react-router/dev/routes'
 
 export const marketingRoutes = [
 	// HOME ROUTES
-	layout('routes/layout/layout-public.tsx', [
-		index('features/marketing/home/routes/home.tsx'),
-		route('security', 'features/marketing/home/routes/security.tsx'),
-	]),
+	layout('routes/layout/layout-public.tsx', [index('features/marketing/home/routes/home.tsx')]),
 
 	// SEO
 	route('robots.txt', 'features/marketing/seo/routes/robots.ts'),

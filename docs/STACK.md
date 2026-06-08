@@ -61,8 +61,7 @@ Ventura-stack/
 │   │   └── misc.ts                 #   Helpers varios (dominio, etc.)
 │   │
 │   ├── utils/hooks/                # Custom hooks
-│   │   ├── use-mobile.tsx
-│   │   └── use-reduced-motion.tsx
+│   │   └── use-mobile.tsx
 │   │
 │   └── styles/                     # CSS global
 │       ├── tailwind.css            #   Tokens, temas, View Transition CSS

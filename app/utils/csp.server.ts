@@ -29,7 +29,7 @@ export function getContentSecurityPolicy(nonce: string, isDev: boolean): string 
 		'script-src': `'self' 'nonce-${nonce}' 'strict-dynamic'`,
 		'style-src': "'self' 'unsafe-inline'",
 		'img-src': "'self' data: blob:",
-		'font-src': "'self' https://fonts.gstatic.com",
+		'font-src': "'self'",
 		'connect-src': connectSrc,
 		'base-uri': "'self'",
 		'form-action': "'self'",

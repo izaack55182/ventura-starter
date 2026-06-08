@@ -2,7 +2,6 @@ import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { Form, Link, type MetaFunction, redirect, useActionData, useNavigation } from 'react-router'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
-import { Field } from '@/components/forms'
 import { Button } from '@/components/ui/button'
 import { checkHoneypot } from '@/utils/honeypot.server'
 import { getMeta } from '@/utils/misc'
@@ -60,16 +59,7 @@ export default function Login() {
 
 			<Form method="post" {...getFormProps(form)} className="space-y-4">
 				<HoneypotInputs />
-				<Field
-					labelProps={{ children: 'Email' }}
-					inputProps={{
-						...getInputProps(fields.email, { type: 'email' }),
-						placeholder: 'm@example.com',
-						autoComplete: 'email',
-						autoFocus: true,
-					}}
-					errors={fields.email.errors}
-				/>
+
 				<div className="space-y-2">
 					<div className="flex items-center justify-between">
 						<span className="text-sm font-medium leading-none">Password</span>
@@ -80,14 +70,6 @@ export default function Login() {
 							Forgot password?
 						</Link>
 					</div>
-					<Field
-						labelProps={{ children: 'Password', className: 'sr-only' }}
-						inputProps={{
-							...getInputProps(fields.password, { type: 'password' }),
-							autoComplete: 'current-password',
-						}}
-						errors={fields.password.errors}
-					/>
 				</div>
 
 				<ErrorBanner errors={form.errors} />
