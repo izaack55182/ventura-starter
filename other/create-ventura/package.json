@@ -1,0 +1,25 @@
+{
+	"name": "create-ventura",
+	"version": "0.1.0",
+	"description": "Crea un proyecto nuevo con el Ventura Stack (React Router v7 + Bun + Cloudflare Workers).",
+	"type": "module",
+	"bin": {
+		"create-ventura": "index.mjs"
+	},
+	"files": [
+		"index.mjs"
+	],
+	"engines": {
+		"node": ">=18"
+	},
+	"license": "MIT",
+	"keywords": [
+		"create",
+		"starter",
+		"template",
+		"react-router",
+		"bun",
+		"cloudflare",
+		"ventura"
+	]
+}
