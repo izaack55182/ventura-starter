@@ -112,8 +112,11 @@ function renameProject() {
 	const site = readFile('app/config/site.ts')
 	const wrangler = readFile('wrangler.toml')
 
-	// Identidad actual leída de los archivos (no placeholders fijos).
+	// Identidad actual leída de los archivos (no placeholders fijos). Cada
+	// archivo declara la suya: `bun create` renombra package.json al nombre del
+	// directorio, así que puede divergir del worker name de wrangler.toml.
 	const oldSlug = pkg?.match(/"name":\s*"([^"]+)"/)?.[1] ?? 'app'
+	const oldWorker = wrangler?.match(/^name\s*=\s*"([^"]+)"/m)?.[1] ?? oldSlug
 	const oldDisplay = site?.match(/name:\s*'([^']+)'/)?.[1] ?? oldSlug
 
 	const argName = getArg('name')
@@ -123,23 +126,23 @@ function renameProject() {
 		argSlug ?? argName ?? ask('Slug (kebab-case, para worker/package)', toSlug(displayName))
 	)
 
-	if (slug === oldSlug && displayName === oldDisplay) {
+	if (slug === oldSlug && slug === oldWorker && displayName === oldDisplay) {
 		info('Nombre sin cambios — se omite el renombrado.')
 		return
 	}
 
 	// package.json — solo el campo name
-	if (pkg) {
+	if (pkg && slug !== oldSlug) {
 		writeFile(
 			'package.json',
 			pkg.replace(new RegExp(`("name":\\s*")${escapeRe(oldSlug)}(")`), `$1${slug}$2`)
 		)
 	}
 
-	// wrangler.toml — reemplaza todas las apariciones del slug viejo (cubre el
+	// wrangler.toml — reemplaza todas las apariciones del nombre viejo (cubre el
 	// worker de prod y el de dev "<slug>-dev", además de comentarios).
-	if (wrangler) {
-		writeFile('wrangler.toml', wrangler.split(oldSlug).join(slug))
+	if (wrangler && slug !== oldWorker) {
+		writeFile('wrangler.toml', wrangler.split(oldWorker).join(slug))
 	}
 
 	// app/config/site.ts — name, url (cambia solo el subdominio), twitter y repo.
