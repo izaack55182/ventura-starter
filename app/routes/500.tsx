@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import type { Route } from './+types/500'
 
-export function meta({}: Route.MetaArgs) {
+export function meta(_args: Route.MetaArgs) {
 	return [
 		{ title: '500 - Server Error' },
 		{ name: 'description', content: 'Something went wrong on our end.' },

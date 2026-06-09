@@ -67,5 +67,5 @@ export function Icon({ name, size = 'font', testId, className, children, ...prop
 	)
 }
 
-export { href }
 export type { IconName }
+export { href }

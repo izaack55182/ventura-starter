@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import type { Route } from './+types/404'
 
-export function meta({}: Route.MetaArgs) {
+export function meta(_args: Route.MetaArgs) {
 	return [
 		{ title: '404 - Not Found' },
 		{ name: 'description', content: 'The page you are looking for does not exist.' },

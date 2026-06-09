@@ -114,6 +114,7 @@ function Carousel({
 				canScrollNext,
 			}}
 		>
+			{/* biome-ignore lint/a11y/useSemanticElements: patrón WAI-ARIA del carousel de shadcn/ui (role + aria-roledescription) */}
 			<div
 				onKeyDownCapture={handleKeyDown}
 				className={cn('relative', className)}
@@ -145,6 +146,7 @@ function CarouselItem({ className, ...props }: React.ComponentProps<'div'>) {
 	const { orientation } = useCarousel()
 
 	return (
+		// biome-ignore lint/a11y/useSemanticElements: patrón WAI-ARIA del carousel de shadcn/ui (role + aria-roledescription)
 		<div
 			role="group"
 			aria-roledescription="slide"
@@ -216,11 +218,11 @@ function CarouselNext({
 }
 
 export {
-	type CarouselApi,
 	Carousel,
+	type CarouselApi,
 	CarouselContent,
 	CarouselItem,
-	CarouselPrevious,
 	CarouselNext,
+	CarouselPrevious,
 	useCarousel,
 }

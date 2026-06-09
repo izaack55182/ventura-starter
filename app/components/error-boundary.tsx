@@ -12,7 +12,7 @@ type StatusHandler = (info: {
 export function GeneralErrorBoundary({
 	defaultStatusHandler = ({ error }) => (
 		<p>
-			{(error as any)?.status} {(error as any)?.data}
+			{error.status} {error.data}
 		</p>
 	),
 	statusHandlers,
@@ -23,10 +23,7 @@ export function GeneralErrorBoundary({
 	unexpectedErrorHandler?: (error: unknown) => ReactElement | null
 }) {
 	const error = useRouteError()
-	let params = {}
-	try {
-		params = useParams()
-	} catch (e) {}
+	const params = useParams()
 	const isResponse = isRouteErrorResponse(error)
 
 	if (typeof document !== 'undefined') {
