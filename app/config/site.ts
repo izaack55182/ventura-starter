@@ -25,7 +25,7 @@ export const SITE_CONFIG = {
 		'El stack open-source que combina React Router v7, Cloudflare Workers y Bun para llevar tu app al edge con 0ms de cold start.',
 
 	/** Imagen OG por defecto (ruta relativa a /public) */
-	ogImage: '/social-preview.png',
+	ogImage: '/social-preview.avif',
 
 	/** Locale para Open Graph */
 	locale: 'es_MX',
