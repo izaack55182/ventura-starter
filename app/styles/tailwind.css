@@ -448,23 +448,23 @@
 	}
 
 	h1 {
-		@apply text-h1;
+		@apply text-h3 md:text-h1;
 	}
 
 	h2 {
-		@apply text-h2;
+		@apply text-h4 md:text-h2;
 	}
 
 	h3 {
-		@apply text-h3;
+		@apply text-h5 md:text-h3;
 	}
 
 	h4 {
-		@apply text-h4;
+		@apply text-h6 md:text-h4;
 	}
 
 	h5 {
-		@apply text-h5;
+		@apply text-h6 md:text-h5;
 	}
 
 	h6 {
@@ -528,7 +528,19 @@
 /* UTILITIES */
 @utility container {
 	margin-inline: auto;
-	padding-inline: 2rem;
+	padding-inline: 1rem;
+
+	@media (width >= 640px) {
+		& {
+			padding-inline: 1.5rem;
+		}
+	}
+
+	@media (width >= 1024px) {
+		& {
+			padding-inline: 2rem;
+		}
+	}
 
 	@media (width >=1400px) {
 		& {

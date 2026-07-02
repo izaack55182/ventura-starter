@@ -4,12 +4,12 @@ import { Icon } from '@/components/ui/icon'
 
 export default function Dashboard() {
 	return (
-		<div className="space-y-6 p-4 md:space-y-8 md:p-6 lg:p-8">
-			<div className="flex flex-col gap-2">
-				<h1 className="text-4xl font-extrabold tracking-tight text-foreground lg:text-5xl">
+		<div className="space-y-6 p-3 sm:p-4 md:space-y-8 md:p-6 lg:p-8">
+			<div className="flex flex-col gap-1 sm:gap-2">
+				<h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground lg:text-5xl">
 					Dashboard
 				</h1>
-				<p className="text-lg text-muted-foreground max-w-[600px]">
+				<p className="text-sm sm:text-base lg:text-lg text-muted-foreground max-w-[600px]">
 					Bienvenido de nuevo. Aquí tienes un resumen del estado actual de tu plataforma.
 				</p>
 			</div>
