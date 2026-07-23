@@ -1,5 +1,7 @@
 // UTILS
 import { type ClassValue, clsx } from 'clsx'
+import { useState } from 'react'
+import { useFormAction, useNavigation } from 'react-router'
 import { extendTailwindMerge } from 'tailwind-merge'
 import { SITE_CONFIG } from '@/config/site'
 
@@ -34,6 +36,11 @@ const twMerge = extendTailwindMerge({
 		},
 	},
 })
+export function getUserImgSrc(objectKey?: string | null) {
+	return objectKey
+		? `/resources/images?objectKey=${encodeURIComponent(objectKey)}`
+		: '/images/avatar/default_avatar.svg'
+}
 
 export function getErrorMessage(error: unknown) {
 	if (typeof error === 'string') return error
@@ -203,3 +210,74 @@ export function getMeta({
 
 	return meta
 }
+export function combineResponseInits(...responseInits: Array<ResponseInit | null | undefined>) {
+	let combined: ResponseInit = {}
+	for (const responseInit of responseInits) {
+		combined = {
+			...responseInit,
+			headers: combineHeaders(combined.headers, responseInit?.headers),
+		}
+	}
+	return combined
+}
+
+export function useIsPending({
+	formAction,
+	formMethod = 'POST',
+	state = 'non-idle',
+}: {
+	formAction?: string
+	formMethod?: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE'
+	state?: 'submitting' | 'loading' | 'non-idle'
+} = {}) {
+	const contextualFormAction = useFormAction()
+	const navigation = useNavigation()
+	const isPendingState =
+		state === 'non-idle' ? navigation.state !== 'idle' : navigation.state === state
+	return (
+		isPendingState &&
+		navigation.formAction === (formAction ?? contextualFormAction) &&
+		navigation.formMethod === formMethod
+	)
+}
+function callAll<Args extends Array<unknown>>(
+	...fns: Array<((...args: Args) => unknown) | undefined>
+) {
+	return (...args: Args) => {
+		for (const fn of fns) {
+			fn?.(...args)
+		}
+	}
+}
+
+export function useDoubleCheck() {
+	const [doubleCheck, setDoubleCheck] = useState(false)
+
+	function getButtonProps(props?: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+		const onBlur: React.ButtonHTMLAttributes<HTMLButtonElement>['onBlur'] = () =>
+			setDoubleCheck(false)
+
+		const onClick: React.ButtonHTMLAttributes<HTMLButtonElement>['onClick'] = doubleCheck
+			? undefined
+			: (e) => {
+					e.preventDefault()
+					setDoubleCheck(true)
+				}
+
+		const onKeyUp: React.ButtonHTMLAttributes<HTMLButtonElement>['onKeyUp'] = (e) => {
+			if (e.key === 'Escape') {
+				setDoubleCheck(false)
+			}
+		}
+
+		return {
+			...props,
+			onBlur: callAll(onBlur, props?.onBlur),
+			onClick: callAll(onClick, props?.onClick),
+			onKeyUp: callAll(onKeyUp, props?.onKeyUp),
+		}
+	}
+
+	return { doubleCheck, getButtonProps }
+}
+export const IMG_MAX_SIZE = 1024 * 1024 * 3

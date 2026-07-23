@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router'
-import { ColorSchemeSwitch } from '@/components/color-scheme-switch'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from '@/components/ui/sheet'
+import { ColorSchemeSwitch } from '@/routes/resource/color-scheme'
 
 import Logo from './logo'
 

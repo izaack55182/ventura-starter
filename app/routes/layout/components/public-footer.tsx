@@ -1,6 +1,5 @@
 import { Link } from 'react-router'
-import { ColorSchemeSwitch } from '@/components/color-scheme-switch'
-import { Icon } from '@/components/ui/icon'
+import { ColorSchemeSwitch } from '@/routes/resource/color-scheme'
 import Logo from './logo'
 
 export function Footer() {

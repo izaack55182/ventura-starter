@@ -13,6 +13,7 @@ export default [
 
 	// 2. AUTHENTICATION (SECURITY)
 	...securityRoutes,
+	...userRoutes,
 
 	// 3. APPLICATION (CENTRALIZED)
 	...prefix('c', [
@@ -21,7 +22,6 @@ export default [
 			// `crm` queda como módulo de referencia. Duplica su estructura para
 			// agregar nuevos módulos de negocio.
 			...crmRoutes,
-			...userRoutes,
 			...settingsRoutes,
 		]),
 	]),

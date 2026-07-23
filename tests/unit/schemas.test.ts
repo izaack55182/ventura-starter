@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { LoginSchema, SignupSchema } from '@/features/security/schemas'
+import { LoginSchema, SignupSchema } from '@/features/security/authentication/schemas'
 
 describe('LoginSchema', () => {
 	it('acepta credenciales válidas y normaliza el email', () => {

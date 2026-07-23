@@ -10,6 +10,9 @@ export default defineConfig({
 	ssr: {
 		noExternal: ['react-tweet'],
 	},
+	optimizeDeps: {
+		exclude: ['drizzle-orm', 'drizzle-zod'],
+	},
 	server: {
 		hmr: {
 			overlay: false,
@@ -25,8 +28,6 @@ export default defineConfig({
 		assetsDir: 'assets',
 	},
 	plugins: [
-		// El plugin de Cloudflare hace que dev/preview corran en el runtime de Workers
-		// (workerd) y sirve los assets como en producción.
 		cloudflare({ viteEnvironment: { name: 'ssr' } }),
 		reactRouter(),
 		{

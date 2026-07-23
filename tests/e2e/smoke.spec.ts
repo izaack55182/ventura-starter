@@ -15,13 +15,13 @@ test('responde con la cabecera Content-Security-Policy con nonce', async ({ page
 
 test('la página de login renderiza el formulario', async ({ page }) => {
 	await page.goto('/login')
-	await expect(page.getByRole('heading', { name: 'Bienvenido' })).toBeVisible()
-	await expect(page.getByLabel('Email')).toBeVisible()
-	await expect(page.getByRole('button', { name: /sign in/i })).toBeVisible()
+	await expect(page.getByLabel('Username')).toBeVisible()
+	await expect(page.getByLabel('Password')).toBeVisible()
+	await expect(page.getByRole('button', { name: /iniciar sesi/i })).toBeVisible()
 })
 
 test('la página de registro renderiza el formulario', async ({ page }) => {
-	await page.goto('/register')
-	await expect(page.getByRole('heading', { name: 'Crear cuenta' })).toBeVisible()
-	await expect(page.getByRole('button', { name: /create account/i })).toBeVisible()
+	await page.goto('/signup')
+	await expect(page.getByRole('heading', { name: /let's start your journey/i })).toBeVisible()
+	await expect(page.getByRole('button', { name: /submit/i })).toBeVisible()
 })

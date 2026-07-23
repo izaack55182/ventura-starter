@@ -1,5 +1,4 @@
 import { NavLink, useLocation } from 'react-router'
-import { ColorSchemeSwitch } from '@/components/color-scheme-switch'
 import { Icon } from '@/components/ui/icon'
 import type { IconName } from '@/components/ui/icons/types'
 import {
@@ -17,6 +16,7 @@ import {
 	SidebarMenuSubButton,
 	SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
+import { ColorSchemeSwitch } from '@/routes/resource/color-scheme'
 import { cn } from '@/utils/misc'
 
 interface NavItem {

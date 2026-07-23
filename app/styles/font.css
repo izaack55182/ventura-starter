@@ -43,11 +43,3 @@ html {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
-
-@font-face {
-	font-family: "Jetbrains Mono";
-	font-style: normal;
-	font-weight: normal;
-	font-display: swap;
-	src: url("/fonts/jetbrains-mono/JetBrainsMono-Regular.ttf") format("truetype");
-}

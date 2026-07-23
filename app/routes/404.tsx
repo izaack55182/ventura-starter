@@ -1,6 +1,5 @@
 import { Link } from 'react-router'
 import { Button } from '@/components/ui/button'
-import { Icon } from '@/components/ui/icon'
 import type { Route } from './+types/404'
 
 export function meta(_args: Route.MetaArgs) {
@@ -12,53 +11,68 @@ export function meta(_args: Route.MetaArgs) {
 
 export default function NotFound() {
 	return (
-		<div className="min-h-screen w-full flex flex-col items-center justify-center bg-background text-foreground relative overflow-hidden">
-			{/* Background Ambience */}
-			<div className="absolute inset-0 pointer-events-none">
-				<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-500/5 blur-[120px] rounded-full" />
-			</div>
-
-			<div className="relative z-10 flex flex-col items-center text-center px-4 gap-6">
-				{/* Glitchy Text Effect */}
-				<h1 className="text-9xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/20 select-none">
-					404
-				</h1>
-
-				<div className="space-y-2">
-					<h2 className="text-2xl md:text-3xl font-bold tracking-tight">Lost in the Edge</h2>
-					<p className="text-muted-foreground max-w-[400px]">
-						La ruta que buscas no ha sido replicada en este nodo. Es posible que haya sido eliminada
-						o nunca existió.
-					</p>
+		<div className="min-h-screen w-full flex flex-col items-center justify-center relative overflow-hidden font-sans">
+			{/* Subtle grid/border container */}
+			<div className="relative w-full max-w-4xl aspect-[2/1] md:border md:border-border flex flex-col items-center justify-center">
+				{/* Corner crosshairs (only visible on md+) */}
+				<div className="hidden md:block absolute -top-1.5 -left-1.5 text-muted-foreground/30 text-xs">
+					+
+				</div>
+				<div className="hidden md:block absolute -top-1.5 -right-1.5 text-muted-foreground/30 text-xs">
+					+
+				</div>
+				<div className="hidden md:block absolute -bottom-1.5 -left-1.5 text-muted-foreground/30 text-xs">
+					+
+				</div>
+				<div className="hidden md:block absolute -bottom-1.5 -right-1.5 text-muted-foreground/30 text-xs">
+					+
 				</div>
 
-				<div className="pt-4">
-					<Button asChild variant="secondary" className="gap-2">
-						<Link to="/">
-							<Icon name="house" size="sm" />
-							Volver al inicio
-						</Link>
-					</Button>
-				</div>
-
-				{/* Terminal decorative */}
-				<div className="mt-12 w-full max-w-md bg-zinc-950 rounded-lg border border-white/10 p-4 font-mono text-xs text-left shadow-2xl opacity-80">
-					<div className="flex gap-1.5 mb-3">
-						<div className="size-2.5 rounded-full bg-red-500/20" />
-						<div className="size-2.5 rounded-full bg-yellow-500/20" />
-						<div className="size-2.5 rounded-full bg-green-500/20" />
+				<div className="relative z-10 flex flex-col items-center text-center px-4 gap-8">
+					{/* Minimalist Graphic */}
+					<div className="relative flex items-center justify-center mb-4">
+						<svg
+							aria-hidden="true"
+							width="120"
+							height="120"
+							viewBox="0 0 120 120"
+							fill="none"
+							xmlns="http://www.w3.org/2000/svg"
+							className="text-muted-foreground/40"
+						>
+							{/* Dashed Triangle */}
+							<path
+								d="M60 20 L100 90 L20 90 Z"
+								stroke="currentColor"
+								strokeWidth="1"
+								strokeDasharray="2 4"
+							/>
+							{/* Overlapping Circle with Solid Wedge */}
+							<g transform="translate(85, 80)">
+								<circle
+									cx="0"
+									cy="0"
+									r="18"
+									className="fill-background"
+									stroke="currentColor"
+									strokeWidth="1"
+								/>
+								<path d="M0 0 L-12.7 12.7 A18 18 0 0 0 18 0 Z" className="fill-foreground" />
+							</g>
+						</svg>
 					</div>
-					<div className="space-y-1 text-muted-foreground">
-						<p>
-							<span className="text-red-400">Error:</span> Route not found
+
+					<div className="space-y-4">
+						<h1 className="text-4xl md:text-5xl font-normal tracking-tight">404</h1>
+						<p className="text-sm md:text-base text-muted-foreground">
+							Sorry, we couldn't find the page you're looking for.
 						</p>
-						<p>
-							<span className="text-blue-400">at</span> Edge_Worker_4021 (cdg)
-						</p>
-						<p>
-							<span className="text-blue-400">at</span> handleRequest (worker.js:12:45)
-						</p>
-						<p className="animate-pulse">_</p>
+					</div>
+
+					<div className="pt-2">
+						<Button asChild variant="secondary" className="rounded-full px-8 py-5">
+							<Link to="/">Return Home</Link>
+						</Button>
 					</div>
 				</div>
 			</div>

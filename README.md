@@ -1,152 +1,404 @@
+# Ventura Stack — Documentación Técnica
+
+> React Router v7 · Cloudflare Workers · Bun · Tailwind CSS v4 · shadcn/ui
+
 <div align="center">
-  <br />
-  <img src="https://img.shields.io/badge/VENTURA_STACK-ENTERPRISE_READY-blue?style=for-the-badge&logo=react" alt="Ventura Banner" />
-  
-  <h1 style="border-bottom: none; margin-bottom: 0;">Ventura Stack</h1>
-  
-  <p style="font-size: 1.1em; color: #586069; margin-top: 0;">
-    <strong style="color: #3178C6;">C</strong>ore Architecture &bull; 
-    <strong style="color: #F38020;">C</strong>loud Edge &bull; 
-    <strong style="color: #ED8B00;">E</strong>nterprise Logic &bull; 
-    <strong style="color: #60A5FA;">I</strong>ntelligent Design
-  </p>
-
-  <p><i>The high-performance foundation for mission-critical web applications.</i></p>
-
-  <p>
-    <a href="https://opensource.org/licenses">
-      <img src="https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square" alt="License" />
-    </a>
-    <img src="https://img.shields.io/badge/Status-Alpha-orange?style=flat-square" alt="Status" />
-    <img src="https://img.shields.io/badge/Build-Passing-brightgreen?style=flat-square" alt="Build" />
-    <img src="https://img.shields.io/badge/Version-1.0.0-blue?style=flat-square" alt="Version" />
-  </p>
-  
-  <hr style="border: 0; height: 1px; background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));" />
+  <img src="./public/images/logo/ventura-long-dark.svg" alt="Arquitectura del Ventura Stack" width="100%" />
 </div>
 
-## 🚀 Introduction
-
-**Ventura Stack** es un proyecto *learn-in-public* que fusiona las tecnologías web más vanguardistas para crear un entorno de desarrollo full-stack de alto rendimiento. Construido sobre la base de **React Router v7** con el runtime de **Bun**, este stack está diseñado para ofrecer una arquitectura híbrida: la agilidad del frontend moderno con la potencia de backends empresariales.
-
-> ⚠️ **Experimental Notice**: Este proyecto se encuentra en fase alfa. La combinación de **React Router v7**, **Tailwind v4** y despliegues en **Cloudflare** es altamente experimental y está en constante evolución.
-
-## 🌟 Inspiration
-
-Este stack toma inspiración de grandes referentes del ecosistema:
-
-- **[Epic Stack](https://github.com/epicweb-dev/epic-stack)** - Estructura modular y robustez.
-- **[TEDI Stack](https://github.com/koikar/tedi-stack)** - Implementación eficiente con Bun.
-
-## 🛠️ Key Technologies
-| Technology | Description | Link |
-|------------|-------------|------|
-| ![React Router](https://img.shields.io/badge/-React%20Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white) | Framework principal para SSR y Routing modular | [reactrouter.com](https://reactrouter.com) |
-| ![Bun](https://img.shields.io/badge/-Bun-000000?style=flat-square&logo=bun&logoColor=white) | Runtime, gestor de paquetes y bundler ultra veloz | [bun.sh](https://bun.sh/) |
-| ![Cloudflare Workers](https://img.shields.io/badge/-Workers-F38020?style=flat-square&logo=cloudflare&logoColor=white) | Runtime de despliegue en el edge (SSR + Static Assets) | [workers.dev](https://workers.dev) |
-| ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) | Desarrollo seguro con tipado estático de extremo a extremo | [typescriptlang.org](https://typescriptlang.org) |
-| ![Tailwind CSS](https://img.shields.io/badge/-Tailwind%20CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white) | Motor de estilos de alto rendimiento basado en variables CSS | [tailwindcss.com](https://tailwindcss.com) |
-| ![Zod](https://img.shields.io/badge/-Zod-3E67B1?style=flat-square&logo=zod&logoColor=white) | Validación de esquemas con inferencia de tipos para TS | [zod.dev](https://zod.dev) |
-| ![Cloudflare](https://img.shields.io/badge/-Cloudflare-F38020?style=flat-square&logo=cloudflare&logoColor=white) | Despliegue en el Edge y optimización de red global | [cloudflare.com](https://cloudflare.com) |
-
-
-- **Workers-Native Edge**: Despliegue nativo en **Cloudflare Workers + Static Assets**. El middleware (rate-limit, secure-headers, trailing-slash, logger) vive en el `fetch()` del Worker — sin capas extra, dentro del free tier.
-- **Cloudflare Edge Ready**: Optimizado para despliegues globales con baja latencia.
-- **Feature-Based Architecture**: Organización modular por dominios de negocio (Marketing, Security, Core, CRM, Accounting, Inventory, Invoicing, Analytics, Settings, User) para escalabilidad real.
-- **SSR Dark Mode**: Sistema de modo oscuro basado en *Client Hints* para una UX sin parpadeos.
-- **Tailwind v4 & Magic UI**: Estilos modernos con variables CSS nativas y componentes visuales impactantes.
+## Inspiración
+Este stack nació adoptando las mejores ideas, convenciones y patrones de arquitectura de grandes proyectos de la comunidad:
+- **[The Epic Stack](https://github.com/epicweb-dev/epic-stack):** Nos inspiramos en su enfoque "baterías incluidas", adoptando sus sólidos patrones de autenticación, gestión de base de datos, estructuración de directorios por dominios lógicos (Features) y buenas prácticas enfocadas a producción.
+- **[TanStack](https://tanstack.com/):** Tomamos su filosofía de simplicidad, rendimiento sin compromisos, modularidad y DX (Developer Experience) de primer nivel para construir la mejor base posible.
 
 ---
 
-## ⚡ Quickstart
+## Stack Tecnológico
 
-```bash
-bun install
-bun run setup                    # genera secrets, crea .dev.vars e instala git hooks
-bun run dev                      # http://localhost:5173
+| Capa           | Tecnología                                    |
+| -------------- | --------------------------------------------- |
+| **Runtime**    | Bun (local + CI)                              |
+| **Framework**  | React Router v7 (SSR, framework mode)         |
+| **Hosting**    | Cloudflare Workers + Static Assets (nativo)   |
+| **Build**      | Vite 7 + `@cloudflare/vite-plugin`            |
+| **Estilos**    | Tailwind CSS v4 + shadcn/ui + MagicUI         |
+| **Lenguaje**   | TypeScript 5.9                                |
+| **Validación** | Zod                                           |
+| **Seguridad**  | Honeypot · rate-limit nativo · secure-headers |
+| **Calidad**    | Biome (lint + formato)                        |
+| **Animaciones**| Framer Motion + View Transition API           |
+
+---
+
+## Estructura del Proyecto
+
+```
+Ventura-stack/
+├── app/
+│   ├── root.tsx                    # Layout raíz, tema, meta tags, ENV
+│   ├── routes.ts                   # Router central (compone todas las features)
+│   ├── entry.server.tsx            # SSR entry point
+│   │
+│   ├── features/                   # ★ Módulos de negocio
+│   │   ├── marketing/              #   Landing page (home pública, SEO)
+│   │   ├── security/               #   Login, flujo de autenticación
+│   │   ├── core/                   #   Dashboard principal y navegación app
+│   │   ├── crm/                    #   Cliente, leads, oportunidades
+│   │   ├── user/                   #   Gestión de cuenta y perfil
+│   │   ├── settings/               #   Configuración global de la app
+│   │   ├── accounting/             #   Contabilidad y finanzas
+│   │   ├── inventory/              #   Inventario y stock
+│   │   ├── invoicing/              #   Facturación
+│   │   └── analytics/              #   KPIs, paneles analíticos
+│   │
+│   ├── routes/
+│   │   └── layout/                 # Layouts compartidos para grupos de rutas
+│   │       ├── layout-public.tsx   #   Layout público (landing, marketing)
+│   │       ├── layout-app.tsx      #   Layout de aplicación autenticada (/c)
+│   │       └── components/         #   Header, sidebar, footer públicos, etc.
+│   │
+│   ├── components/                 # Componentes globales reutilizables
+│   │   ├── ui/                     #   shadcn/ui + MagicUI (genéricos)
+│   │   ├── epic-progress.tsx       #   Barra de progreso global
+│   │   └── error-boundary.tsx      #   Error boundary global
+│   │
+│   ├── utils/                      # Utilidades compartidas
+│   │   ├── env.server.ts           #   Variables de entorno
+│   │   ├── color-scheme.server.ts  #   Cookie de tema (server-only)
+│   │   ├── client-hints.tsx        #   Client hints del navegador
+│   │   ├── headers.server.ts       #   Utilidades de headers
+│   │   └── misc.ts                 #   Helpers varios (dominio, etc.)
+│   │
+│   ├── utils/hooks/                # Custom hooks
+│   │   └── use-mobile.tsx
+│   │
+│   └── styles/                     # CSS global
+│       ├── tailwind.css            #   Tokens, temas, View Transition CSS
+│       └── font.css                #   Tipografía
+│
+├── workers/                        # ★ Entry del Cloudflare Worker (nativo)
+│   ├── app.ts                      #   fetch() + middleware (rate-limit, headers, logger)
+│   └── logger.ts                   #   Epic logger con colores (solo dev)
+│
+├── public/                         # Archivos estáticos (los sirve la plataforma)
+│   ├── favicons/
+│   ├── icons/
+│   └── images/
+│
+├── server/                         # Puente de contexto server-side
+│   └── context.ts                  #   getLoadContext (env validado + bindings CF)
+│
+├── vite.config.ts                  # Vite + React Router + @cloudflare/vite-plugin
+├── tsconfig.json                   # TypeScript config (paths "@/")
+├── wrangler.toml                   # Config del Worker (assets, ratelimits, secrets)
+├── components.json                 # Configuración shadcn/ui
+└── package.json
 ```
 
-> El script `setup` es idempotente y, si lo ejecutas sin `--yes`, te pregunta el
-> nombre y la URL del proyecto para personalizar `package.json`, `wrangler.toml` y
-> `app/config/site.ts`. `bun install` ya instala los git hooks vía `prepare`.
+---
 
-## 📜 Scripts
+## Arquitectura Modular (Features)
 
-| Comando | Qué hace |
-|---|---|
-| `bun run dev` | Dev server (Vite + runtime de Workers) |
-| `bun run build` | Build de producción (`build/client` + worker) |
-| `bun run typecheck` | `wrangler types` + `react-router typegen` + `tsc` |
-| `bun run test` | Tests unitarios y de componente (Vitest, jsdom) |
-| `bun run test:watch` | Vitest en modo watch |
-| `bun run test:e2e` | E2E con navegador real (Playwright) contra el build |
-| `bun run setup` | Personaliza el template (secrets, nombre, URL) |
-| `bun run deploy` | Build + `wrangler deploy` (manual) |
-| `bun run start` | Build + `vite preview` (worker en local) |
+Cada feature es un módulo independiente con sus propias rutas, componentes y lógica de dominio.
 
-## 🧪 Testing & Calidad
-
-- **Vitest** (`tests/unit`, `*.test.ts(x)`) — unidad y componente en jsdom.
-- **Playwright** (`tests/e2e`) — smoke + verificación de la cabecera CSP/nonce.
-- **Lefthook** — `pre-commit` corre Biome (lint+format con auto-fix) sobre los
-  archivos staged; `pre-push` corre el typecheck completo.
-
-## 🚀 Despliegue (CI/CD)
-
-Push a `main` → GitHub Actions corre **typecheck + build + `wrangler deploy`** a Cloudflare Workers.
-Requiere los secrets de repo `CLOUDFLARE_API_TOKEN` (permiso *Workers Scripts: Edit*) y `CLOUDFLARE_ACCOUNT_ID`.
-
-Secrets del Worker en producción:
-
-```bash
-wrangler secret put HONEYPOT_SECRET
-wrangler secret put COOKIE_SECRET
-wrangler secret put SESSION_SECRET
-```
-
-## 📊 Observabilidad y Costos (Cloudflare)
-
-Cloudflare ofrece potentes herramientas de observabilidad, pero debes conocer cómo impactan en los costos:
-
-- **Dashboard (Workers Logs, Traces, Muestreo):** Vienen apagados por defecto. Activar el almacenamiento histórico y exportación de logs normalmente requiere el plan **Workers Paid ($5/mes)**.
-- **Tail Worker:** Puedes programar un Worker para leer tus propios logs, pero consumirá tu cuota gratuita diaria (100k requests/día).
-
-✨ **Recomendación para Desarrollo / Free Tier:**
-Deja las opciones del dashboard desactivadas. Para depurar tu aplicación en vivo, abre tu terminal y ejecuta:
-```bash
-bunx wrangler tail
-```
-Este comando intercepta y transmite los logs de producción en tiempo real directamente a tu pantalla. **Es 100% gratis e ilimitado**, ideal para cazar bugs sin pagar almacenamiento.
-
-## 🧬 Usar como plantilla
-
-Este repo está marcado como **GitHub Template**: pulsa **Use this template** para
-crear un repo nuevo (o usa `degit izaack55182/ventura-stack`).
-
-1. **Use this template** en GitHub → repo nuevo, luego clónalo.
-2. `bun install && bun run setup` → instala deps, genera secrets, crea `.dev.vars`
-   y te pregunta nombre/URL para reemplazarlos en `package.json`, `wrangler.toml` y
-   `app/config/site.ts`.
-3. Revisa lo que el script no toca:
-   - `wrangler.toml` → los `namespace_id` de `[[ratelimits]]`.
-   - Contenido en `app/features/marketing/` y assets en `public/`.
-4. Configura los secrets (GitHub + Workers).
-5. Push a `main` → se despliega en `<name>.<tu-subdominio>.workers.dev`.
-
-## 🗂️ Estructura
+### Estructura de una Feature
 
 ```
 app/
-  config/site.ts     # config única del sitio (SEO, marca)
-  features/          # features por dominio (marketing, security, …)
-  root.tsx           # shell HTML, tema, honeypot, error boundary
-workers/
-  app.ts             # entry del Worker (middleware nativo)
-  logger.ts          # epic logger con colores (dev)
-server/context.ts    # AppLoadContext (bindings de Cloudflare)
-wrangler.toml        # config de Workers (assets, ratelimits, secrets)
+└── features/
+    └── [feature-name]/
+        ├── routes.ts[x]         # Definición de rutas del módulo
+        ├── routes/              # (opcional) Subrutas de la feature
+        │   └── index.tsx
+        ├── components/          # Componentes exclusivos de la feature
+        │   └── ...
+        └── [sub-feature]/       # (opcional) Sub-módulos adicionales
+            ├── routes/
+            └── components/
 ```
 
-> Migración Pages → Workers documentada en [`docs/migration-pages-to-workers.md`](docs/migration-pages-to-workers.md).
+### Registro de Rutas (router central)
 
-<!-- Nota: Archivo actualizado para probar despliegues en modo Preview -->
+Cada feature exporta un array de rutas que se compone en `app/routes.ts`.  
+Convenciones de URL:
+
+- `/` → rutas públicas (marketing)
+- `/c/*` → aplicación autenticada (core, crm, accounting, etc.)
+- `/r/*` → resource routes (acciones como cambio de tema)
+
+Ejemplo real simplificado de `app/routes.ts`:
+
+```typescript
+import { layout, prefix, type RouteConfig, route } from '@react-router/dev/routes'
+import { accountingRoutes } from './features/accounting/routes'
+import { analyticsRoutes } from './features/analytics/routes'
+import { coreRoutes } from './features/core/routes'
+import { crmRoutes } from './features/crm/routes'
+import { inventoryRoutes } from './features/inventory/routes'
+import { invoicingRoutes } from './features/invoicing/routes'
+import { marketingRoutes } from './features/marketing/routes'
+import { securityRoutes } from './features/security/routes'
+import { settingsRoutes } from './features/settings/routes'
+import { userRoutes } from './features/user/routes'
+
+export default [
+  // 1. PUBLIC / MARKETING
+  ...marketingRoutes,
+
+  // 2. AUTHENTICATION (SECURITY)
+  ...securityRoutes,
+
+  // 3. APPLICATION (CENTRALIZED)
+  ...prefix('c', [
+    layout('routes/layout/layout-app.tsx', [
+      ...coreRoutes,
+      ...crmRoutes,
+      ...userRoutes,
+      ...settingsRoutes,
+      ...accountingRoutes,
+      ...inventoryRoutes,
+      ...invoicingRoutes,
+      ...analyticsRoutes,
+    ]),
+  ]),
+
+  // 4. RESOURCE ROUTES
+  ...prefix('r', [
+    route('color-scheme', 'routes/resource/color-scheme.tsx'),
+  ]),
+
+  // 5. SYSTEM / ERRORS
+  route('404', 'routes/404.tsx'),
+  route('500', 'routes/500.tsx'),
+  route('*', 'routes/catch-all.tsx'),
+] satisfies RouteConfig
+```
+
+### Ejemplo: Feature Marketing (Home pública)
+
+```typescript
+// app/features/marketing/home/routes/index.tsx
+import type { MetaFunction } from 'react-router'
+import Home from '../components/home'
+
+export async function loader() {
+  return { title: 'Ventura Stack - Home' }
+}
+
+export default function Index() {
+  return <Home />
+}
+
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return [{ title: data?.title ?? 'Ventura Stack' }]
+}
+```
+
+### Agregar una nueva Feature
+
+1. Crear `app/features/[nombre]/routes.ts[x]` exportando un array de rutas.
+2. Crear `app/features/[nombre]/components/` con los componentes específicos.
+3. Importar la nueva feature y hacer `...miNuevaFeatureRoutes` en `app/routes.ts`.
+
+---
+
+## Cloudflare Workers
+
+### Arquitectura de Despliegue
+
+```
+[Browser] → Static Assets (gratis, edge) → Cloudflare Worker (SSR)
+                  │                              │
+            build/client/                  workers/app.ts
+            (HTML, CSS, JS)         (middleware + React Router SSR)
+```
+
+> Los assets se sirven **antes** que el Worker (gratis e ilimitado). Si no hay
+> asset en la ruta, cae al Worker. Esto elimina el bug de entrega de assets que
+> tenía el adaptador de Hono sobre Pages.
+
+### Configuración de Vite
+
+```typescript
+// vite.config.ts
+export default defineConfig({
+    plugins: [
+        cloudflare({ viteEnvironment: { name: 'ssr' } }),
+        reactRouter(),
+        tailwindcss(),
+        tsconfigPaths(),
+        // iconsSpritesheet(...)
+    ],
+});
+```
+
+> El `@cloudflare/vite-plugin` hace que `dev`/`preview` corran en **workerd**
+> (runtime real de Workers), sirviendo los assets como en producción.
+
+### Comandos
+
+| Comando              | Uso                                        |
+| -------------------- | ------------------------------------------ |
+| `bun run dev`        | Dev server (SSR en workerd, HMR)           |
+| `bun run build`      | Build de producción (`build/client` + worker) |
+| `bun run preview`    | Build + `vite preview` (worker en local)   |
+| `bun run deploy`     | Build + `wrangler deploy` (manual)         |
+| `bun run typecheck`  | `wrangler types` + `react-router typegen` + `tsc` |
+| `bun run lint`       | Biome check (lint + formato)               |
+| `bun run format`     | Biome check --write (auto-fix)             |
+
+### CI/CD con GitHub Actions
+
+El deploy se gestiona en **un solo job** (`.github/workflows/deploy.yml`). Build y
+deploy van JUNTOS porque `wrangler deploy` necesita la config redirigida que
+genera el build (`.wrangler/deploy/config.json` → `build/server/wrangler.json`),
+que no viaja entre jobs.
+
+```
+git push main → GitHub Actions (un job):
+  ┌────────────────────────────────────────────────┐
+  │  • Checkout · Setup Bun · bun install           │
+  │  • Typecheck                                    │
+  │  • Build                                        │
+  │  • wrangler deploy     ← solo si push a main    │
+  └────────────────────────────────────────────────┘
+```
+
+- **Pull Requests** → typecheck + build (sin deploy)
+- **Push a main** → typecheck + build + `wrangler deploy` a Cloudflare Workers
+
+**Secrets requeridos** (GitHub → Settings → Secrets → Actions):
+- `CLOUDFLARE_API_TOKEN` — Token con permiso **Workers Scripts: Edit**
+- `CLOUDFLARE_ACCOUNT_ID` — Account ID de Cloudflare
+
+> El Worker se **crea solo** en el primer `wrangler deploy` (no hace falta
+> conectar el repo en el dashboard; el GitHub Action es el CI/CD).
+
+### Worker Entry Point
+
+```typescript
+// workers/app.ts — entry nativo del Worker
+import { createRequestHandler } from 'react-router'
+import { getLoadContext } from '../server/context'
+
+const handler = createRequestHandler(
+    () => import('virtual:react-router/server-build'),
+    import.meta.env.MODE,
+)
+
+export default {
+    async fetch(request, env, ctx) {
+        // middleware nativo: trailing-slash, rate-limit, secure-headers, logger…
+        return handler(request, getLoadContext(env))
+    },
+} satisfies ExportedHandler<Env>
+```
+
+Los **bindings de Cloudflare** (`env`) llegan directos a `getLoadContext` y de ahí
+a `context.cloudflare.env` en loaders/actions — sin el puente de Hono.
+
+---
+
+## Sistema de Temas (Dark/Light)
+
+### Flujo
+
+```
+Cookie `kb-color-scheme` (httpOnly, firmada) ──┐
+prefers-color-scheme (client hint)           ──┤
+                                               ▼
+                       root.tsx loader → resuelve  theme: "light" | "dark"
+                                               ▼
+                  root.tsx Layout → <Document>     ← <html class={theme}>
+                                               ▼
+         ColorSchemeSwitch (Componente)      ─ fetcher.submit({ colorScheme }) ─►
+                                               ▼
+              /r/color-scheme  action()  ← valida con Zod + Set-Cookie
+```
+
+**Resiliencia (sin parpadeo, incluso si el loader raíz cae):**
+
+1. `App` espeja el tema resuelto en `localStorage.theme` en cada render.
+2. Un **script inline anti-FOUC** en el `<head>` aplica el tema **antes del primer
+   paint**: lee `localStorage.theme` y, si no hay, cae al `prefers-color-scheme` del SO.
+3. En el **ErrorBoundary** (loader raíz sin datos) la cookie es `httpOnly` y no se
+   puede leer desde el cliente → ese script es el que restaura la preferencia, por eso
+   la página de error también respeta el tema.
+
+### Componentes del Sistema
+
+| Archivo | Responsabilidad |
+| --- | --- |
+| `app/utils/color-scheme.server.ts` | Cookie `kb-color-scheme` (httpOnly + firmada): `getColorScheme`/`setColorScheme` |
+| `app/utils/client-hints.tsx` | Detecta `prefers-color-scheme` (+ time-zone, reduced-motion) |
+| `app/root.tsx` loader | Resuelve tema: cookie → client hint → "light" |
+| `app/root.tsx` Layout/Document | `<html class={theme}>` + script anti-FOUC en `<head>` |
+| `app/root.tsx` App | Espeja `localStorage.theme` (fuente del fallback en error) |
+| `app/routes/resource/color-scheme.tsx` | `action` en `/r/color-scheme` (Zod + Set-Cookie); hooks `useTheme`/`useOptionalTheme`; componente `<ColorSchemeSwitch>` |
+
+### Paleta de Colores (OKLCH)
+
+Definida en `styles/tailwind.css` usando **OKLCH** para mayor consistencia perceptual:
+
+- **Light:** Fondo blanco puro `oklch(1 0 0)`, texto negro suave `oklch(0.1 0 0)`
+- **Dark:** Fondo oscuro `oklch(0.1 0 0)`, texto blanco suave `oklch(0.98 0 0)`
+- **Sistema monocromático** con acentos semánticos (destructive en rojo desaturado)
+
+
+
+## UI & Componentes
+
+### Stack de UI
+
+- **shadcn/ui** — Componentes base (Button, Separator, Tooltip, etc.)
+- **MagicUI** — Componentes animados (Dock)
+- **Lucide React** — Iconografía
+- **Framer Motion** — Animaciones complejas
+- **CVA** (class-variance-authority) — Variantes de componentes
+
+### Alias de importación
+
+```json
+// tsconfig.json
+"paths": {
+    "@/*": ["./app/*"]
+}
+```
+
+Uso: `import { Button } from "@/components/ui/button"`
+
+### Configuración shadcn
+
+Definida en `components.json` — utilidades en `@/lib/utils`, componentes en `@/components/ui`.
+
+---
+
+## Desarrollo Local
+
+### Requisitos
+
+- **Bun** (runtime y package manager)
+- **Node.js** ≥ 18 (para Wrangler compatibility)
+
+### Inicio rápido
+
+```bash
+# Instalar dependencias
+bun install
+
+# Desarrollo local
+bun run dev
+
+# Type checking
+bun run typecheck
+
+# Preview con Wrangler (simula Cloudflare)
+bun run preview
+```
+
+### Notas importantes
+
+- **No usar npm** — El proyecto usa exclusivamente Bun (`bun.lock`)
+- `package-lock.json` está en `.gitignore`
+- El type generation de React Router se ejecuta con `react-router typegen`
+- Los tipos generados se guardan en `.react-router/types/`

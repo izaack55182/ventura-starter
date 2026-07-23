@@ -1,14 +1,14 @@
 // CORE
 
 import { parseWithZod } from '@conform-to/zod'
-import { data, href, useFetchers } from 'react-router'
+import { data, href, useFetcher, useFetchers } from 'react-router'
 import { z } from 'zod'
+import { Icon } from '@/components/ui/icon'
 import type { Route } from '@/rr/routes/resource/+types/color-scheme'
 import { useHints, useOptionalHints } from '@/utils/client-hints'
 // UTILS
 import { setColorScheme } from '@/utils/color-scheme.server'
 import { useOptionalRequestInfo, useRequestInfo } from '@/utils/request-info'
-
 export const ColorSchemeSchema = z
 	.enum(['dark', 'light', 'system']) // Possible color schemes
 	.default('light') // If there's no cookie, default to "system"
@@ -112,4 +112,43 @@ export function useOptimisticColorScheme() {
 			return submission.value.colorScheme
 		}
 	}
+}
+
+export function ColorSchemeSwitch() {
+	const fetcher = useFetcher()
+	const mode = useColorScheme()
+
+	const nextMode = mode === 'system' ? 'light' : mode === 'light' ? 'dark' : 'system'
+
+	const modeLabel = {
+		light: (
+			<Icon name="sun">
+				<span className="sr-only">Light</span>
+			</Icon>
+		),
+		dark: (
+			<Icon name="moon">
+				<span className="sr-only">Dark</span>
+			</Icon>
+		),
+		system: (
+			<Icon name="laptop">
+				<span className="sr-only">System</span>
+			</Icon>
+		),
+	}
+
+	return (
+		<fetcher.Form method="POST" action={href('/r/color-scheme')}>
+			<input type="hidden" name="colorScheme" value={nextMode} />
+			<div className="flex gap-2">
+				<button
+					type="submit"
+					className="flex size-8 cursor-pointer items-center justify-center rounded-full hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+				>
+					{modeLabel[mode]}
+				</button>
+			</div>
+		</fetcher.Form>
+	)
 }

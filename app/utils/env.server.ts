@@ -14,6 +14,9 @@ const envSchema = z.object({
 
 	// SECURITY - Required in production
 	HONEYPOT_SECRET: z.string().min(1, 'HONEYPOT_SECRET es obligatorio'),
+	RESEND_API_KEY: z.string().min(1, 'RESEND_API_KEY es obligatorio'),
+
+	DATABASE_URL: z.string().min(1, 'DATABASE_URL es obligatorio'),
 })
 
 export type ServerEnv = z.infer<typeof envSchema>

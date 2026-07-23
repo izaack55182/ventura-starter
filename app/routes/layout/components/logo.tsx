@@ -10,7 +10,7 @@ import { cn } from '@/utils/misc'
 type LogoProps = {
 	redirect?: string
 	className?: string
-	variant: 'long' | 'icon'
+	variant: 'long' | 'icon' | 'symbol' | 'brand'
 	theme?: ColorScheme
 	alt?: string
 }
@@ -21,7 +21,7 @@ export const logoVariants = cva('', {
 			long: 'w-40 h-auto',
 			icon: 'size-7',
 			symbol: 'size-7',
-			brand: 'w-40 h-auto',
+			brand: 'w-80 h-auto',
 		},
 	},
 })

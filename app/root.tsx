@@ -13,10 +13,12 @@ import {
 } from 'react-router'
 import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import { SITE_CONFIG } from '@/config/site'
+import { getUserId, logout } from '@/features/security/authentication/server/auth.server'
+import { getRootUser } from '@/features/user/server/queries'
 // UTILS
 import { ClientHintCheck, getHints } from '@/utils/client-hints'
 import { getColorScheme } from '@/utils/color-scheme.server'
-import { combineHeaders, createDomain, getMeta } from '@/utils/misc'
+import { combineHeaders, createDomain, getDomainUrl, getMeta } from '@/utils/misc'
 import { useNonce } from '@/utils/nonce-provider'
 import { buildOrganizationSchema, buildWebSiteSchema, JsonLd } from '@/utils/seo/json-ld'
 // COMPONENTS
@@ -35,17 +37,15 @@ import type { Route } from './+types/root'
 import NotFound from './routes/404'
 import ServerError from './routes/500'
 // ROUTES
-import { useOptionalTheme } from './routes/resource/color-scheme'
+import { useOptionalTheme } from './routes/resource/color-scheme.tsx'
 import fontStyleSheetUrl from './styles/font.css?url'
 import tailwindStyleSheetUrl from './styles/tailwind.css?url'
 
-export const meta: MetaFunction<typeof loader> = ({ data, matches }) => {
-	return getMeta({
-		title: data?.meta?.title ?? data?.meta?.error,
-		description: data?.meta?.description,
-		origin: data?.origin,
-		matches: matches as any,
-	})
+export const meta: Route.MetaFunction = ({ data }) => {
+	return [
+		{ title: data ? 'Ventura Notes' : 'Error | Ventura Notes' },
+		{ name: 'description', content: `Your own captain's log` },
+	]
 }
 
 export const links: Route.LinksFunction = () => {
@@ -63,6 +63,9 @@ export const links: Route.LinksFunction = () => {
 export async function loader({ request }: Route.LoaderArgs) {
 	const timing = makeTimings('root loader')
 
+	const userId = await getUserId(request)
+	const user = userId ? await getRootUser(userId) : null
+
 	const hints = getHints(request)
 	const colorScheme = await getColorScheme(request)
 	const origin = createDomain(request)
@@ -71,20 +74,27 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const description = SITE_CONFIG.description
 	const error = `Error | ${SITE_CONFIG.name}`
 
-	// Resuelve 'system' → tema real usando el hint del OS
 	const theme = colorScheme === 'system' ? hints.theme : colorScheme
 
-	// Props del honeypot (campos trampa + timestamp cifrado) para los formularios.
+	if (userId && !user) {
+		console.info('something weird happened')
+		// something weird happened... The user is authenticated but we can't find
+		// them in the database. Maybe they were deleted? Let's log them out.
+		await logout({ request, redirectTo: '/' })
+	}
 	const honeyProps = await getHoneypot().getInputProps()
 	const { toast, headers: toastHeaders } = await getToast(request)
 
 	return data(
 		{
-			meta: { title, description, error },
+			user,
 			requestInfo: {
 				hints,
+				origin: getDomainUrl(request),
 				userPrefs: { colorScheme },
 			},
+			meta: { title, description, error },
+
 			theme,
 			toast,
 			origin,
@@ -111,56 +121,35 @@ function Document({
 	origin = '',
 }: {
 	children: React.ReactNode
-	// Opcional: si el loader raíz falló no hay preferencia; el script de abajo
-	// resuelve el tema desde el SO para que la página de error no salga en blanco.
 	colorScheme?: string
 	env?: Record<string, string | undefined>
 	allowIndexing?: boolean
-	/** Request origin (protocol + host) for structured data URLs */
 	origin?: string
 }) {
-	// Nonce CSP de esta petición (vacío en cliente; el navegador lo elimina del DOM).
 	const nonce = useNonce()
 	return (
-		<html lang={SITE_CONFIG.lang} className={colorScheme} suppressHydrationWarning={true}>
+		<html
+			lang={SITE_CONFIG.lang}
+			className={`${colorScheme} h-full overflow-x-hidden`}
+			suppressHydrationWarning={true}
+		>
 			<head>
-				{/* Fallback de tema: si <html> no trae clase light/dark (caso de
-				    ErrorBoundary con loader raíz caído), restaura la preferencia desde
-				    localStorage —escrito por App— y, solo si no existe, cae al SO. Así
-				    respeta la elección explícita del usuario. En el camino normal no
-				    hace nada porque la clase ya viene del SSR. */}
-				<script
-					nonce={nonce}
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: script anti-FOUC inline
-					dangerouslySetInnerHTML={{
-						__html: `(function(){try{var e=document.documentElement;if(e.classList.contains('dark')||e.classList.contains('light'))return;var v=localStorage.getItem('theme');if(v!=='light'&&v!=='dark'){v=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}e.classList.add(v)}catch(_){}})()`,
-					}}
-				/>
 				<ClientHintCheck nonce={nonce} />
 				<Meta />
 				<meta charSet="utf-8" />
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				{allowIndexing ? null : <meta name="robots" content="noindex, nofollow" />}
 
-				{/* ── SEO: theme-color (PWA + browser chrome) ── */}
 				<meta
 					name="theme-color"
 					content={SITE_CONFIG.themeColor}
 					media="(prefers-color-scheme: dark)"
 				/>
 				<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-
-				{/* ── SEO: hreflang (señal de idioma para Google) ── */}
 				{origin && (
 					<>
 						<link rel="alternate" hrefLang={SITE_CONFIG.lang} href={origin} />
 						<link rel="alternate" hrefLang="x-default" href={origin} />
-					</>
-				)}
-
-				{/* ── SEO: JSON-LD Structured Data (Organization + WebSite) ── */}
-				{origin && (
-					<>
 						<JsonLd data={buildOrganizationSchema(origin)} />
 						<JsonLd data={buildWebSiteSchema(origin)} />
 					</>
@@ -184,21 +173,10 @@ function Document({
 	)
 }
 
-/**
- * `Layout` envuelve TANTO al componente normal (`App`) COMO al `ErrorBoundary`.
- * Por eso el shell del documento (html/head/Links/Scripts) vive aquí: garantiza
- * que la página de error también se renderice con CSS y JS, no como un div pelado.
- *
- * Usa hooks "opcionales" porque, dentro del ErrorBoundary, el loader raíz puede
- * no tener datos (data?.ENV → undefined; useOptionalTheme → fallback 'light').
- */
 export function Layout({ children }: { children: React.ReactNode }) {
 	const data = useRouteLoaderData<typeof loader>('root')
 	const theme = useOptionalTheme()
 	const allowIndexing = data?.ENV?.ALLOW_INDEXING !== 'false'
-
-	// Si el loader raíz falló (data === undefined) no conocemos la preferencia, así
-	// que NO forzamos una clase: dejamos que el script inline la resuelva desde el SO.
 	const colorScheme = data ? theme : undefined
 
 	return (
@@ -217,17 +195,12 @@ export default function App({ loaderData }: Route.ComponentProps) {
 	const theme = useOptionalTheme()
 	const { honeyProps } = loaderData
 
-	// Espejo del tema resuelto en localStorage. Es la fuente que lee el script
-	// inline del <head> para restaurar la preferencia cuando el loader raíz cae
-	// (su cookie es httpOnly y el cliente no puede leerla directamente).
 	useEffect(() => {
 		try {
 			localStorage.setItem('theme', theme)
 		} catch {}
 	}, [theme])
 
-	// HoneypotProvider expone los honeyProps a cualquier <HoneypotInputs /> que
-	// rendericen los formularios de la app (debajo de <Outlet />).
 	return (
 		<HoneypotProvider {...honeyProps}>
 			<Outlet />
@@ -237,10 +210,6 @@ export default function App({ loaderData }: Route.ComponentProps) {
 	)
 }
 
-/**
- * Boundary raíz. Reutiliza las páginas pulidas 404/500 según el tipo de error.
- * El shell HTML lo aporta `Layout`, así que aquí solo devolvemos el contenido.
- */
 export function ErrorBoundary() {
 	const error = useRouteError()
 
