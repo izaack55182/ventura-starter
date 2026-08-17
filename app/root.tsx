@@ -4,7 +4,6 @@ import {
 	isRouteErrorResponse,
 	Links,
 	Meta,
-	type MetaFunction,
 	Outlet,
 	Scripts,
 	ScrollRestoration,
@@ -15,13 +14,11 @@ import { HoneypotProvider } from 'remix-utils/honeypot/react'
 import { SITE_CONFIG } from '@/config/site'
 import { getUserId, logout } from '@/features/security/authentication/server/auth.server'
 import { getRootUser } from '@/features/user/server/queries'
-// UTILS
 import { ClientHintCheck, getHints } from '@/utils/client-hints'
 import { getColorScheme } from '@/utils/color-scheme.server'
-import { combineHeaders, createDomain, getDomainUrl, getMeta } from '@/utils/misc'
+import { combineHeaders, getDomainUrl } from '@/utils/misc'
 import { useNonce } from '@/utils/nonce-provider'
 import { buildOrganizationSchema, buildWebSiteSchema, JsonLd } from '@/utils/seo/json-ld'
-// COMPONENTS
 import { EpicProgress } from './components/epic-progress'
 import { EpicToaster } from './components/epic-toaster'
 import { getHoneypot } from './utils/honeypot.server.ts'
@@ -32,11 +29,9 @@ const iconsHref = '/icons/sprite.svg'
 
 import appleTouchIconAssetUrl from '/favicons/apple-touch-icon.png'
 import faviconAssetUrl from '/favicons/favicon.png'
-// CORE
 import type { Route } from './+types/root'
 import NotFound from './routes/404'
 import ServerError from './routes/500'
-// ROUTES
 import { useOptionalTheme } from './routes/resource/color-scheme.tsx'
 import fontStyleSheetUrl from './styles/font.css?url'
 import tailwindStyleSheetUrl from './styles/tailwind.css?url'
@@ -68,7 +63,7 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 	const hints = getHints(request)
 	const colorScheme = await getColorScheme(request)
-	const origin = createDomain(request)
+	const origin = getDomainUrl(request)
 
 	const title = SITE_CONFIG.name
 	const description = SITE_CONFIG.description
@@ -77,7 +72,6 @@ export async function loader({ request }: Route.LoaderArgs) {
 	const theme = colorScheme === 'system' ? hints.theme : colorScheme
 
 	if (userId && !user) {
-		console.info('something weird happened')
 		// something weird happened... The user is authenticated but we can't find
 		// them in the database. Maybe they were deleted? Let's log them out.
 		await logout({ request, redirectTo: '/' })

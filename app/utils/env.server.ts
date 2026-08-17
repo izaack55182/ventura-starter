@@ -13,10 +13,10 @@ const envSchema = z.object({
 	ALLOW_INDEXING: z.enum(['true', 'false']).optional(),
 
 	// SECURITY - Required in production
-	HONEYPOT_SECRET: z.string().min(1, 'HONEYPOT_SECRET es obligatorio'),
-	RESEND_API_KEY: z.string().min(1, 'RESEND_API_KEY es obligatorio'),
+	HONEYPOT_SECRET: z.string().min(1, 'HONEYPOT_SECRET is required'),
+	RESEND_API_KEY: z.string().min(1, 'RESEND_API_KEY is required'),
 
-	DATABASE_URL: z.string().min(1, 'DATABASE_URL es obligatorio'),
+	DATABASE_URL: z.string().min(1, 'DATABASE_URL is required'),
 })
 
 export type ServerEnv = z.infer<typeof envSchema>
@@ -34,20 +34,15 @@ export function initEnv(runtimeEnv?: unknown) {
 	const parsed = envSchema.safeParse(source)
 
 	if (parsed.success === false) {
-		const fieldErrors = parsed.error.flatten().fieldErrors
+		const _fieldErrors = parsed.error.flatten().fieldErrors
 		const isEmpty = Object.keys(source).length === 0
 		const isProduction = source.NODE_ENV === 'production' || source.APP_ENV === 'production'
 
 		if (!isEmpty || isProduction) {
-			console.error('❌ Invalid environment variables:', JSON.stringify(fieldErrors))
-			console.log('🔑 Keys found in source:', Object.keys(source || {}))
 		}
 
 		if (!isProduction) {
 			if (!isEmpty) {
-				console.warn(
-					'⚠️ Advertencia: Algunas variables de entorno no son válidas, pero se permitirá el arranque en modo desarrollo.'
-				)
 			}
 			env = {
 				...source,
@@ -60,7 +55,7 @@ export function initEnv(runtimeEnv?: unknown) {
 			return env
 		}
 
-		throw new Error('Configuración de entorno inválida en producción.')
+		throw new Error('Invalid environment configuration in production.')
 	}
 
 	env = parsed.data

@@ -1,5 +1,5 @@
 import type { MetaFunction } from 'react-router'
-import { getMeta } from '@/utils/misc'
+import { getMeta } from '@/utils/seo/meta'
 import { Hero } from '../components/hero'
 
 export async function loader() {
@@ -10,11 +10,7 @@ export async function loader() {
 }
 
 export default function Home() {
-	return (
-		<>
-			<Hero />
-		</>
-	)
+	return <Hero />
 }
 
 export const meta: MetaFunction<typeof loader> = ({ data, matches, location }: any) => {

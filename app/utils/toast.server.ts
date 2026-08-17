@@ -6,10 +6,8 @@ import { combineHeaders } from './misc'
 
 export const toastKey = 'kb_flash_toast'
 
-// 1. Tipos de Toast ampliados
 const ToastTypeSchema = z.enum(['message', 'success', 'error', 'warning', 'info'])
 
-// 2. Esquema más potente
 const ToastSchema = z.object({
 	id: z.string().default(() => cuid()),
 	type: ToastTypeSchema.default('message'),
@@ -18,22 +16,19 @@ const ToastSchema = z.object({
 	action: z
 		.object({
 			label: z.string(),
-			url: z.string(), // Útil para links rápidos en el toast
+			url: z.string(),
 		})
 		.optional(),
 })
 
 export type Toast = z.infer<typeof ToastSchema>
 
-// Omitimos 'id' para que el desarrollador no tenga que pasarlo manualmente
 export type ToastInput = Omit<Toast, 'id'> & { id?: string }
 
-// [FIX TYPESCRIPT] Definimos exactamente qué datos temporales (flash) vamos a guardar
 export type ToastFlashData = {
 	kb_flash_toast: Toast
 }
 
-// 3. Storage optimizado con auto-limpieza (maxAge) y Lazy Loading
 let _toastSessionStorage:
 	| ReturnType<typeof createCookieSessionStorage<unknown, ToastFlashData>>
 	| undefined
@@ -51,14 +46,13 @@ function getToastSessionStorage() {
 				httpOnly: true,
 				secrets: secrets,
 				secure: env.NODE_ENV === 'production',
-				maxAge: 60, // Expira en 60s si no es consumido
+				maxAge: 60,
 			},
 		})
 	}
 	return _toastSessionStorage
 }
 
-// Exportamos el storage manteniendo los tipos originales de Remix/React Router
 export const toastSessionStorage: ReturnType<
 	typeof createCookieSessionStorage<unknown, ToastFlashData>
 > = {
@@ -67,9 +61,6 @@ export const toastSessionStorage: ReturnType<
 	destroySession: (session, options) => getToastSessionStorage().destroySession(session, options),
 }
 
-/**
- * Función base para crear los headers del Toast
- */
 export async function createToastHeaders(toastInput: ToastInput) {
 	const session = await toastSessionStorage.getSession()
 	const toast = ToastSchema.parse(toastInput)
@@ -81,9 +72,6 @@ export async function createToastHeaders(toastInput: ToastInput) {
 	return new Headers({ 'set-cookie': cookie })
 }
 
-/**
- * Función base para redirección con Toast
- */
 export async function redirectWithToast(url: string, toast: ToastInput, init?: ResponseInit) {
 	return redirect(url, {
 		...init,
@@ -106,9 +94,6 @@ export async function redirectWithInfo(url: string, description: string, title?:
 	return redirectWithToast(url, { type: 'info', description, title })
 }
 
-/**
- * Recupera el Toast y destruye la sesión (Consumo en loaders)
- */
 export async function getToast(request: Request) {
 	const session = await toastSessionStorage.getSession(request.headers.get('cookie'))
 	const result = ToastSchema.safeParse(session.get(toastKey))
@@ -124,10 +109,6 @@ export async function getToast(request: Request) {
 			: null,
 	}
 }
-
-// =====================================================================
-// 5. RESPUESTAS CON DATA (Para fetchers o respuestas que no redireccionan)
-// =====================================================================
 
 export async function dataWithToast<T>(responseData: T, toast: ToastInput, init?: ResponseInit) {
 	return data(responseData, {

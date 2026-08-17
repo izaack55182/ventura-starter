@@ -1,5 +1,3 @@
-// CORE
-
 // UTILS
 import { invariant } from '@epic-web/invariant'
 import { useRouteLoaderData } from 'react-router'

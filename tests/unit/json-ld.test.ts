@@ -71,10 +71,10 @@ describe('buildFAQSchema', () => {
 		expect(schema['@type']).toBe('FAQPage')
 		expect(schema.mainEntity).toHaveLength(2)
 
-		expect(schema.mainEntity![0]!['@type']).toBe('Question')
-		expect(schema.mainEntity![0]!.name).toBe('¿Pregunta 1?')
-		expect(schema.mainEntity![0]!.acceptedAnswer['@type']).toBe('Answer')
-		expect(schema.mainEntity![0]!.acceptedAnswer.text).toBe('Respuesta 1')
+		expect(schema.mainEntity?.[0]?.['@type']).toBe('Question')
+		expect(schema.mainEntity?.[0]?.name).toBe('¿Pregunta 1?')
+		expect(schema.mainEntity?.[0]?.acceptedAnswer['@type']).toBe('Answer')
+		expect(schema.mainEntity?.[0]?.acceptedAnswer.text).toBe('Respuesta 1')
 	})
 
 	it('genera un array vacío si no hay items', () => {
@@ -96,11 +96,11 @@ describe('buildBreadcrumbSchema', () => {
 		expect(schema['@type']).toBe('BreadcrumbList')
 		expect(schema.itemListElement).toHaveLength(3)
 
-		expect(schema.itemListElement![0]!.position).toBe(1)
-		expect(schema.itemListElement![0]!.name).toBe('Inicio')
-		expect(schema.itemListElement![0]!.item).toBe(`${ORIGIN}/`)
+		expect(schema.itemListElement?.[0]?.position).toBe(1)
+		expect(schema.itemListElement?.[0]?.name).toBe('Inicio')
+		expect(schema.itemListElement?.[0]?.item).toBe(`${ORIGIN}/`)
 
-		expect(schema.itemListElement![2]!.position).toBe(3)
-		expect(schema.itemListElement![2]!.item).toBe(`${ORIGIN}/blog/articulo`)
+		expect(schema.itemListElement?.[2]?.position).toBe(3)
+		expect(schema.itemListElement?.[2]?.item).toBe(`${ORIGIN}/blog/articulo`)
 	})
 })

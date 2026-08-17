@@ -1,26 +1,34 @@
-// CORE
+import { cva, type VariantProps } from 'class-variance-authority'
 import type * as React from 'react'
-
-// UTILS
 import { cn } from '@/utils/misc'
 
-const Textarea = ({
+const textareaVariants = cva(
+	'flex field-sizing-content w-full rounded-lg border border-input bg-transparent transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:bg-input/30 dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40',
+	{
+		variants: {
+			size: {
+				default: 'min-h-16 px-2.5 py-2 text-sm',
+				lg: 'min-h-24 px-4 py-3 text-base',
+			},
+		},
+		defaultVariants: {
+			size: 'default',
+		},
+	}
+)
+
+function Textarea({
 	className,
-	error,
+	size,
 	...props
-}: React.ComponentProps<'textarea'> & { error?: boolean }) => {
+}: React.ComponentProps<'textarea'> & VariantProps<typeof textareaVariants>) {
 	return (
 		<textarea
-			className={cn(
-				'flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
-				'min-h-input border-input-border bg-input hover:bg-input-hover', // CUSTOM STYLES OVERRIDE
-				error &&
-					'border-input-invalid placeholder:text-input-invalid focus-visible:border-input-invalid focus-visible:ring-input-invalid',
-				className
-			)}
+			data-slot="textarea"
+			className={cn(textareaVariants({ size }), className)}
 			{...props}
 		/>
 	)
 }
 
-export { Textarea }
+export { Textarea, textareaVariants }

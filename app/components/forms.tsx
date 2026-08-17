@@ -36,7 +36,7 @@ export function Field({
 	className,
 }: {
 	labelProps: React.LabelHTMLAttributes<HTMLLabelElement>
-	inputProps: React.InputHTMLAttributes<HTMLInputElement>
+	inputProps: React.ComponentProps<typeof Input>
 	errors?: ListOfErrors
 	className?: string
 }) {

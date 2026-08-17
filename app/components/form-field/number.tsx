@@ -35,7 +35,6 @@ const FORMAT_CONFIGS: Record<NumberType, NumericFormatProps> = {
 }
 
 export function getNumericFormatProps(numberType: NumberType): NumericFormatProps {
-	// TODO: Localize the formatting of the numbers
 	return FORMAT_CONFIGS[numberType] || FORMAT_CONFIGS.default
 }
 
@@ -152,7 +151,6 @@ export function NumberEditable({
 	const inputRef = useRef<HTMLInputElement>(null)
 	const buttonRef = useRef<HTMLButtonElement>(null)
 
-	// OPTIMISTIC UI CORRECTION: Nunca mutar las props directamente.
 	const optimisticValue = fetcher.formData?.has(meta.name)
 		? String(fetcher.formData.get(meta.name))
 		: String(inputProps.defaultValue ?? '')

@@ -47,7 +47,6 @@ const BentoCard = ({
 				className
 			)}
 		>
-			{/* Top Area: Icon, Title, Description, Link */}
 			<div className="flex flex-col items-start gap-3 w-full">
 				<div className="flex items-center justify-between w-full">
 					{Icon && (
@@ -85,7 +84,6 @@ const BentoCard = ({
 				)}
 			</div>
 
-			{/* Bottom Area: Visual Graphic / Code */}
 			<div className="relative w-full flex-1 min-h-[120px] mt-4 flex items-center justify-center overflow-hidden">
 				{background}
 			</div>

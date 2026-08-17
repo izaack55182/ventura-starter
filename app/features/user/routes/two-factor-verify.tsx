@@ -192,7 +192,7 @@ export default function TwoFactorVerifyRoute({ loaderData }: Route.ComponentProp
 		<DialogDrawerWrapper
 			title="Configurar Aplicación de Autenticación"
 			description="Escanea el código QR con tu aplicación de autenticación. Ingresa el código de 6 dígitos para finalizar, o copia la clave si no puedes escanearlo."
-			redirectTo="/profile"
+			redirectTo="/c/profile"
 			noPadding
 		>
 			<div className="flex flex-col items-center gap-6 p-6">

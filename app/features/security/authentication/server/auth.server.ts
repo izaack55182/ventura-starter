@@ -39,7 +39,7 @@ export async function getUserId(request: Request) {
 export async function requireAdminUserId(request: Request) {
 	const userId = await requireUserId(request)
 
-	const user = await db.query.user.findFirst({
+	const _user = await db.query.user.findFirst({
 		where: eq(schema.user.id, userId),
 		with: {
 			roles: {
@@ -218,7 +218,7 @@ export async function verifyUserPasswordByEmail(email: string, password: User['p
 		where: eq(schema.user.email, email),
 		columns: { id: true, password: true, statusAccount: true },
 	})
-	if (!userWithPassword || !userWithPassword.password) {
+	if (!userWithPassword?.password) {
 		return null
 	}
 
@@ -236,7 +236,7 @@ export async function verifyUserPasswordByUsername(username: string, password: U
 		where: eq(schema.user.username, username),
 		columns: { id: true, password: true, statusAccount: true },
 	})
-	if (!userWithPassword || !userWithPassword.password) {
+	if (!userWithPassword?.password) {
 		return null
 	}
 
@@ -254,7 +254,7 @@ export async function verifyUserPasswordById(id: User['id'], password: User['pas
 		where: eq(schema.user.id, id),
 		columns: { id: true, password: true },
 	})
-	if (!userWithPassword || !userWithPassword.password) {
+	if (!userWithPassword?.password) {
 		return null
 	}
 
@@ -278,16 +278,14 @@ export async function checkIsCommonPassword(password: string) {
 
 		const data = await response.text()
 		return data.split(/\r?\n/).some((line) => {
-			const [hashSuffix, ignoredPrevalenceCount] = line.split(':')
+			const [hashSuffix, _ignoredPrevalenceCount] = line.split(':')
 			return hashSuffix === suffix
 		})
 	} catch (error) {
 		if (error instanceof DOMException && error.name === 'TimeoutError') {
-			console.warn('Password check timed out')
 			return false
 		}
 
-		console.warn('Unknown error during password check', error)
 		return false
 	}
 }

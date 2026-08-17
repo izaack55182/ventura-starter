@@ -1,5 +1,4 @@
 // CORE
-
 import { parseWithZod } from '@conform-to/zod'
 import { data, href, useFetcher, useFetchers } from 'react-router'
 import { z } from 'zod'
@@ -9,10 +8,7 @@ import { useHints, useOptionalHints } from '@/utils/client-hints'
 // UTILS
 import { setColorScheme } from '@/utils/color-scheme.server'
 import { useOptionalRequestInfo, useRequestInfo } from '@/utils/request-info'
-export const ColorSchemeSchema = z
-	.enum(['dark', 'light', 'system']) // Possible color schemes
-	.default('light') // If there's no cookie, default to "system"
-	.catch('light') // In case of an error, default to "system"
+export const ColorSchemeSchema = z.enum(['dark', 'light', 'system']).default('light').catch('light')
 
 export type ColorScheme = z.infer<typeof ColorSchemeSchema>
 
@@ -74,11 +70,6 @@ export function useTheme() {
 	return preference
 }
 
-/**
- * Igual que `useTheme`, pero NO lanza error si el loader raíz no tiene datos
- * (p. ej. dentro del ErrorBoundary, cuando el loader falló). Devuelve 'light'
- * como fallback seguro. Pensada para usarse en el `Layout` de root.
- */
 export function useOptionalTheme() {
 	const hints = useOptionalHints()
 	const requestInfo = useOptionalRequestInfo()

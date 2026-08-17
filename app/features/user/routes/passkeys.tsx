@@ -105,8 +105,7 @@ export default function Passkeys({ loaderData }: Route.ComponentProps) {
 			}
 
 			void revalidator.revalidate()
-		} catch (err) {
-			console.error('Failed to create passkey:', err)
+		} catch (_err) {
 			setError('Failed to create passkey. Please try again.')
 		}
 	}
@@ -115,7 +114,7 @@ export default function Passkeys({ loaderData }: Route.ComponentProps) {
 		<DialogDrawerWrapper
 			title="Administrar Passkeys"
 			description="Inicia sesión de forma segura sin contraseña usando tu huella, rostro o dispositivo."
-			redirectTo="/profile"
+			redirectTo="/c/profile"
 		>
 			<div className="flex flex-col gap-6">
 				<div className="flex justify-end">

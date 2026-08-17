@@ -1,12 +1,11 @@
 import { generateRobotsTxt } from '@forge42/seo-tools/robots'
 import type { Route } from '@/rr/features/marketing/seo/routes/+types/robots'
-import { createDomain } from '@/utils/misc'
+import { getDomainUrl } from '@/utils/misc'
 
-/** Rutas privadas — Google no debe indexarlas */
 const PRIVATE_PATHS = ['/c/', '/login', '/register', '/404', '/500']
 
 export async function loader({ request }: Route.LoaderArgs) {
-	const domain = createDomain(request)
+	const domain = getDomainUrl(request)
 	const robotsTxt = generateRobotsTxt([
 		{
 			userAgent: '*',

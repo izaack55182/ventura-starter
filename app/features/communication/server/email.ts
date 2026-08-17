@@ -4,7 +4,7 @@ import type { ReactElement } from 'react'
 import { z } from 'zod'
 import { getServerEnv } from '@/utils/env.server'
 
-const env = getServerEnv()
+const _env = getServerEnv()
 const shouldMock = process.env.RESEND_API_KEY?.startsWith('MOCK_')
 
 const resendErrorSchema = z.union([
@@ -45,11 +45,6 @@ export async function sendEmail({
 	}
 
 	if (!process.env.RESEND_API_KEY || shouldMock) {
-		console.error(`\n================= MOCK EMAIL =================`)
-		console.error(`To: ${email.to}`)
-		console.error(`Subject: ${email.subject}`)
-		console.error(`\nBody:\n${email.text}`)
-		console.error(`==============================================\n`)
 		return {
 			status: 'success',
 			data: { id: 'mocked' },

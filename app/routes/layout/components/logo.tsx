@@ -1,5 +1,3 @@
-// CORE
-
 // UTILS
 import { cva } from 'class-variance-authority'
 import { Link } from 'react-router'

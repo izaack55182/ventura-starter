@@ -5,30 +5,27 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import type * as React from 'react'
 import { cn } from '@/utils/misc'
 
-const cardVariants = cva(
-	'flex flex-col rounded-2xl border text-card-foreground transition-all duration-300',
-	{
-		variants: {
-			variant: {
-				default: 'border-border bg-card shadow-xl',
-				button:
-					'border-border bg-card hover:bg-primary/5 hover:border-primary/30 cursor-pointer shadow-md',
-				settings: 'w-full border-border bg-card',
-			},
-			align: {
-				default: '',
-				left: '*:items-start',
-				center: '*:items-center',
-				right: '*:items-end',
-				full: 'w-full',
-			},
+const cardVariants = cva('flex flex-col rounded-2xl border text-card-foreground', {
+	variants: {
+		variant: {
+			default: 'border-border bg-card shadow-xl',
+			button:
+				'border-border bg-card hover:bg-primary/5 hover:border-primary/30 cursor-pointer shadow-md',
+			settings: 'w-full border-border bg-card',
 		},
-		defaultVariants: {
-			variant: 'default',
-			align: 'default',
+		align: {
+			default: '',
+			left: '*:items-start',
+			center: '*:items-center',
+			right: '*:items-end',
+			full: 'w-full',
 		},
-	}
-)
+	},
+	defaultVariants: {
+		variant: 'default',
+		align: 'default',
+	},
+})
 
 export interface CardProps extends React.ComponentProps<'div'>, VariantProps<typeof cardVariants> {}
 

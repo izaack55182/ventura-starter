@@ -2,11 +2,11 @@ import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { startAuthentication } from '@simplewebauthn/browser'
 import { useOptimistic, useState, useTransition } from 'react'
-import { data, Form, Link, useNavigate, useSearchParams } from 'react-router'
+import { data, Form, href, Link, useNavigate, useSearchParams } from 'react-router'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from '@/components/error-boundary'
-import { CheckboxField, ErrorList, Field } from '@/components/forms.tsx'
+import { ErrorList, Field } from '@/components/forms.tsx'
 import { Icon } from '@/components/ui/icon'
 import { StatusButton } from '@/components/ui/status-button'
 import { handleNewSession } from '@/features/security/authentication/server/login.server.ts'
@@ -73,7 +73,7 @@ const AuthenticationOptionsSchema = z.object({
 export default function LoginPage({ actionData }: Route.ComponentProps) {
 	const isPending = useIsPending()
 	const [searchParams] = useSearchParams()
-	const redirectTo = searchParams.get('redirectTo')
+	const redirectTo = searchParams.get('redirectTo') || href('/c/dashboard')
 
 	const [form, fields] = useForm({
 		id: 'login-form',

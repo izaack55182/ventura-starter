@@ -25,11 +25,9 @@ export default function EditUserForm({ user, lastResult }: { user: any; lastResu
 			const parsed = parseWithZod(formData, {
 				schema: EditUserSchema,
 			})
-			console.log('FORM DATA:', Object.fromEntries(formData.entries()))
+
 			if (parsed.status === 'error') {
-				console.error('ZOD ERRORS:', parsed.error)
 			} else {
-				console.log('ZOD VALIDATION SUCCESS:', parsed)
 			}
 			return parsed
 		},
@@ -45,7 +43,6 @@ export default function EditUserForm({ user, lastResult }: { user: any; lastResu
 			method="POST"
 			{...getFormProps(form)}
 			onSubmit={(e) => {
-				console.log('=== FORM ONSUBMIT FIRED ===')
 				if (form.onSubmit) form.onSubmit(e as any)
 			}}
 		>

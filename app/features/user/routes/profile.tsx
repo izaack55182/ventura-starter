@@ -2,11 +2,9 @@ import { parseWithZod } from '@conform-to/zod'
 import { and, eq } from 'drizzle-orm'
 import { data, Link, Outlet, useFetcher, useLoaderData, useMatches } from 'react-router'
 import { z } from 'zod'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Icon } from '@/components/ui/icon'
 import { Page, PageContent, PageHeader, PageTitle } from '@/components/ui/page'
-import { StatusButton } from '@/components/ui/status-button'
 import * as schema from '@/drizzle/schema.server'
 import { requireUserId } from '@/features/security/authentication/server/auth.server'
 import { useUser } from '@/features/user/utils'
@@ -45,8 +43,6 @@ export async function action({ request }: Route.ActionArgs) {
 	const formData = await request.formData()
 	const intent = formData.get('intent')
 
-	console.log('ACTION HIT!', { userId, intent, data: Object.fromEntries(formData.entries()) })
-
 	switch (intent) {
 		case INTENT.EDIT_USER: {
 			const submission = parseWithZod(formData, { schema: EditUserSchema })
@@ -79,7 +75,7 @@ export async function action({ request }: Route.ActionArgs) {
 export default function ProfilePage() {
 	const user = useUser()
 	const data = useLoaderData<typeof loader>()
-	const enable2FAFetcher = useFetcher()
+	const _enable2FAFetcher = useFetcher()
 	const matches = useMatches()
 
 	const breadcrumbs = matches
@@ -130,7 +126,6 @@ export default function ProfilePage() {
 			</PageHeader>
 			<PageContent>
 				<div className="space-y-6">
-					{/* Ya no necesitas pasar lastResult, el fetcher interno se encarga */}
 					<EditUserForm user={user} />
 
 					<div className="flex flex-col gap-6 mt-8 pt-8 border-t border-border/50">
@@ -155,11 +150,11 @@ export default function ProfilePage() {
 
 							{data.is2FAEnabled ? (
 								<Button asChild variant="outline" size="sm">
-									<Link to="/profile/two-factor/disable">Reemplazar</Link>
+									<Link to="/c/profile/two-factor/disable">Reemplazar</Link>
 								</Button>
 							) : (
 								<Button asChild size="sm">
-									<Link to="/profile/two-factor/verify">Habilitar</Link>
+									<Link to="/c/profile/two-factor/verify">Habilitar</Link>
 								</Button>
 							)}
 						</div>

@@ -30,10 +30,9 @@ const c = {
 	cyan: '\x1b[36m',
 	red: '\x1b[31m',
 }
-const ok = (m) => console.log(`${c.green}✓${c.reset} ${m}`)
-const info = (m) => console.log(`${c.cyan}›${c.reset} ${m}`)
-const fail = (m) => {
-	console.error(`${c.red}✗ ${m}${c.reset}`)
+const ok = (_m) => {}
+const info = (_m) => {}
+const fail = (_m) => {
 	process.exit(1)
 }
 
@@ -75,8 +74,6 @@ function has(cmd) {
 }
 
 async function main() {
-	console.log(`\n${c.bold}${c.cyan}⚡ create-ventura${c.reset} — Ventura Stack\n`)
-
 	// 1. Directorio destino
 	let dir = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : undefined
 	if (!dir && process.stdin.isTTY) {
@@ -137,10 +134,6 @@ async function main() {
 		if (commit.status === 0) ok('Commit inicial creado.')
 		else info('No se pudo crear el commit inicial (¿falta configurar git user.name/email?).')
 	}
-
-	console.log(`\n${c.bold}${c.green}Listo.${c.reset} Para empezar:\n`)
-	console.log(`  cd ${dir}`)
-	console.log(`  bun run dev\n`)
 }
 
 main().catch((e) => fail(e?.message ?? String(e)))

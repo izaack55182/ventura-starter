@@ -1,7 +1,7 @@
 // CORE
 
 import { type InferInsertModel, type InferSelectModel, relations } from 'drizzle-orm'
-import { boolean, customType, integer, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core'
+import { customType, pgTable } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 
 // SCHEMAS

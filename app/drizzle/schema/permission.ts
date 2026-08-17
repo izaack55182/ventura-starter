@@ -1,7 +1,7 @@
 // CORE
 
 import { type InferSelectModel, relations } from 'drizzle-orm'
-import { pgTable, serial, timestamp, unique, varchar } from 'drizzle-orm/pg-core'
+import { pgTable, unique } from 'drizzle-orm/pg-core'
 import { rolePermission } from './role-permission'
 
 export const permission = pgTable(

@@ -1,17 +1,13 @@
 import type { CreateReporter } from '@epic-web/cachified'
 
-/**
- * Representa el mapa de tiempos acumulados durante una petición.
- */
 export type Timings = Record<
 	string,
 	Array<{ desc?: string } & ({ time: number; start?: never } | { time?: never; start: number })>
 >
 
 /**
- * Inicializa el objeto de tiempos para una petición.
- * @param type El nombre del proceso principal (ej. 'root loader')
- * @param desc Una descripción opcional
+ * @param type The name of the main process (e.g., 'root loader')
+ * @param desc An optional description
  */
 export function makeTimings(type: string, desc?: string) {
 	const timings: Timings = {
@@ -24,9 +20,6 @@ export function makeTimings(type: string, desc?: string) {
 	return timings
 }
 
-/**
- * Crea un temporizador interno para medir un bloque de código.
- */
 function createTimer(type: string, desc?: string) {
 	const start = performance.now()
 	return {
@@ -40,16 +33,6 @@ function createTimer(type: string, desc?: string) {
 	}
 }
 
-/**
- * Envuelve una función o promesa para medir su tiempo de ejecución.
- *
- * @example
- * const user = await time(() => db.user.findUnique({ where: { id } }), {
- *   timings,
- *   type: 'db',
- *   desc: 'fetch user'
- * })
- */
 export async function time<ReturnType>(
 	fn: Promise<ReturnType> | (() => ReturnType | Promise<ReturnType>),
 	{
@@ -68,14 +51,10 @@ export async function time<ReturnType>(
 		const result = await promise
 		return result
 	} finally {
-		// El temporizador se detiene siempre, incluso si hay un error
 		if (timings) timer.end(timings)
 	}
 }
 
-/**
- * Genera el string para el encabezado HTTP 'Server-Timing'.
- */
 export function getServerTimeHeader(timings?: Timings) {
 	if (!timings) return ''
 	return Object.entries(timings)
@@ -91,7 +70,6 @@ export function getServerTimeHeader(timings?: Timings) {
 				.filter(Boolean)
 				.join(' & ')
 
-			// Limpieza de caracteres no permitidos en los keys de los headers
 			const safeKey = key.replace(/(:| |@|=|;|,|\/|\\)/g, '_')
 			const safeDesc = desc ? `desc=${JSON.stringify(desc)}` : null
 
@@ -100,18 +78,12 @@ export function getServerTimeHeader(timings?: Timings) {
 		.join(',')
 }
 
-/**
- * Combina múltiples encabezados de Server-Timing.
- */
 export function combineServerTimings(headers1: Headers, headers2: Headers) {
 	const timing1 = headers1.get('Server-Timing')
 	const timing2 = headers2.get('Server-Timing')
 	return [timing1, timing2].filter(Boolean).join(',')
 }
 
-/**
- * Reporter para la librería @epic-web/cachified que mide hits/misses de caché.
- */
 export function cachifiedTimingReporter<Value>(
 	timings?: Timings
 ): undefined | CreateReporter<Value> {

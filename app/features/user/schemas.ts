@@ -1,7 +1,9 @@
 import { z } from 'zod'
 import { UserInsertSchema } from '@/drizzle/schema/user'
-import { IMG_MAX_SIZE } from '@/utils/misc'
 import { INTENT } from './constants'
+
+/** 3 MB — maximum allowed image file size. */
+const IMG_MAX_SIZE = 1024 * 1024 * 3
 
 export const UserNameSchema = z
 	.string({ required_error: 'El username es obligatorio' })

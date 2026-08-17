@@ -10,7 +10,7 @@ import { GeneralErrorBoundary } from '@/components/error-boundary'
 import { OTPField } from '@/components/form-field/otp'
 import { buttonVariants } from '@/components/ui/button'
 // COMPONENTS
-import { FormContent, FormErrors, FormFooter, FormRow } from '@/components/ui/form'
+import { FormContent, FormErrors, FormRow } from '@/components/ui/form'
 import { Icon } from '@/components/ui/icon'
 import { StatusButton } from '@/components/ui/status-button'
 import type { Route } from '@/rr/features/security/authentication/routes/+types/verify'

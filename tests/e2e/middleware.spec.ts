@@ -20,6 +20,6 @@ test.describe('Middleware & Security', () => {
 
 		// Esperamos que app.ts intercepte y haga un redirect 302 a /login
 		expect(response.status()).toBe(302)
-		expect(response.headers()['location']).toBe('/login')
+		expect(response.headers().location).toBe('/login')
 	})
 })

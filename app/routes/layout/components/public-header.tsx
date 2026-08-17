@@ -13,7 +13,6 @@ export function Header() {
 		<header className="fixed top-0 w-full z-50 border-b border-border bg-background/80 backdrop-blur-lg">
 			<Container size="large" className="px-4">
 				<div className="flex h-20 items-center justify-between">
-					{/* Left: Logo + Navigation */}
 					<div className="flex items-center gap-6">
 						<Logo variant="icon" className="size-8" />
 					</div>
@@ -22,7 +21,9 @@ export function Header() {
 							<ColorSchemeSwitch />
 						</div>
 						{user ? (
-							<UserDropdown />
+							<div className="hidden md:block">
+								<UserDropdown />
+							</div>
 						) : (
 							<div className="hidden md:block">
 								<Button asChild variant="default" size="sm">

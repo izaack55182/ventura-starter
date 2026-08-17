@@ -1,11 +1,6 @@
 import { z } from 'zod'
 
-import {
-	EmailSchema,
-	FirstNameSchema,
-	LastNameSchema,
-	PasswordSchema,
-} from '@/features/user/schemas'
+import { PasswordSchema } from '@/features/user/schemas'
 
 const email = z
 	.string({ required_error: 'El email es obligatorio' })

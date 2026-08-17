@@ -1,17 +1,9 @@
 import { SITE_CONFIG } from '@/config/site'
 import { useNonce } from '@/utils/nonce-provider'
 
-// ─── JSON-LD Component ───────────────────────────────────────────────────────
-
 /**
- * Inyecta un bloque `<script type="application/ld+json">` en el HTML.
- *
- * Uso:
- * ```tsx
- * <JsonLd data={buildOrganizationSchema(origin)} />
- * ```
- *
- * El nonce CSP se inyecta automáticamente desde el NonceProvider.
+ * Renders a `<script type="application/ld+json">` block in the HTML.
+ * The CSP nonce is injected automatically from the NonceProvider.
  */
 export function JsonLd<T extends Record<string, unknown>>({ data }: { data: T }) {
 	const nonce = useNonce()
@@ -25,14 +17,8 @@ export function JsonLd<T extends Record<string, unknown>>({ data }: { data: T })
 	)
 }
 
-// ─── Schema Builders ─────────────────────────────────────────────────────────
-
 /**
- * Schema `Organization` — identifica la entidad detrás del sitio.
- *
- * Google lo usa para el Knowledge Panel y rich results.
- * Los datos se leen de `SITE_CONFIG`.
- *
+ * Organization schema — identifies the entity behind the site.
  * @see https://schema.org/Organization
  */
 export function buildOrganizationSchema(origin: string) {
@@ -48,9 +34,7 @@ export function buildOrganizationSchema(origin: string) {
 }
 
 /**
- * Schema `WebSite` — identifica el sitio web y habilita el Sitelinks
- * Search Box en Google (si tienes search implementado).
- *
+ * WebSite schema — enables Sitelinks Search Box in Google.
  * @see https://schema.org/WebSite
  */
 export function buildWebSiteSchema(origin: string) {
@@ -66,11 +50,7 @@ export function buildWebSiteSchema(origin: string) {
 }
 
 /**
- * Schema `FAQPage` — genera rich results con preguntas/respuestas
- * expandibles directamente en Google.
- *
- * Se usa junto al componente `<FAQ />` que lo genera automáticamente.
- *
+ * FAQPage schema — generates expandable Q&A rich results in Google.
  * @see https://schema.org/FAQPage
  */
 export function buildFAQSchema(items: { question: string; answer: string }[]) {
@@ -89,19 +69,8 @@ export function buildFAQSchema(items: { question: string; answer: string }[]) {
 }
 
 /**
- * Schema `BreadcrumbList` — ayuda a Google a entender la jerarquía
- * del sitio y muestra breadcrumbs en los resultados de búsqueda.
- *
+ * BreadcrumbList schema — helps Google understand site hierarchy.
  * @see https://schema.org/BreadcrumbList
- *
- * Uso:
- * ```tsx
- * <JsonLd data={buildBreadcrumbSchema(origin, [
- *   { name: 'Inicio', path: '/' },
- *   { name: 'Blog', path: '/blog' },
- *   { name: 'Mi artículo', path: '/blog/mi-articulo' },
- * ])} />
- * ```
  */
 export function buildBreadcrumbSchema(origin: string, items: { name: string; path: string }[]) {
 	const url = origin || SITE_CONFIG.url

@@ -1,4 +1,4 @@
-import { index, layout, prefix, route } from '@react-router/dev/routes'
+import { index, layout, route } from '@react-router/dev/routes'
 
 export const marketingRoutes = [
 	// HOME ROUTES

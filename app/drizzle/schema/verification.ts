@@ -1,5 +1,5 @@
 import { createId } from '@paralleldrive/cuid2'
-import { integer, pgTable, timestamp, unique, varchar } from 'drizzle-orm/pg-core'
+import { pgTable, unique } from 'drizzle-orm/pg-core'
 
 export const verification = pgTable(
 	'verification',

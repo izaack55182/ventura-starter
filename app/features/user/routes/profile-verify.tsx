@@ -9,7 +9,7 @@ import { z } from 'zod'
 // COMPONENTS
 import { DialogDrawerWrapper } from '@/components/dialog-drawer-wrapper'
 import { OTPField } from '@/components/form-field/otp'
-import { FormContent, FormErrors, FormRow } from '@/components/ui/form'
+import { FormErrors } from '@/components/ui/form'
 import { Icon } from '@/components/ui/icon'
 import { StatusButton } from '@/components/ui/status-button'
 import {
@@ -45,7 +45,7 @@ export default function ProfileVerifyRoute() {
 	const parseWithZodType = VerificationTypeSchema.safeParse(searchParams.get(typeQueryParam))
 	const type = parseWithZodType.success ? parseWithZodType.data : null
 
-	const redirectTo = searchParams.get(redirectToQueryParam) || '/profile'
+	const _redirectTo = searchParams.get(redirectToQueryParam) || '/profile'
 
 	const [form, fields] = useForm({
 		id: 'profile-verify-form',
@@ -89,7 +89,7 @@ export default function ProfileVerifyRoute() {
 		<DialogDrawerWrapper
 			title={heading.title}
 			description={heading.description}
-			redirectTo="/profile"
+			redirectTo="/c/profile"
 		>
 			<Form method="POST" {...getFormProps(form)} className="flex flex-col items-center gap-6">
 				<div className="flex items-center gap-3 w-full p-3 bg-muted/50 rounded-lg border border-border/50">

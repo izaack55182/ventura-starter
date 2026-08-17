@@ -6,7 +6,7 @@ import * as schema from '@/drizzle/schema.server'
 import { USER_ROLE } from '@/features/security/access/role/constants'
 import { twoFAVerificationType } from '@/features/user/types'
 import { db } from '@/utils/db.server'
-import { combineHeaders, combineResponseInits } from '@/utils/misc'
+import { combineResponseInits } from '@/utils/misc'
 import { redirectWithToast } from '@/utils/toast.server'
 import { getUserId, sessionKey } from './auth.server'
 import { authSessionStorage } from './session.server'
@@ -50,6 +50,8 @@ export async function handleNewSession(
 	const isAdmin = user?.roles.some((role: any) => role.roleId === USER_ROLE.ADMIN)
 	if (isAdmin) {
 		redirectTo = '/a/organizations'
+	} else if (!redirectTo) {
+		redirectTo = '/c/dashboard'
 	}
 	const userHasTwoFactor = Boolean(verification)
 
@@ -77,7 +79,7 @@ export async function handleNewSession(
 		const authSession = await authSessionStorage.getSession(request.headers.get('cookie'))
 		authSession.set(sessionKey, session.id)
 		return redirect(
-			safeRedirect(redirectTo),
+			safeRedirect(redirectTo, 'c/dashboard'),
 			combineResponseInits(
 				{
 					headers: {

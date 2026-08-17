@@ -12,7 +12,6 @@ import type { twoFAVerifyVerificationType } from '@/features/user/routes/two-fac
 import { twoFAVerificationType } from '@/features/user/types'
 import { db } from '@/utils/db.server'
 import { getDomainUrl } from '@/utils/misc'
-import { redirectWithToast } from '@/utils/toast.server'
 import { generateTOTP, verifyTOTP } from '@/utils/totp.server'
 // TYPES & SCHEMAS
 import {
@@ -30,7 +29,7 @@ import {
 	shouldRequestTwoFA,
 } from './login.server'
 import { handleVerification as handleOnboardingVerification } from './onboarding.server'
-import { handleVerification as handleResetPasswordVerification } from './reset-password'
+import { handleVerification as handleResetPasswordVerification } from './reset-password.server'
 
 export function getRedirectToUrl({
 	request,
@@ -188,7 +187,7 @@ export async function validateRequest(request: Request, body: URLSearchParams | 
 	switch (submissionValue[typeQueryParam]) {
 		case 'reset-password': {
 			await deleteVerification()
-			return handleResetPasswordVerification(db, { request, body, submission })
+			return handleResetPasswordVerification({ request, body, submission })
 		}
 		case 'onboarding': {
 			await deleteVerification()

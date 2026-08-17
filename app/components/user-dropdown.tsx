@@ -41,16 +41,9 @@ export function UserDropdown() {
 			<DropdownMenuPortal>
 				<DropdownMenuContent sideOffset={8} align="end">
 					<DropdownMenuItem asChild>
-						<Link prefetch="intent" to="/profile">
+						<Link prefetch="intent" to="/c/profile">
 							<Icon className="text-body-md" name="user">
 								Perfil
-							</Icon>
-						</Link>
-					</DropdownMenuItem>
-					<DropdownMenuItem asChild>
-						<Link prefetch="intent" to={`/users/${user.username}/notes`}>
-							<Icon className="text-body-md" name="pencil">
-								Notes
 							</Icon>
 						</Link>
 					</DropdownMenuItem>

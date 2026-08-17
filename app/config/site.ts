@@ -1,56 +1,47 @@
 /**
- * ─────────────────────────────────────────────────────────────
- *  SITE CONFIG — Punto único de configuración del proyecto
+ * Central site configuration — single source of truth.
  *
- *  Al reutilizar este stack para un proyecto nuevo, solo cambia
- *  este archivo y todo (SEO, sitemap, robots, manifest) quedará
- *  consistente automáticamente.
- * ─────────────────────────────────────────────────────────────
+ * When reusing this stack for a new project, change only this file
+ * and everything (SEO, sitemap, robots, manifest) stays consistent.
  */
 export const SITE_CONFIG = {
-	/** Nombre del sitio — aparece en <title>, OG y manifest */
+	/** Site name — used in <title>, OG, and manifest. */
 	name: 'Ventura Stack',
 
-	/** Dominio de producción — usado como fallback en canonical y OG */
+	/** Production domain — fallback for canonical and OG URLs. */
 	url: 'https://ventura-stack.claux.workers.dev',
 
-	/** Idioma principal — usado en <html lang=""> y sitemap hreflang */
+	/** Primary language — used in <html lang=""> and sitemap hreflang. */
 	lang: 'es',
 
-	/** Handle de Twitter/X para twitter:site y twitter:creator */
+	/** Twitter/X handle for twitter:site and twitter:creator. */
 	twitterHandle: '@venturastack',
 
-	/** Descripción por defecto del sitio */
+	/** Default site description. */
 	description:
 		'El stack open-source que combina React Router v7, Cloudflare Workers y Bun para llevar tu app al edge con 0ms de cold start.',
 
-	/** Imagen OG por defecto (ruta relativa a /public) */
+	/** Default OG image (relative path from /public). */
 	ogImage: '/social-preview.avif',
 
-	/** Locale para Open Graph */
+	/** Open Graph locale. */
 	locale: 'es_MX',
 
-	/** Color del tema para PWA manifest y browser theme-color */
+	/** Theme color for PWA manifest and browser theme-color. */
 	themeColor: '#09090b',
 
-	/** Logo del sitio — usado en Organization schema (JSON-LD) */
+	/** Site logo — used in Organization schema (JSON-LD). */
 	logo: '/images/logo/ventura-light.svg',
 
-	/** Links de redes sociales — usado en Organization schema */
-	sameAs: [
-		'https://github.com/izaack55182/ventura-stack',
-		// Agrega aquí tus redes sociales:
-		// 'https://twitter.com/tu-handle',
-		// 'https://linkedin.com/company/tu-empresa',
-	],
+	/** Social links — used in Organization schema. */
+	sameAs: ['https://github.com/izaack55182/ventura-stack'],
 } as const
 
 /**
- * Rutas públicas indexables por Google.
- * Úsalas en el sitemap y para validar qué está expuesto.
+ * Public indexable routes for the sitemap.
  *
  * changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
- * priority: 0.0 – 1.0  (1.0 = más importante)
+ * priority: 0.0 – 1.0  (1.0 = most important)
  */
 export const SITE_PAGES = [
 	{

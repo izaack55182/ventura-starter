@@ -54,7 +54,7 @@ export default function TwoFactorDisableRoute() {
 		<DialogDrawerWrapper
 			title="Deshabilitar Autenticación de Dos Factores"
 			description="Deshabilitar la autenticación de dos factores reducirá significativamente la seguridad de tu cuenta. Te recomendamos mantenerla activa para proteger tu información."
-			redirectTo="/profile"
+			redirectTo="/c/profile"
 		>
 			<div className="flex flex-col gap-6">
 				<div className="flex items-center gap-4 my-2 p-4 bg-destructive/10 text-destructive rounded-lg border border-destructive/20">

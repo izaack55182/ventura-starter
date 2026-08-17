@@ -1,5 +1,5 @@
 import { type InferInsertModel, type InferSelectModel, relations, type SQL, sql } from 'drizzle-orm'
-import { index, pgTable, text, unique, uuid } from 'drizzle-orm/pg-core'
+import { index, pgTable, unique } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { passkey } from './passkey'
 import { userRole } from './user-role'

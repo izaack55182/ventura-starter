@@ -2,7 +2,7 @@
 
 import { invariant } from '@epic-web/invariant'
 import bcrypt from 'bcryptjs'
-import { and, eq } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { redirect } from 'react-router'
 // CONSTANTS
 //import { PERMISSIONS } from '@/features/security/access/permission/constants'
@@ -10,7 +10,7 @@ import type { User, UserInsert } from '@/drizzle/schema/user'
 import * as schema from '@/drizzle/schema.server'
 // UTILS
 import { db } from '@/utils/db.server'
-//import type { Team } from '@/drizzle/schema/team'
+//import type { Organization } from '@/drizzle/schema/organization'
 
 export async function getRootUser(userId: User['id']) {
 	return db.query.user.findFirst({
@@ -92,9 +92,9 @@ export async function getUserById(id: User['id']) {
 	return db.query.user.findFirst({ where: eq(schema.user.id, id) })
 }
 
-// export async function getRoleUserByUserId(userId: User['id'], teamId: Team['id']) {
+// export async function getRoleUserByUserId(userId: User['id'], organizationId: Organization['id']) {
 //     const userRole = await db.query.userRole.findFirst({
-//         where: and(eq(schema.userRole.userId, userId), eq(schema.userRole.teamId, teamId)),
+//         where: and(eq(schema.userRole.userId, userId), eq(schema.userRole.organizationId, organizationId)),
 //         with: {
 //             role: {
 //                 columns: {
@@ -169,7 +169,7 @@ export async function verifyLoginEmail(email: User['email'], password: User['pas
 		where: eq(schema.user.email, email),
 	})
 
-	if (!userWithPassword || !userWithPassword.password) {
+	if (!userWithPassword?.password) {
 		return null
 	}
 	if (password === null) {

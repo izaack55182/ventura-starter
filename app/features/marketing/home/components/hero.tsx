@@ -2,6 +2,7 @@ import { motion } from 'motion/react'
 import { WavyBackground } from '@/components/ui/animation/wavy-background'
 import { Button } from '@/components/ui/button'
 import { Container } from '@/components/ui/container'
+import { Icon } from '@/components/ui/icon'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 import Logo from '@/routes/layout/components/logo'
@@ -43,22 +44,27 @@ const BRANDS = [
 
 export function Hero() {
 	return (
-		<Container as="section" id="hero" variant="section">
+		<Container
+			as="section"
+			id="hero"
+			variant="section"
+			className="min-h-[calc(100vh-5rem)] flex flex-col justify-center pt-24 pb-12 md:pt-20 md:pb-20"
+		>
 			<div className="absolute inset-0 z-0">
 				<WavyBackground />
 				<div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-background" />
 			</div>
 
-			<div className="relative z-10 flex flex-col items-center max-w-4xl mx-auto w-full mt-6 md:mt-10 lg:mt-16">
-				<div className="mb-4 md:mb-6 flex flex-col items-center">
-					<Logo variant="long" className="w-44 sm:w-56 md:w-64 lg:w-80 h-auto mb-4 md:mb-6" />
-					<h1 className="text-xl sm:text-2xl md:text-h2 lg:text-h1 tracking-tighter text-foreground animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100 leading-tight">
+			<div className="relative z-10 flex flex-col items-center max-w-4xl mx-auto w-full">
+				<div className="mb-3 md:mb-4 flex flex-col items-center">
+					<Logo variant="long" className="w-44 sm:w-56 md:w-64 lg:w-80 h-auto mb-3 md:mb-4" />
+					<h1 className="text-center text-h4 sm:text-h3 md:text-h2 lg:text-h1 font-bold tracking-tight text-foreground animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-100 leading-tight">
 						El Stack de React para la Web
 					</h1>
 				</div>
 
 				{/* ── 2. Subtitle ── */}
-				<p className="text-base sm:text-lg md:text-xl text-foreground text-center leading-relaxed mb-8 md:mb-10 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
+				<p className="text-base sm:text-lg md:text-xl text-foreground text-center leading-relaxed mb-6 md:mb-8 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
 					Ventura te permite crear{' '}
 					<span className="font-bold text-foreground">aplicaciones web de alto rendimiento</span>{' '}
 					<br />
@@ -66,16 +72,17 @@ export function Hero() {
 				</p>
 
 				{/* ── 3. CTAs ── */}
-				<div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full sm:w-auto animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
-					<Button size="lg" className="w-full sm:w-auto">
+				<div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4 w-full max-w-xs sm:max-w-none px-4 sm:px-0 sm:w-auto animate-in fade-in slide-in-from-bottom-10 duration-1000 delay-500">
+					<Button size="lg" className="w-full sm:w-auto gap-2 font-semibold">
 						Comenzar
+						<Icon name="arrow-right" className="size-4" />
 					</Button>
-					<Button size="lg" variant="secondary" className="w-full sm:w-auto">
+					<Button size="lg" variant="secondary" className="w-full sm:w-auto gap-2 font-semibold">
 						Documentación
 					</Button>
 				</div>
 				<motion.span
-					className="text-[10px] sm:text-xs font-semibold text-zinc-450 mt-10 sm:mt-16 block"
+					className="text-[10px] sm:text-xs font-semibold text-zinc-450 mt-6 sm:mt-8 block"
 					initial={{ opacity: 0 }}
 					whileInView={{ opacity: 1 }}
 					viewport={{ once: true }}
@@ -86,7 +93,7 @@ export function Hero() {
 
 				<TooltipProvider>
 					<motion.div
-						className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-8 w-full px-4"
+						className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-4 w-full px-4"
 						variants={{
 							hidden: { opacity: 0 },
 							show: {
@@ -141,7 +148,7 @@ export function Hero() {
 				</TooltipProvider>
 
 				{/* ── 4. Terminal snippet ── */}
-				<div className="mt-8 md:mt-14 text-xs sm:text-sm text-foreground font-mono animate-in fade-in duration-1000 delay-700 flex items-center gap-2 sm:gap-3 opacity-80 hover:opacity-100 transition-opacity max-w-full overflow-x-auto">
+				<div className="mt-6 md:mt-8 text-xs sm:text-sm text-foreground font-mono animate-in fade-in duration-1000 delay-700 flex items-center gap-2 sm:gap-3 opacity-80 hover:opacity-100 transition-opacity max-w-full overflow-x-auto">
 					<span className="text-foreground shrink-0">▲</span>
 					<span className="truncate">~ bun create ventura-app@latest</span>
 				</div>

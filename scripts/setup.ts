@@ -35,7 +35,7 @@ const c = {
 	cyan: '\x1b[36m',
 	yellow: '\x1b[33m',
 }
-const log = (m: string) => console.log(m)
+const log = (_m: string) => {}
 const ok = (m: string) => log(`${c.green}✓${c.reset} ${m}`)
 const info = (m: string) => log(`${c.cyan}›${c.reset} ${m}`)
 

@@ -11,6 +11,7 @@ const pageVariants = cva('w-full mx-auto animate-in fade-in duration-500', {
 			default: 'max-w-7xl',
 			settings: 'max-w-4xl py-10',
 			auth: 'max-w-md',
+			full: 'max-w-full',
 		},
 		align: {
 			left: '',

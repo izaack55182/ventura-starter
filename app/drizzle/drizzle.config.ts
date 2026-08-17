@@ -1,7 +1,7 @@
 import { type Config, defineConfig } from 'drizzle-kit'
 import { getServerEnv } from '@/utils/env.server'
 
-const env = getServerEnv()
+const _env = getServerEnv()
 
 export default defineConfig({
 	schema: 'app/drizzle/schema/*',

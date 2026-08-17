@@ -1,7 +1,7 @@
 // CORE
 
 import { type InferSelectModel, relations } from 'drizzle-orm'
-import { index, integer, pgTable } from 'drizzle-orm/pg-core'
+import { index, pgTable } from 'drizzle-orm/pg-core'
 import { permission } from './permission'
 import { role } from './role'
 
