@@ -6,6 +6,7 @@ export function meta(_args: Route.MetaArgs) {
 	return [
 		{ title: '404 - Not Found' },
 		{ name: 'description', content: 'The page you are looking for does not exist.' },
+		{ name: 'robots', content: 'noindex, nofollow' },
 	]
 }
 

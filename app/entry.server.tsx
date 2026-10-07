@@ -1,6 +1,6 @@
 import { isbot } from 'isbot'
 import { renderToReadableStream } from 'react-dom/server'
-import type { AppLoadContext, EntryContext } from 'react-router'
+import type { EntryContext } from 'react-router'
 import { ServerRouter } from 'react-router'
 import { generateNonce, getContentSecurityPolicy } from '@/utils/csp.server'
 import { NonceProvider } from '@/utils/nonce-provider'
@@ -11,14 +11,11 @@ export default async function handleRequest(
 	request: Request,
 	responseStatusCode: number,
 	responseHeaders: Headers,
-	routerContext: EntryContext,
-	_loadContext: AppLoadContext
+	routerContext: EntryContext
 ) {
 	const userAgent = request.headers.get('user-agent')
 	const isBot = isbot(userAgent || '')
 
-	// Nonce CSP único por petición: viaja al árbol React vía <NonceProvider> y a los
-	// scripts de bootstrap de React vía la opción `nonce` de renderToReadableStream.
 	const nonce = generateNonce()
 	responseHeaders.set(
 		'Content-Security-Policy',

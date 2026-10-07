@@ -1,6 +1,6 @@
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
-import type { SEOHandle } from '@nasa-gcn/remix-seo'
+
 import * as E from '@react-email/components'
 import { data, Form, redirect, useSearchParams } from 'react-router'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
@@ -20,10 +20,7 @@ import type { Route } from '@/rr/features/security/authentication/routes/+types/
 import { db } from '@/utils/db.server'
 import { checkHoneypot } from '@/utils/honeypot.server'
 import { useIsPending } from '@/utils/misc'
-
-export const handle: SEOHandle = {
-	getSitemapEntries: () => null,
-}
+import { getMeta } from '@/utils/seo/meta'
 
 const SignupSchema = z.object({
 	email: EmailSchema,
@@ -111,8 +108,8 @@ export function SignupEmail({ onboardingUrl, otp }: { onboardingUrl: string; otp
 	)
 }
 
-export const meta: Route.MetaFunction = () => {
-	return [{ title: 'Sign Up | Epic Notes' }]
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Sign Up', matches, noIndex: true })
 }
 
 export default function SignupRoute({ actionData }: Route.ComponentProps) {

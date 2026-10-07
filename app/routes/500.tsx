@@ -6,6 +6,7 @@ export function meta(_args: Route.MetaArgs) {
 	return [
 		{ title: '500 - Server Error' },
 		{ name: 'description', content: 'Something went wrong on our end.' },
+		{ name: 'robots', content: 'noindex, nofollow' },
 	]
 }
 

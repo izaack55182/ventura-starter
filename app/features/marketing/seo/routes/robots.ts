@@ -2,7 +2,21 @@ import { generateRobotsTxt } from '@forge42/seo-tools/robots'
 import type { Route } from '@/rr/features/marketing/seo/routes/+types/robots'
 import { getDomainUrl } from '@/utils/misc'
 
-const PRIVATE_PATHS = ['/c/', '/login', '/register', '/404', '/500']
+const PRIVATE_PATHS = [
+	'/c',
+	'/c/',
+	'/login',
+	'/logout',
+	'/signup',
+	'/verify',
+	'/forgot-password',
+	'/reset-password',
+	'/onboarding',
+	'/webauthn/',
+	'/r/',
+	'/404',
+	'/500',
+]
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const domain = getDomainUrl(request)

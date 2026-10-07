@@ -1,6 +1,6 @@
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
-import type { SEOHandle } from '@nasa-gcn/remix-seo'
+
 import { data, Form, redirect } from 'react-router'
 import { GeneralErrorBoundary } from '@/components/error-boundary.tsx'
 import { ErrorList, Field } from '@/components/forms.tsx'
@@ -13,11 +13,8 @@ import {
 import { verifySessionStorage } from '@/features/security/authentication/server/verification.server'
 import { PasswordAndConfirmPasswordSchema } from '@/features/user/schemas'
 import { useIsPending } from '@/utils/misc.tsx'
+import { getMeta } from '@/utils/seo/meta'
 import type { Route } from './+types/reset-password'
-
-export const handle: SEOHandle = {
-	getSitemapEntries: () => null,
-}
 
 export const resetPasswordUsernameSessionKey = 'resetPasswordUsername'
 
@@ -71,8 +68,8 @@ export async function action({ request }: Route.ActionArgs) {
 	})
 }
 
-export const meta: Route.MetaFunction = () => {
-	return [{ title: 'Reset Password | Epic Notes' }]
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Reset Password', matches, noIndex: true })
 }
 
 export default function ResetPasswordPage({ loaderData, actionData }: Route.ComponentProps) {

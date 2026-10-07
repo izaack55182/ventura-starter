@@ -12,12 +12,17 @@ import * as schema from '@/drizzle/schema.server'
 import { requireUserId } from '@/features/security/authentication/server/auth.server'
 import type { Route } from '@/rr/features/user/routes/+types/two-factor'
 import { db } from '@/utils/db.server'
+import { getMeta } from '@/utils/seo/meta'
 import { generateTOTP } from '@/utils/totp.server'
 
 // TYPES
 
 import { twoFAVerificationType } from '../types'
 import { twoFAVerifyVerificationType } from './two-factor-verify'
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Two-Factor Authentication', matches, noIndex: true })
+}
 
 export const handle = {
 	breadcrumb: <Icon name="lock">Dos Factores</Icon>,

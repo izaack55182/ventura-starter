@@ -2,6 +2,8 @@ import { Outlet } from 'react-router'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import AppSidebar from './components/app-sidebar'
 
+export const meta = () => [{ name: 'robots', content: 'noindex, nofollow' }]
+
 export default function LayoutApp() {
 	return (
 		<SidebarProvider>

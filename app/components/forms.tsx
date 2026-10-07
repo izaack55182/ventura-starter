@@ -2,6 +2,7 @@ import { useInputControl } from '@conform-to/react'
 import { type OTPInputProps, REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp'
 import type React from 'react'
 import { useId } from 'react'
+import { cn } from '@/utils/misc'
 import { Checkbox, type CheckboxProps } from './ui/checkbox'
 import { Icon } from './ui/icon'
 import { Input } from './ui/input'
@@ -11,17 +12,25 @@ import { Textarea } from './ui/textarea'
 
 export type ListOfErrors = Array<string | null | undefined> | null | undefined
 
-export function ErrorList({ id, errors }: { errors?: ListOfErrors; id?: string }) {
+export function ErrorList({
+	id,
+	errors,
+	className,
+}: {
+	errors?: ListOfErrors
+	id?: string
+	className?: string
+}) {
 	const errorsToRender = errors?.filter(Boolean)
 	if (!errorsToRender?.length) return null
 	return (
-		<ul id={id} className="flex flex-col gap-2 pt-2">
+		<ul id={id} className={cn('flex flex-col gap-1.5 pt-1.5', className)}>
 			{errorsToRender.map((e) => (
 				<li
 					key={e}
-					className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 border border-red-500/20 py-2.5 px-3 rounded-md"
+					className="flex items-center gap-1.5 text-[12px] font-medium text-destructive animate-in fade-in slide-in-from-top-1 duration-150"
 				>
-					<Icon name="circle-alert" className="shrink-0 size-4 text-red-400" />
+					<Icon name="circle-alert" className="shrink-0 size-3.5 text-destructive" />
 					<span className="leading-tight">{e}</span>
 				</li>
 			))}

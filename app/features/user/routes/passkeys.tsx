@@ -11,6 +11,11 @@ import * as schema from '@/drizzle/schema.server.ts'
 import { requireUserId } from '@/features/security/authentication/server/auth.server.ts'
 import type { Route } from '@/rr/features/user/routes/+types/passkeys.ts'
 import { db } from '@/utils/db.server.ts'
+import { getMeta } from '@/utils/seo/meta'
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Passkeys', matches, noIndex: true })
+}
 
 export const handle = {
 	breadcrumb: <Icon name="passkey">Passkeys</Icon>,

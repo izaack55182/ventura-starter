@@ -12,6 +12,7 @@ const cardVariants = cva('flex flex-col rounded-2xl border text-card-foreground'
 			button:
 				'border-border bg-card hover:bg-primary/5 hover:border-primary/30 cursor-pointer shadow-md',
 			settings: 'w-full border-border bg-card',
+			flat: 'overflow-hidden border-0 bg-muted/30 shadow-none',
 		},
 		align: {
 			default: '',

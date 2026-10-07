@@ -32,7 +32,7 @@ export function getMeta({
 	type?: 'website' | 'article'
 	noIndex?: boolean
 	/** Route matches — used to auto-extract origin from root loader data. */
-	matches?: Array<{ id: string; data: Record<string, unknown> | unknown }>
+	matches?: ReadonlyArray<{ id: string; loaderData?: unknown } | undefined>
 	/** Current pathname (e.g. location.pathname). Used for canonical URL. */
 	pathname?: string
 }) {
@@ -45,7 +45,7 @@ export function getMeta({
 		url: siteUrl,
 	} = SITE_CONFIG
 
-	const rootData = matches?.find((m) => m.id === 'root')?.data as
+	const rootData = matches?.find((m) => m?.id === 'root')?.loaderData as
 		| Record<string, unknown>
 		| undefined
 	const effectiveOrigin =

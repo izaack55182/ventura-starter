@@ -1,6 +1,12 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Icon } from '@/components/ui/icon'
 import { Page, PageContent, PageDescription, PageHeader, PageTitle } from '@/components/ui/page'
+import type { Route } from '@/rr/features/core/dashboard/routes/+types/dashboard'
+import { getMeta } from '@/utils/seo/meta'
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Dashboard', matches, noIndex: true })
+}
 
 export default function Dashboard() {
 	return (

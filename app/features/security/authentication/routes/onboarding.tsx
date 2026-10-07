@@ -25,6 +25,7 @@ import {
 import { db } from '@/utils/db.server.ts'
 import { checkHoneypot } from '@/utils/honeypot.server.ts'
 import { useIsPending } from '@/utils/misc.tsx'
+import { getMeta } from '@/utils/seo/meta'
 import { redirectWithToast } from '@/utils/toast.server'
 import type { Route } from './+types/onboarding'
 
@@ -121,8 +122,8 @@ export async function action({ request }: Route.ActionArgs) {
 	)
 }
 
-export const meta: Route.MetaFunction = () => {
-	return [{ title: 'Setup Epic Notes Account' }]
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Setup Account', matches, noIndex: true })
 }
 
 export default function OnboardingRoute({ loaderData, actionData }: Route.ComponentProps) {

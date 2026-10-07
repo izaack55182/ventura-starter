@@ -1,6 +1,6 @@
 import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
-import type { SEOHandle } from '@nasa-gcn/remix-seo'
+
 import * as E from '@react-email/components'
 import { data, Link, redirect, useFetcher } from 'react-router'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
@@ -13,11 +13,8 @@ import { EmailSchema, UserNameSchema } from '@/features/user/schemas'
 import type { Route } from '@/rr/features/security/authentication/routes/+types/forgot-password'
 import { db } from '@/utils/db.server'
 import { checkHoneypot } from '@/utils/honeypot.server'
+import { getMeta } from '@/utils/seo/meta'
 import { prepareVerification } from '../server/verify.server'
-
-export const handle: SEOHandle = {
-	getSitemapEntries: () => null,
-}
 
 const ForgotPasswordSchema = z.object({
 	usernameOrEmail: z.union([EmailSchema, UserNameSchema]),
@@ -106,8 +103,8 @@ function ForgotPasswordEmail({ onboardingUrl, otp }: { onboardingUrl: string; ot
 	)
 }
 
-export const meta: Route.MetaFunction = () => {
-	return [{ title: 'Password Recovery for Epic Notes' }]
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Password Recovery', matches, noIndex: true })
 }
 
 export default function ForgotPasswordRoute() {

@@ -16,6 +16,7 @@ import { StatusButton } from '@/components/ui/status-button'
 import type { Route } from '@/rr/features/security/authentication/routes/+types/verify'
 import { checkHoneypot } from '@/utils/honeypot.server'
 import { useIsPending } from '@/utils/misc'
+import { getMeta } from '@/utils/seo/meta'
 // QUERIES
 import { validateRequest } from '../server/verify.server'
 export const codeQueryParam = 'code'
@@ -32,6 +33,10 @@ export const VerifySchema = z.object({
 	[targetQueryParam]: z.string(),
 	[redirectToQueryParam]: z.string().optional(),
 })
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Verify', matches, noIndex: true })
+}
 
 export async function action({ request }: Route.ActionArgs) {
 	const formData = await request.formData()

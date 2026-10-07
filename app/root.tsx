@@ -19,6 +19,7 @@ import { getColorScheme } from '@/utils/color-scheme.server'
 import { combineHeaders, getDomainUrl } from '@/utils/misc'
 import { useNonce } from '@/utils/nonce-provider'
 import { buildOrganizationSchema, buildWebSiteSchema, JsonLd } from '@/utils/seo/json-ld'
+import { getMeta } from '@/utils/seo/meta'
 import { EpicProgress } from './components/epic-progress'
 import { EpicToaster } from './components/epic-toaster'
 import { getHoneypot } from './utils/honeypot.server.ts'
@@ -36,11 +37,12 @@ import { useOptionalTheme } from './routes/resource/color-scheme.tsx'
 import fontStyleSheetUrl from './styles/font.css?url'
 import tailwindStyleSheetUrl from './styles/tailwind.css?url'
 
-export const meta: Route.MetaFunction = ({ data }) => {
-	return [
-		{ title: data ? 'Ventura Notes' : 'Error | Ventura Notes' },
-		{ name: 'description', content: `Your own captain's log` },
-	]
+export const meta: Route.MetaFunction = ({ loaderData, matches }) => {
+	return getMeta({
+		title: loaderData ? SITE_CONFIG.name : `Error | ${SITE_CONFIG.name}`,
+		description: SITE_CONFIG.description,
+		matches,
+	})
 }
 
 export const links: Route.LinksFunction = () => {

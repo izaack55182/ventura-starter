@@ -17,21 +17,21 @@ export function Header() {
 						<Logo variant="icon" className="size-8" />
 					</div>
 					<div className="flex items-center gap-4">
-						<div className="hidden md:block">
+						<div className="hidden lg:block">
 							<ColorSchemeSwitch />
 						</div>
 						{user ? (
-							<div className="hidden md:block">
+							<div className="hidden lg:block">
 								<UserDropdown />
 							</div>
 						) : (
-							<div className="hidden md:block">
+							<div className="hidden lg:block">
 								<Button asChild variant="default" size="sm">
 									<Link to="/login">Iniciar Sesión</Link>
 								</Button>
 							</div>
 						)}
-						<div className="md:hidden">
+						<div className="lg:hidden">
 							<MobileNavigation />
 						</div>
 					</div>

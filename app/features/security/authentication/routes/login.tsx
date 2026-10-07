@@ -2,11 +2,12 @@ import { getFormProps, getInputProps, useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { startAuthentication } from '@simplewebauthn/browser'
 import { useOptimistic, useState, useTransition } from 'react'
-import { data, Form, href, Link, useNavigate, useSearchParams } from 'react-router'
+import { data, Form, href, useNavigate, useSearchParams } from 'react-router'
 import { HoneypotInputs } from 'remix-utils/honeypot/react'
 import { z } from 'zod'
 import { GeneralErrorBoundary } from '@/components/error-boundary'
 import { ErrorList, Field } from '@/components/forms.tsx'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Icon } from '@/components/ui/icon'
 import { StatusButton } from '@/components/ui/status-button'
 import { handleNewSession } from '@/features/security/authentication/server/login.server.ts'
@@ -87,95 +88,97 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
 	})
 
 	return (
-		<div className="flex flex-col justify-center">
-			<div className="mx-auto w-full max-w-sm">
-				<div>
-					<div className="mx-auto w-full max-w-md px-8">
-						<Form method="POST" {...getFormProps(form)}>
-							<HoneypotInputs />
+		<div className="flex w-full items-center justify-center">
+			<Card className="w-full max-w-[640px] overflow-hidden">
+				<CardHeader className="pb-3 pt-8 text-center">
+					<CardTitle className="text-2xl">Bienvenido</CardTitle>
+					<p className="mt-2 text-sm text-muted-foreground/80">
+						Ingresa tus credenciales para acceder.
+					</p>
+				</CardHeader>
+				<CardContent className="space-y-7 px-6 pb-8 md:px-14">
+					<div className="relative rounded-2xl border border-foreground/10 bg-foreground/[0.02] p-4 transition-colors duration-200 hover:border-foreground/20 hover:bg-foreground/[0.04]">
+						<div className="flex items-center justify-between gap-4">
+							<div className="space-y-0.5">
+								<h2 className="text-sm font-medium tracking-tight text-foreground">
+									Acceso rápido y seguro
+								</h2>
+								<p className="text-xs text-muted-foreground">Inicia sesión para comenzar.</p>
+							</div>
+							<div className="flex size-5 shrink-0 items-center justify-center rounded-full bg-emerald-500">
+								<Icon name="check" className="size-3 stroke-[2.5] text-white" />
+							</div>
+						</div>
+					</div>
+					<Form method="POST" {...getFormProps(form)} className="space-y-4">
+						<HoneypotInputs />
+						<div className="space-y-4">
 							<Field
-								labelProps={{ children: 'Username', className: 'sr-only' }}
+								labelProps={{
+									children: 'Nombre de usuario',
+									className: 'text-[11px] font-bold text-foreground/70',
+								}}
 								inputProps={{
 									...getInputProps(fields.username, { type: 'text' }),
 									autoFocus: true,
-									className: 'lowercase',
-									autoComplete: 'Username',
-									placeholder: 'Username',
+									className: 'h-12 rounded-xl lowercase',
+									autoComplete: 'username',
+									placeholder: 'usuario',
 								}}
 								errors={fields.username.errors}
 							/>
 
-							<Field
-								labelProps={{ children: 'Password', className: 'sr-only' }}
-								inputProps={{
-									...getInputProps(fields.password, {
-										type: 'password',
-									}),
-									autoComplete: 'current-password',
-									placeholder: 'Password',
-								}}
-								errors={fields.password.errors}
-							/>
-
-							<div className="flex justify-between">
-								{/* <CheckboxField
-                                        labelProps={{
-                                            htmlFor: fields.remember.id,
-                                            children: 'Remember me',
-                                        }}
-                                        buttonProps={getInputProps(fields.remember, {
-                                            type: 'checkbox',
-                                        })}
-                                        errors={fields.remember.errors}
-                                    /> */}
-								<div>
-									<Link to="/forgot-password" className="text-body-xs font-semibold">
-										Forgot password?
-									</Link>
-								</div>
+							<div className="space-y-1">
+								<span className="text-[11px] font-bold text-foreground/70">Contraseña</span>
+								<Field
+									labelProps={{ children: 'Contraseña', className: 'sr-only' }}
+									inputProps={{
+										...getInputProps(fields.password, {
+											type: 'password',
+										}),
+										className: 'h-12 rounded-xl',
+										autoComplete: 'current-password',
+										placeholder: '••••••••',
+									}}
+									errors={fields.password.errors}
+								/>
 							</div>
-
-							<input {...getInputProps(fields.redirectTo, { type: 'hidden' })} />
-							<ErrorList errors={form.errors} id={form.errorId} />
-
-							<div className="flex items-center justify-between gap-6 pt-3">
-								<StatusButton
-									className="w-full"
-									status={isPending ? 'pending' : (form.status ?? 'idle')}
-									type="submit"
-									disabled={isPending}
-								>
-									Iniciar Sesión
-								</StatusButton>
-							</div>
-						</Form>
-						<hr className="my-4" />
-						<div className="flex flex-col gap-5">
-							<PasskeyLogin redirectTo={redirectTo} />
 						</div>
-						<hr className="my-4" />
-						<ul className="flex flex-col gap-5">
-							{providerNames.map((providerName) => (
-								<li key={providerName}>
-									<ProviderConnectionForm
-										type="Login"
-										providerName={providerName}
-										redirectTo={redirectTo}
-									/>
-								</li>
-							))}
-						</ul>
-						<div className="flex items-center justify-center gap-2 pt-6">
-							<span className="text-muted-foreground">Don't have an account?</span>
-							<Link
-								to={redirectTo ? `/signup?redirectTo=${encodeURIComponent(redirectTo)}` : '/signup'}
+
+						<input {...getInputProps(fields.redirectTo, { type: 'hidden' })} />
+						<ErrorList errors={form.errors} id={form.errorId} />
+
+						<div className="flex justify-center pt-2">
+							<StatusButton
+								className="h-12 w-full rounded-xl font-medium"
+								variant="outline"
+								status={isPending ? 'pending' : (form.status ?? 'idle')}
+								type="submit"
+								disabled={isPending}
 							>
-								Sign Up
-							</Link>
+								{isPending ? 'Iniciando sesión...' : 'Entrar al workspace'}
+								{!isPending ? <Icon name="arrow-right" className="size-4" /> : null}
+							</StatusButton>
 						</div>
+					</Form>
+					<hr className="my-4" />
+					<div className="flex flex-col gap-5">
+						<PasskeyLogin redirectTo={redirectTo} />
 					</div>
-				</div>
-			</div>
+					<hr className="my-4" />
+					<ul className="flex flex-col gap-5">
+						{providerNames.map((providerName) => (
+							<li key={providerName}>
+								<ProviderConnectionForm
+									type="Login"
+									providerName={providerName}
+									redirectTo={redirectTo}
+								/>
+							</li>
+						))}
+					</ul>
+				</CardContent>
+			</Card>
 		</div>
 	)
 }
@@ -257,7 +260,7 @@ function PasskeyLogin({ redirectTo }: { redirectTo: string | null }) {
 }
 
 export const meta: Route.MetaFunction = () => {
-	return [{ title: 'Login to Ventura' }]
+	return [{ title: 'Iniciar Sesión | Smart Mobile' }]
 }
 
 export function ErrorBoundary() {

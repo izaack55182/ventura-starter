@@ -24,9 +24,14 @@ import {
 import { validateRequest } from '@/features/security/authentication/server/verify.server'
 import { checkHoneypot } from '@/utils/honeypot.server'
 import { useIsPending } from '@/utils/misc'
+import { getMeta } from '@/utils/seo/meta'
 import type { Route } from './+types/profile-verify'
 
 const VerificationTypeSchema = z.enum(['onboarding', 'reset-password', 'change-email', '2fa'])
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Verify Profile', matches, noIndex: true })
+}
 
 export const handle = {
 	breadcrumb: <Icon name="shield-check">Verificación</Icon>,

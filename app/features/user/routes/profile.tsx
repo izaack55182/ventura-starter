@@ -10,12 +10,17 @@ import { requireUserId } from '@/features/security/authentication/server/auth.se
 import { useUser } from '@/features/user/utils'
 import { db } from '@/utils/db.server'
 import { cn } from '@/utils/misc'
+import { getMeta } from '@/utils/seo/meta'
 import { dataWithSuccess } from '@/utils/toast.server'
 import EditUserForm from '../components/edit-user-form'
 import { INTENT } from '../constants'
 import { EditUserSchema } from '../schemas'
 import { twoFAVerificationType } from '../types'
 import type { Route } from './+types/profile'
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Profile', matches, noIndex: true })
+}
 
 export const BreadcrumbHandle = z.object({ breadcrumb: z.any() })
 export type BreadcrumbHandle = z.infer<typeof BreadcrumbHandle>

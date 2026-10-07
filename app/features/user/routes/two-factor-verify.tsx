@@ -21,6 +21,7 @@ import { isCodeValid } from '@/features/security/authentication/server/verify.se
 import type { Route } from '@/rr/features/user/routes/+types/two-factor-verify'
 import { db } from '@/utils/db.server'
 import { getDomainUrl, useIsPending } from '@/utils/misc'
+import { getMeta } from '@/utils/seo/meta'
 import { redirectWithToast } from '@/utils/toast.server'
 // QUERIES
 import { generateTOTP, getTOTPAuthUri } from '@/utils/totp.server'
@@ -30,6 +31,10 @@ import { generateTOTP, getTOTPAuthUri } from '@/utils/totp.server'
 
 import { Icon } from '@/components/ui/icon'
 import { twoFAVerificationType } from '../types'
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Verify 2FA', matches, noIndex: true })
+}
 
 export const handle = {
 	breadcrumb: <Icon name="shield-check">Verificar 2FA</Icon>,

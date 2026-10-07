@@ -1,4 +1,4 @@
-import type { MetaFunction } from 'react-router'
+import type { Route } from '@/rr/features/marketing/home/routes/+types/home'
 import { getMeta } from '@/utils/seo/meta'
 import { Hero } from '../components/hero'
 
@@ -13,10 +13,10 @@ export default function Home() {
 	return <Hero />
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data, matches, location }: any) => {
+export const meta: Route.MetaFunction = ({ loaderData, matches, location }) => {
 	return getMeta({
-		title: data?.title,
-		description: data?.description,
+		title: loaderData?.title,
+		description: loaderData?.description,
 		matches,
 		pathname: location.pathname,
 	})

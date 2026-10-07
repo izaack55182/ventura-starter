@@ -14,11 +14,16 @@ import { requireRecentVerification } from '@/features/security/authentication/se
 import type { Route } from '@/rr/features/user/routes/+types/two-factor-disable'
 import { db } from '@/utils/db.server'
 import { useDoubleCheck } from '@/utils/misc'
+import { getMeta } from '@/utils/seo/meta'
 import { redirectWithToast } from '@/utils/toast.server'
 
 // TYPES
 
 import { twoFAVerificationType } from '../types'
+
+export const meta: Route.MetaFunction = ({ matches }) => {
+	return getMeta({ title: 'Disable 2FA', matches, noIndex: true })
+}
 
 export const handle = {
 	breadcrumb: <Icon name="shield-off">Deshabilitar 2FA</Icon>,
