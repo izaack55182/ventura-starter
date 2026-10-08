@@ -7,38 +7,28 @@ import * as React from 'react'
 import { cn } from '@/utils/misc'
 
 const buttonVariants = cva(
-	'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+	'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-body-xs font-medium ring-offset-background transition-colors duration-200 ease-out focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
 	{
 		variants: {
 			variant: {
 				default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-				destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-				outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-				secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-				ghost: 'hover:bg-accent hover:text-accent-foreground',
+				secondary: 'bg-secondary text-secondary-foreground hover:bg-interactive-hover',
+				outline:
+					'border border-input bg-background hover:bg-interactive-hover hover:text-accent-foreground',
+				ghost: 'hover:bg-interactive-hover hover:text-accent-foreground',
 				link: 'text-primary underline-offset-4 hover:underline',
-				pillGhost:
-					'bg-transparent text-muted-foreground hover:bg-muted/50 hover:text-foreground rounded-full font-medium transition-[transform,opacity,box-shadow]',
-
-				// CUSTOM VARIANTS
+				destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+				// Used when a button exposes an editable field value.
 				input:
-					'bg-background text-foreground hover:bg-accent hover:text-accent-foreground border border-input justify-start text-left overflow-auto',
-				dashed:
-					'border-2 border-dashed bg-transparent border-input hover:bg-accent hover:text-accent-foreground',
+					'border border-input bg-background text-foreground hover:bg-interactive-hover hover:text-accent-foreground',
 			},
 			size: {
 				default: 'h-10 px-4 py-2',
 				sm: 'h-9 px-3',
 				lg: 'h-12 px-8',
 				icon: 'h-10 w-10',
-
-				// CUSTOM SIZES
-				wide: 'px-24 py-5',
-				pill: 'px-12 py-3 leading-3',
-				xs: 'h-8 px-2 text-xs',
+				xs: 'h-8 px-2 text-body-2xs',
 				input: 'h-10 px-3',
-				full: 'w-full h-full px-4 py-2',
-				dropdown: 'h-12 px-8 justify-start w-full',
 			},
 		},
 		defaultVariants: {

@@ -31,7 +31,6 @@ function InputGroup({
 		<div
 			data-slot="input-group"
 			data-size={size}
-			role="group"
 			className={cn(inputGroupVariants({ size }), className)}
 			{...props}
 		/>
@@ -70,17 +69,10 @@ function InputGroupAddon({
 }: React.ComponentProps<'div'> & VariantProps<typeof inputGroupAddonVariants>) {
 	return (
 		<div
-			role="group"
 			data-slot="input-group-addon"
 			data-align={align}
 			data-size={size}
 			className={cn(inputGroupAddonVariants({ align, size }), className)}
-			onClick={(e) => {
-				if ((e.target as HTMLElement).closest('button')) {
-					return
-				}
-				e.currentTarget.parentElement?.querySelector('input')?.focus()
-			}}
 			{...props}
 		/>
 	)
@@ -138,7 +130,7 @@ interface InputGroupInputProps extends React.ComponentPropsWithoutRef<typeof Inp
 }
 
 function InputGroupInput({ className, size, variant, ...props }: InputGroupInputProps) {
-	const finalSize = size as any
+	const finalSize = size === 'lg' ? 'lg' : 'default'
 
 	return (
 		<Input

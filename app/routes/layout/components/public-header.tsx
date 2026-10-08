@@ -10,7 +10,7 @@ import { MobileNavigation } from './public-mobile-navigation'
 export function Header() {
 	const user = useOptionalUser()
 	return (
-		<header className="fixed top-0 w-full z-50 border-b border-border bg-background/80 backdrop-blur-lg">
+		<header className="fixed top-0 w-full z-50 border-b border-border bg-background">
 			<Container size="large" className="px-4">
 				<div className="flex h-20 items-center justify-between">
 					<div className="flex items-center gap-6">

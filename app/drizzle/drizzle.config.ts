@@ -9,7 +9,7 @@ export default defineConfig({
 	casing: 'snake_case',
 	out: 'app/drizzle/migrations',
 	dbCredentials: {
-		url: process.env.DATABASE_URL!,
+		url: _env.DATABASE_URL,
 	},
 	verbose: true,
 	strict: true,

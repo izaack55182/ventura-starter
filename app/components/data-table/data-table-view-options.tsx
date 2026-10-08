@@ -45,7 +45,12 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
 	return (
 		<Popover open={open} onOpenChange={setOpen}>
 			<PopoverTrigger asChild>
-				<Button variant="pillGhost" role="combobox" aria-expanded={open} className="gap-2">
+				<Button
+					variant="ghost"
+					role="combobox"
+					aria-expanded={open}
+					className="gap-2 rounded-full text-muted-foreground hover:bg-muted/50 hover:text-foreground"
+				>
 					<span>Columnas ({totalColumns})</span>
 					<Icon name="chevron-down" className="h-3.5 w-3.5 text-primary" />
 				</Button>

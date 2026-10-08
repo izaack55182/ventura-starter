@@ -18,6 +18,7 @@ import {
 import { UserDropdown } from '@/components/user-dropdown'
 import { ColorSchemeSwitch } from '@/routes/resource/color-scheme'
 import { cn } from '@/utils/misc'
+import Logo from './logo'
 
 interface NavItem {
 	label: string
@@ -40,19 +41,27 @@ export default function AppSidebar({ className, ...props }: React.ComponentProps
 	const location = useLocation()
 
 	return (
-		<Sidebar className={className} variant="inset" {...props}>
-			<SidebarContent>
+		<Sidebar className={cn('bg-sidebar p-2 sm:p-3', className)} variant="inset" {...props}>
+			<SidebarContent className="px-1 pt-1">
+				<div className="flex h-12 items-center px-2 group-data-[collapsible=icon]:hidden">
+					<Logo variant="brand" />
+				</div>
+
 				{NAV_SECTIONS.map((section) => (
-					<SidebarGroup key={section.title} className="group-data-[collapsible=icon]:hidden">
-						<SidebarGroupLabel className="text-sm font-medium text-muted-foreground/50 px-0 h-8 mt-2 mb-1">
+					<SidebarGroup
+						key={section.title}
+						className="px-0 py-0 group-data-[collapsible=icon]:hidden"
+					>
+						<SidebarGroupLabel className="h-8 px-2 text-[11px] font-semibold tracking-[0.08em] text-muted-foreground/60">
 							{section.title}
 						</SidebarGroupLabel>
 						<SidebarGroupContent>
-							<SidebarMenu className="gap-2.5">
+							<SidebarMenu className="gap-1">
 								{section.items.map((item) => {
 									const isActive =
 										location.pathname.startsWith(item.href) &&
 										(item.href !== '/' || location.pathname === '/')
+
 									return (
 										<SidebarMenuItem key={item.href}>
 											<SidebarMenuButton
@@ -60,24 +69,22 @@ export default function AppSidebar({ className, ...props }: React.ComponentProps
 												isActive={isActive}
 												tooltip={item.label}
 												className={cn(
-													'h-[30px] px-0 hover:bg-transparent hover:text-foreground hover:opacity-100 data-[active=true]:bg-transparent',
-													isActive
-														? 'font-medium text-foreground opacity-100'
-														: 'text-muted-foreground font-normal opacity-80'
+													'h-9 rounded-lg px-2.5 font-semibold transition-[background-color,color] duration-200 ease-out hover:bg-sidebar-accent/60 hover:text-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:shadow-none',
+													isActive ? 'text-foreground' : 'text-muted-foreground'
 												)}
 											>
 												<NavLink to={item.href}>
 													<div
 														className={cn(
-															'flex items-center justify-center size-6 rounded-md mr-1.5 transition-colors',
+															'flex size-5 items-center justify-center rounded-md transition-colors',
 															isActive
-																? 'text-primary'
-																: 'text-muted-foreground/70 group-hover:text-foreground'
+																? 'text-foreground'
+																: 'text-muted-foreground group-hover:text-foreground'
 														)}
 													>
 														<Icon name={item.icon} className="size-4" />
 													</div>
-													<span className="text-[14.5px] leading-tight">{item.label}</span>
+													<span className="text-sm leading-tight">{item.label}</span>
 												</NavLink>
 											</SidebarMenuButton>
 
@@ -106,12 +113,11 @@ export default function AppSidebar({ className, ...props }: React.ComponentProps
 				))}
 			</SidebarContent>
 
-			<SidebarFooter>
+			<SidebarFooter className="p-1">
 				<SidebarMenu>
-					<SidebarMenuItem className="flex items-center justify-between w-full pt-2 border-t border-sidebar-border/30 px-2">
+					<SidebarMenuItem className="flex w-full items-center justify-between border-t border-sidebar-border/60 px-2 pt-3">
 						<UserDropdown />
-
-						<div className="shrink-0 flex items-center justify-center pl-2">
+						<div className="flex shrink-0 items-center justify-center pl-2">
 							<ColorSchemeSwitch />
 						</div>
 					</SidebarMenuItem>

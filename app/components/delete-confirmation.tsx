@@ -22,7 +22,7 @@ import { FormFooter, FormRow } from '@/components/ui/form'
 import { Icon } from '@/components/ui/icon'
 import { StatusButton } from '@/components/ui/status-button'
 // UTILS
-import { useDoubleCheck } from '@/utils/misc'
+import { cn, useDoubleCheck } from '@/utils/misc'
 
 const DeleteConfirmationSchema = z.object({
 	id: z.union([z.string(), z.number()]),
@@ -72,8 +72,8 @@ const DeleteConfirmation = ({
 			<AlertDialogTrigger asChild>
 				<Button
 					variant="destructive"
-					size={variant === 'dropdown' ? 'dropdown' : 'sm'}
-					className={className}
+					size={variant === 'dropdown' ? 'lg' : 'sm'}
+					className={cn(variant === 'dropdown' && 'w-full justify-start', className)}
 				>
 					<Icon name="trash" />
 					{variant === 'dropdown' && 'Eliminar'}

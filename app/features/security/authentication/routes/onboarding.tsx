@@ -135,7 +135,7 @@ export default function OnboardingRoute({ loaderData, actionData }: Route.Compon
 		id: 'onboarding-form',
 		constraint: getZodConstraint(SignupFormSchema),
 		defaultValue: { redirectTo },
-		lastResult: (actionData as any)?.result,
+		lastResult: actionData?.result,
 		onValidate({ formData }) {
 			return parseWithZod(formData, { schema: SignupFormSchema })
 		},
@@ -146,7 +146,7 @@ export default function OnboardingRoute({ loaderData, actionData }: Route.Compon
 		<Page variant="auth" align="center" className="mt-15 md:mt-25">
 			<PageHeader className="text-center">
 				<PageTitle>Welcome aboard!</PageTitle>
-				<PageDescription className="break-all">{(loaderData as any)?.email}</PageDescription>
+				<PageDescription className="break-all">{loaderData?.email}</PageDescription>
 			</PageHeader>
 			<PageContent className="w-full">
 				<Form method="POST" {...getFormProps(form)} className="flex flex-col gap-4">

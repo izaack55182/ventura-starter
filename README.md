@@ -23,10 +23,26 @@ Este stack nació adoptando las mejores ideas, convenciones y patrones de arquit
 | **Build**      | Vite 7 + `@cloudflare/vite-plugin`            |
 | **Estilos**    | Tailwind CSS v4 + shadcn/ui + MagicUI         |
 | **Lenguaje**   | TypeScript 5.9                                |
+| **Base de datos** | PostgreSQL + Drizzle ORM (`postgres-js`)     |
 | **Validación** | Zod                                           |
 | **Seguridad**  | Honeypot · rate-limit nativo · secure-headers |
 | **Calidad**    | Biome (lint + formato)                        |
 | **Animaciones**| Framer Motion + View Transition API           |
+
+---
+
+## PostgreSQL y Hyperdrive
+
+El stack usa PostgreSQL con Drizzle ORM y una conexión directa mediante `DATABASE_URL`. Esta es la configuración adecuada para desarrollo local, migraciones y las primeras etapas del producto.
+
+Cuando el ERP crezca en consultas concurrentes desde Cloudflare Workers, se recomienda incorporar **Cloudflare Hyperdrive**. Hyperdrive reutiliza conexiones hacia PostgreSQL y evita que múltiples aislamientos del Worker abran conexiones directas al proveedor de base de datos.
+
+La adopción se deja intencionalmente para una fase posterior, cuando haya carga real que la justifique. La migración prevista es:
+
+1. Crear una configuración Hyperdrive apuntando al PostgreSQL de producción.
+2. Declarar el binding `HYPERDRIVE` en `wrangler.toml`.
+3. Usar `env.HYPERDRIVE.connectionString` en producción.
+4. Mantener `DATABASE_URL` para desarrollo local, Drizzle Kit y migraciones.
 
 ---
 

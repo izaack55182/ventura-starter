@@ -47,9 +47,12 @@ export const StatusButton = React.forwardRef<HTMLButtonElement, StatusButtonProp
 		return (
 			<Button
 				ref={ref}
-				variant="pillGhost"
+				variant="ghost"
 				disabled={disabled || status === 'pending'}
-				className={cn('relative transition-all font-semibold text-sm', className)}
+				className={cn(
+					'relative rounded-full text-sm font-semibold text-muted-foreground transition-all hover:bg-muted/50 hover:text-foreground',
+					className
+				)}
 				size={props.size ?? 'lg'}
 				{...props}
 			>

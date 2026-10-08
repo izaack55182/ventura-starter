@@ -14,7 +14,7 @@ export function Field({
 	orientation = 'vertical',
 }: {
 	labelProps?: React.LabelHTMLAttributes<HTMLLabelElement>
-	meta: FieldMetadata<any>
+	meta: FieldMetadata<unknown, Record<string, unknown>, string[]>
 	children: ReactNode
 	className?: string
 	variant?: string | null | undefined
@@ -38,9 +38,9 @@ export function Field({
 					htmlFor={id}
 					{...labelProps}
 					className={cn(
-						'text-muted-foreground text-[14px] font-regular block',
+						'text-content-secondary text-body-xs font-normal block',
 						(variant === 'settings' || orientation === 'horizontal') &&
-							'text-[14px] font-semibold text-foreground',
+							'text-body-xs font-semibold text-foreground',
 						orientation === 'horizontal' && 'sm:w-64 shrink-0',
 						labelProps.className
 					)}
@@ -66,7 +66,7 @@ export function FieldError({ errors, id }: { errors?: string[] | null; id?: stri
 			{errors.map((error, i) => (
 				<div key={i} className="flex items-center gap-1.5 text-destructive">
 					<Icon name="circle-alert" className="size-3.5 opacity-90 shrink-0" />
-					<span className="text-[12px] font-medium tracking-tight leading-none">{error}</span>
+					<span className="text-body-2xs font-medium tracking-tight leading-none">{error}</span>
 				</div>
 			))}
 		</motion.div>

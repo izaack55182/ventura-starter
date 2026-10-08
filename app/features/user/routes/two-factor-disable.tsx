@@ -29,7 +29,7 @@ export const handle = {
 	breadcrumb: <Icon name="shield-off">Deshabilitar 2FA</Icon>,
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
+async function disableTwoFactor(request: Request) {
 	await requireRecentVerification(request, '/profile/verify')
 	const userId = await requireUserId(request)
 	await db
@@ -47,8 +47,12 @@ export async function loader({ request }: Route.LoaderArgs) {
 	})
 }
 
+export async function loader({ request }: Route.LoaderArgs) {
+	return disableTwoFactor(request)
+}
+
 export async function action({ request }: Route.ActionArgs) {
-	return loader({ request } as any)
+	return disableTwoFactor(request)
 }
 
 export default function TwoFactorDisableRoute() {

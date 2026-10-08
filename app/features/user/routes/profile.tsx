@@ -177,7 +177,7 @@ export default function ProfilePage() {
 							</div>
 
 							<Button asChild variant="outline" size="sm">
-								<Link to="/profile/passkeys">Administrar</Link>
+								<Link to="/c/profile/passkeys">Administrar</Link>
 							</Button>
 						</div>
 					</div>

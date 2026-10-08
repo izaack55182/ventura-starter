@@ -10,7 +10,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 		domain,
 		routes: SITE_PAGES.map((page) => ({
 			url: page.path,
-			lastmod: page.lastmod,
+			...(page.lastmod ? { lastmod: page.lastmod } : {}),
 			changefreq: page.changefreq,
 			priority: page.priority as 0 | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 | 1,
 		})),

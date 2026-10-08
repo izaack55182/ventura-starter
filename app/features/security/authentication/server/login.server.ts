@@ -47,7 +47,7 @@ export async function handleNewSession(
 		},
 	})
 
-	const isAdmin = user?.roles.some((role: any) => role.roleId === USER_ROLE.ADMIN)
+	const isAdmin = user?.roles.some((role) => role.roleId === USER_ROLE.ADMIN)
 	if (isAdmin) {
 		redirectTo = '/a/organizations'
 	} else if (!redirectTo) {

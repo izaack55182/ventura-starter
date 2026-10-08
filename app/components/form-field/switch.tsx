@@ -36,7 +36,7 @@ export function SwitchField({
 	disabled?: boolean
 	size?: 'sm' | 'default' | 'lg'
 }) {
-	const [meta, form] = useField(name)
+	const [meta] = useField(name)
 
 	const fallbackId = useId()
 	const id = meta.id ?? fallbackId
@@ -250,7 +250,6 @@ export function ToggleAllSwitchEditable({
 	editableId,
 	categoryId,
 	intent,
-	errors,
 	className,
 	children,
 }: {
@@ -267,9 +266,6 @@ export function ToggleAllSwitchEditable({
 
 	const control = useControl(meta)
 
-	const fallbackId = useId()
-	const id = meta.id ?? fallbackId ?? ''
-	const errorId = errors?.length ? `${id}-error` : undefined
 	const hoverEffect = 'hover:underline hover:text-primary hover:decoration-primary'
 	return (
 		<div className={cn('', className)}>

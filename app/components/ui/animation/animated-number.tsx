@@ -18,7 +18,7 @@ export function AnimatedNumber({
 	suffix,
 	minimumFractionDigits,
 	maximumFractionDigits,
-	locale,
+	locale: _locale,
 }: Props) {
 	let format = {}
 	if (isCurrency) {

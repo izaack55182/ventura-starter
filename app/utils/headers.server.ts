@@ -62,34 +62,17 @@ export function pipeHeaders({
  * Given multiple Cache-Control headers, merge them and get the most conservative one.
  */
 export function getConservativeCacheControl(...cacheControlHeaders: Array<string | null>): string {
-	return format(
-		cacheControlHeaders
-			.filter(Boolean)
-			.map((header) => parse(header ?? undefined))
-			.reduce<CacheControlValue>((acc, current) => {
-				for (const key in current) {
-					const directive = key as keyof Required<CacheControlValue> // keyof CacheControl includes functions
-					const currentValue = current[directive]
-					switch (typeof currentValue) {
-						case 'boolean': {
-							if (currentValue) {
-								acc[directive] = true as any
-							}
-							break
-						}
-						case 'number': {
-							const accValue = acc[directive] as number | undefined
-							if (accValue === undefined) {
-								acc[directive] = currentValue as any
-							} else {
-								const result = Math.min(accValue, currentValue)
-								acc[directive] = result as any
-							}
-							break
-						}
-					}
-				}
-				return acc
-			}, {})
-	)
+	const directives: Record<string, boolean | number | undefined> = {}
+
+	for (const header of cacheControlHeaders.filter(Boolean)) {
+		for (const [directive, value] of Object.entries(parse(header ?? undefined))) {
+			if (value === true) directives[directive] = true
+			if (typeof value === 'number') {
+				const current = directives[directive]
+				directives[directive] = typeof current === 'number' ? Math.min(current, value) : value
+			}
+		}
+	}
+
+	return format(directives as CacheControlValue)
 }

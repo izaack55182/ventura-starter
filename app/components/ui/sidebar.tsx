@@ -77,6 +77,7 @@ function SidebarProvider({
 			}
 
 			// This sets the cookie to keep the sidebar state.
+			// biome-ignore lint/suspicious/noDocumentCookie: preserves the sidebar preference across visits
 			document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
 		},
 		[setOpenProp, open]
@@ -85,7 +86,7 @@ function SidebarProvider({
 	// Helper to toggle the sidebar.
 	const toggleSidebar = React.useCallback(() => {
 		return isMobile ? setOpenMobile((open) => !open) : setOpen((open) => !open)
-	}, [isMobile, setOpen, setOpenMobile])
+	}, [isMobile, setOpen])
 
 	// Adds a keyboard shortcut to toggle the sidebar.
 	React.useEffect(() => {
@@ -114,7 +115,7 @@ function SidebarProvider({
 			setOpenMobile,
 			toggleSidebar,
 		}),
-		[state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar]
+		[state, open, setOpen, isMobile, openMobile, toggleSidebar]
 	)
 
 	return (
@@ -447,7 +448,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<'li'>) {
 }
 
 const sidebarMenuButtonVariants = cva(
-	'ring-sidebar-ring hover:text-sidebar-foreground active:text-sidebar-foreground data-active:text-sidebar-foreground data-open:hover:text-sidebar-foreground gap-2 rounded-[var(--radius)] p-1.5 text-left text-sm transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-7! group-data-[collapsible=icon]:p-1.5! focus-visible:ring-1 data-active:font-normal peer/menu-button flex w-full items-center overflow-hidden outline-hidden group/menu-button disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&_svg]:size-4 [&_svg]:shrink-0',
+	'ring-sidebar-ring hover:text-sidebar-foreground active:text-sidebar-foreground data-active:text-sidebar-foreground data-open:hover:text-sidebar-foreground gap-2 rounded-[var(--radius)] p-1.5 text-left text-sm transition-[width,height,padding] group-has-data-[sidebar=menu-action]/menu-item:pr-8 group-data-[collapsible=icon]:size-7! group-data-[collapsible=icon]:p-1.5! focus-visible:ring-1 peer/menu-button flex w-full items-center overflow-hidden outline-hidden group/menu-button disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&>span:last-child]:truncate [&_svg]:size-4 [&_svg]:shrink-0',
 	{
 		variants: {
 			variant: {

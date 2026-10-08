@@ -1,7 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
 import { cn } from '@/utils/misc'
-import { SidebarContext } from './sidebar'
 
 const pageVariants = cva('flex flex-col w-full', {
 	variants: {
@@ -66,8 +65,6 @@ export interface PageHeaderProps
 
 const PageHeader = React.forwardRef<HTMLElement, PageHeaderProps>(
 	({ className, variant, children, actions, breadcrumbActions, ...props }, ref) => {
-		const sidebarContext = React.useContext(SidebarContext)
-
 		if (variant === 'document') {
 			return (
 				<header ref={ref} className={cn(pageHeaderVariants({ variant, className }))} {...props}>
@@ -94,10 +91,10 @@ PageHeader.displayName = 'PageHeader'
 const pageTitleVariants = cva('leading-none tracking-tight transition-colors', {
 	variants: {
 		variant: {
-			default: 'text-3xl font-semibold text-zinc-800 dark:text-zinc-300',
-			center: 'text-lg font-semibold text-zinc-800 dark:text-zinc-300 text-center w-full',
+			default: 'text-h5 font-semibold text-foreground',
+			center: 'text-h6 font-semibold text-foreground text-center w-full',
 			regular:
-				'text-xl md:text-2xl lg:text-4xl font-medium text-foreground mb-6 leading-tight tracking-tight',
+				'text-h5 md:text-h4 lg:text-h2 font-medium text-foreground mb-6 leading-tight tracking-tight',
 		},
 	},
 	defaultVariants: {
@@ -124,7 +121,7 @@ const PageDescription = React.forwardRef<
 	HTMLParagraphElement,
 	React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-	<p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />
+	<p ref={ref} className={cn('text-body-xs text-content-secondary', className)} {...props} />
 ))
 PageDescription.displayName = 'PageDescription'
 

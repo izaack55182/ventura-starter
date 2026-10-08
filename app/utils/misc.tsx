@@ -35,7 +35,7 @@ const twMerge = extendTailwindMerge({
 export function getUserImgSrc(objectKey?: string | null) {
 	return objectKey
 		? `/resources/images?objectKey=${encodeURIComponent(objectKey)}`
-		: '/images/avatar/default_avatar.svg'
+		: '/images/avatar/default_avatar.jpg'
 }
 
 export function getErrorMessage(error: unknown) {
@@ -48,8 +48,6 @@ export function getErrorMessage(error: unknown) {
 	) {
 		return error.message
 	}
-	// biome-ignore lint/suspicious/noConsole: Log errors to console for debugging
-	console.error('Unable to get error message for error', error)
 	return 'Unknown Error'
 }
 
@@ -66,9 +64,6 @@ export function getDomainUrl(request: Request) {
 	return `${protocol}://${host}`
 }
 
-/**
- * Combine multiple header objects into one (uses append so headers are not overridden)
- */
 export function combineHeaders(...headers: Array<ResponseInit['headers'] | null | undefined>) {
 	const combined = new Headers()
 	for (const header of headers) {

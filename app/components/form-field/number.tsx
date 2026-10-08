@@ -49,7 +49,7 @@ export function NumberField({
 	onValueChange,
 	onBlur,
 }: {
-	meta: FieldMetadata<any, any, any> | undefined
+	meta: FieldMetadata<unknown, Record<string, unknown>, string[]> | undefined
 	numberType?: NumberType
 	labelProps?: React.LabelHTMLAttributes<HTMLLabelElement>
 	inputProps?: Omit<ComponentProps<typeof Input>, 'value'> & {
@@ -59,14 +59,16 @@ export function NumberField({
 	}
 	className?: string
 	inputClassName?: string
-	variant?: string | null | undefined
+	variant?: ComponentProps<typeof Input>['variant']
 	onBlur?: () => void
 } & ComponentProps<typeof NumericFormat>) {
 	const fallbackId = useId()
 	const inputRef = useRef<HTMLInputElement>(null)
 
-	// biome-ignore lint/suspicious/noExplicitAny: Required for generic meta
-	const control = useControl(meta as any)
+	const control = useControl({
+		key: meta?.key,
+		initialValue: String(meta?.initialValue ?? ''),
+	})
 
 	if (!meta) return null
 
@@ -81,14 +83,15 @@ export function NumberField({
 				{...restInputProps}
 				{...getNumericFormatProps(numberType)}
 				id={id}
-				customInput={Input as any}
-				{...({ variant, size } as any)}
+				customInput={Input}
+				variant={variant}
+				size={size}
 				getInputRef={inputRef}
 				disabled={inputProps?.disabled}
 				className={cn(inputClassName)}
 				aria-invalid={errorId ? true : undefined}
 				aria-describedby={errorId}
-				value={inputProps?.value ?? (meta.initialValue as any)}
+				value={inputProps?.value ?? String(meta.initialValue ?? '')}
 				onValueChange={(values, source) => {
 					control.change(values.value)
 					onValueChange?.(values, source)
@@ -104,7 +107,7 @@ export function NumberField({
 				ref={control.register}
 				name={meta.name}
 				tabIndex={-1}
-				defaultValue={meta.initialValue as any}
+				defaultValue={String(meta.initialValue ?? '')}
 				onFocus={() => inputRef.current?.focus()}
 			/>
 			<FieldError id={errorId} errors={meta.errors} />
@@ -141,7 +144,7 @@ export function NumberEditable({
 	className?: string
 	inputClassName?: string
 	buttonClassName?: string
-	variant?: string | null | undefined
+	variant?: ComponentProps<typeof Input>['variant']
 	action?: string
 } & ComponentProps<typeof NumericFormat>) {
 	const [meta, form] = useField(name)
@@ -199,8 +202,9 @@ export function NumberEditable({
 						{...restInputProps}
 						{...getNumericFormatProps(numberType)}
 						id={id}
-						customInput={Input as any}
-						{...({ variant, size } as any)}
+						customInput={Input}
+						variant={variant}
+						size={size}
 						getInputRef={inputRef}
 						className={cn(inputClassName)}
 						aria-invalid={errorId ? true : undefined}

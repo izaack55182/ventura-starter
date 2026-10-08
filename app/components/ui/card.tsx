@@ -63,7 +63,7 @@ const CardTitle = ({ className, ...props }: React.ComponentProps<'div'>) => (
 	<div
 		data-slot="card-title"
 		className={cn(
-			'leading-none font-semibold',
+			'text-body-sm leading-none font-semibold',
 			'', // CUSTOM STYLES OVERRIDE
 			className
 		)}
@@ -75,7 +75,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<'div'>) {
 	return (
 		<div
 			data-slot="card-description"
-			className={cn('text-sm text-muted-foreground', className)}
+			className={cn('text-body-xs text-content-secondary', className)}
 			{...props}
 		/>
 	)

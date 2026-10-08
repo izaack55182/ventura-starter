@@ -120,6 +120,11 @@
 
 	--color-muted: var(--muted);
 	--color-muted-foreground: var(--muted-foreground);
+	--color-select-item-selected: var(--select-item-selected);
+	--color-surface-subtle: var(--surface-subtle);
+	--color-interactive-hover: var(--interactive-hover);
+	--color-interactive-selected: var(--interactive-selected);
+	--color-content-secondary: var(--content-secondary);
 
 	--color-accent: var(--accent);
 	--color-accent-foreground: var(--accent-foreground);
@@ -333,6 +338,11 @@
 	/* MUTED */
 	--muted: oklch(0.96 0 0);
 	--muted-foreground: oklch(0.55 0 0);
+	--select-item-selected: oklch(0.92 0 0);
+	--surface-subtle: oklch(0.98 0 0);
+	--interactive-hover: oklch(0.94 0 0);
+	--interactive-selected: oklch(0.91 0 0);
+	--content-secondary: oklch(0.45 0 0);
 
 	/* ACCENT */
 	--accent: oklch(0.96 0 0);
@@ -354,7 +364,7 @@
 	--sidebar-foreground: oklch(0.3 0 0);
 	--sidebar-primary: oklch(0.14 0 0);
 	--sidebar-primary-foreground: oklch(1 0 0);
-	--sidebar-accent: oklch(0.96 0 0);
+	--sidebar-accent: oklch(0.9104 0.0068 277.16);
 	--sidebar-accent-foreground: var(--foreground);
 	--sidebar-border: oklch(0.92 0 0);
 	--sidebar-ring: oklch(0 0 0 / 0.15);
@@ -397,6 +407,11 @@
 	/* MUTED */
 	--muted: oklch(0.15 0 0);
 	--muted-foreground: oklch(0.6 0 0);
+	--select-item-selected: oklch(0.22 0 0);
+	--surface-subtle: oklch(0.1 0 0);
+	--interactive-hover: oklch(0.18 0 0);
+	--interactive-selected: oklch(0.22 0 0);
+	--content-secondary: oklch(0.7 0 0);
 
 	/* ACCENT */
 	--accent: oklch(0.15 0 0);

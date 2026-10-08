@@ -122,10 +122,16 @@ export default function Passkeys({ loaderData }: Route.ComponentProps) {
 			redirectTo="/c/profile"
 		>
 			<div className="flex flex-col gap-6">
-				<div className="flex justify-end">
+				<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+					<div>
+						<h2 className="text-body-sm font-semibold">Passkeys registradas</h2>
+						<p className="text-body-xs text-content-secondary">
+							Administra los dispositivos con los que puedes iniciar sesión.
+						</p>
+					</div>
 					<form action={handlePasskeyRegistration}>
-						<Button type="submit" variant="secondary" size="sm" className="flex items-center gap-2">
-							Agregar
+						<Button type="submit" className="w-full sm:w-auto">
+							Agregar passkey
 						</Button>
 					</form>
 				</div>

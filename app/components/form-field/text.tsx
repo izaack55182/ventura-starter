@@ -30,7 +30,7 @@ export function TextField({
 	size = 'default',
 	orientation = 'vertical',
 }: {
-	meta: FieldMetadata<any, any, any> | undefined
+	meta: FieldMetadata<unknown, Record<string, unknown>, string[]> | undefined
 	inputProps?: ComponentProps<typeof Input> & {
 		type?: Parameters<typeof getInputProps>[1]['type']
 	}
@@ -105,7 +105,7 @@ export function TextEditable({
 }: {
 	intent: string
 	editableId: string | number
-	name: FieldName<any>
+	name: FieldName<string | number | null>
 	inputProps: ComponentPropsWithoutRef<typeof Input> & {
 		type?: Parameters<typeof getInputProps>[1]['type']
 	}
@@ -126,12 +126,12 @@ export function TextEditable({
 	const [localValue, setLocalValue] = useState<string | undefined>(undefined)
 	const fallbackId = useId()
 
-	const fetcherError =
-		fetcher.data && typeof fetcher.data === 'object' && 'error' in fetcher.data
-			? [String(fetcher.data.error)]
-			: fetcher.data && typeof fetcher.data === 'object' && 'errors' in (fetcher.data as any)
-				? (fetcher.data as any).errors[name]
-				: undefined
+	const fetcherData = fetcher.data as
+		| { error?: unknown; errors?: Record<string, string[]> }
+		| undefined
+	const fetcherError = fetcherData?.error
+		? [String(fetcherData.error)]
+		: fetcherData?.errors?.[name]
 
 	const errors = fetcherError || meta.errors
 	const hasError = !!errors?.length
@@ -176,8 +176,7 @@ export function TextEditable({
 							inputClassName
 						)}
 						disabled={isSubmitting}
-						defaultValue={displayValue as any}
-						autoFocus
+						defaultValue={displayValue == null ? '' : String(displayValue)}
 						onFocus={(e) => {
 							originalValueRef.current = e.currentTarget.value
 						}}
@@ -242,7 +241,7 @@ export function TextEditable({
 					<div className="flex flex-col text-left w-full">
 						<div className="flex items-center justify-between w-full">
 							{displayValue ? (
-								<span className={cn(hasError && 'text-destructive')}>{displayValue as any}</span>
+								<span className={cn(hasError && 'text-destructive')}>{String(displayValue)}</span>
 							) : !errorId ? (
 								<span className="text-muted-foreground">
 									{inputProps.placeholder ?? 'Agregar...'}

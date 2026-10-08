@@ -4,9 +4,14 @@ import { useRouteLoaderData } from 'react-router'
 //TYPES
 import type { loader as rootLoader } from '@/root'
 
-function isUser(user: any): user is Awaited<ReturnType<typeof rootLoader>>['data']['user'] {
+type RootUser = NonNullable<Awaited<ReturnType<typeof rootLoader>>['data']['user']>
+
+function isUser(user: unknown): user is RootUser {
 	return (
-		user && typeof user === 'object' && (typeof user.id === 'string' || typeof user.id === 'number')
+		user !== null &&
+		typeof user === 'object' &&
+		'id' in user &&
+		(typeof user.id === 'string' || typeof user.id === 'number')
 	)
 }
 
@@ -49,9 +54,9 @@ export function userHasPermission(
 ) {
 	if (!user) return false
 	const { action, entity, access } = parsePermissionString(permission)
-	return user.roles.some((ur: any) =>
+	return user.roles.some((ur) =>
 		ur.role.permissions.some(
-			(rp: any) =>
+			(rp) =>
 				rp.permission.entity === entity &&
 				rp.permission.action === action &&
 				(!access || access.includes(rp.permission.access as Access))
@@ -61,5 +66,5 @@ export function userHasPermission(
 
 export function userHasRole(user: Pick<ReturnType<typeof useUser>, 'roles'> | null, role: string) {
 	if (!user) return false
-	return user.roles.some((ur: any) => ur.role.name === role)
+	return user.roles.some((ur) => ur.role.name === role)
 }

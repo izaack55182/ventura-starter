@@ -51,7 +51,7 @@ export const links: Route.LinksFunction = () => {
 		{ rel: 'icon', href: '/favicons/favicon.ico', sizes: '48x48' },
 		{ rel: 'apple-touch-icon', href: appleTouchIconAssetUrl },
 		{ rel: 'manifest', href: '/site.webmanifest', crossOrigin: 'use-credentials' } as const,
-		{ rel: 'icon', type: 'image/svg+xml', href: faviconAssetUrl },
+		{ rel: 'icon', type: 'image/png', href: faviconAssetUrl },
 		{ rel: 'stylesheet', href: tailwindStyleSheetUrl },
 		{ rel: 'stylesheet', href: fontStyleSheetUrl },
 	].filter(Boolean)
@@ -157,7 +157,7 @@ function Document({
 				{children}
 				<script
 					nonce={nonce}
-					// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: serialized server-controlled environment data
 					dangerouslySetInnerHTML={{
 						__html: `window.ENV = ${JSON.stringify(env)}`,
 					}}

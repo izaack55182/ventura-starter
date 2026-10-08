@@ -14,12 +14,17 @@ import type { action } from '../routes/profile'
 // TYPES & SCHEMAS
 import { EditUserSchema } from '../schemas'
 
-export default function EditUserForm({ user, lastResult }: { user: any; lastResult?: any }) {
+type EditableUser = Pick<
+	z.input<typeof EditUserSchema>,
+	'id' | 'firstName' | 'lastName' | 'username'
+>
+
+export default function EditUserForm({ user }: { user: EditableUser }) {
 	const fetcher = useFetcher<typeof action>()
 
 	const [form, fields] = useForm<z.infer<typeof EditUserSchema>>({
 		id: `edit-profile:${user.id}`,
-		lastResult: fetcher.data?.result || lastResult,
+		lastResult: fetcher.data?.result,
 		constraint: getZodConstraint(EditUserSchema),
 		onValidate({ formData }) {
 			const parsed = parseWithZod(formData, {
@@ -39,13 +44,7 @@ export default function EditUserForm({ user, lastResult }: { user: any; lastResu
 	})
 
 	return (
-		<fetcher.Form
-			method="POST"
-			{...getFormProps(form)}
-			onSubmit={(e) => {
-				if (form.onSubmit) form.onSubmit(e as any)
-			}}
-		>
+		<fetcher.Form method="POST" {...getFormProps(form)}>
 			<Section
 				variant="settings"
 				title="Información Personal"

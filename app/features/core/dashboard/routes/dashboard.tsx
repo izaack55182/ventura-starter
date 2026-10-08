@@ -10,7 +10,7 @@ export const meta: Route.MetaFunction = ({ matches }) => {
 
 export default function Dashboard() {
 	return (
-		<Page variant="full">
+		<Page>
 			<PageHeader>
 				<PageTitle>Dashboard</PageTitle>
 				<PageDescription>

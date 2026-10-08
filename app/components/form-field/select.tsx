@@ -17,7 +17,7 @@ export function SelectField({
 	meta,
 	...props
 }: {
-	meta: FieldMetadata<any, any, any> | undefined
+	meta: FieldMetadata<string, Record<string, unknown>, string[]> | undefined
 	options: {
 		id: string | number
 		label: string
@@ -54,7 +54,7 @@ function SelectFieldControl({
 	value,
 	onValueChange,
 }: {
-	meta: FieldMetadata<any, any, any>
+	meta: FieldMetadata<string, Record<string, unknown>, string[]>
 	options: {
 		id: string | number
 		label: string
@@ -76,7 +76,7 @@ function SelectFieldControl({
 	const triggerRef = useRef<ElementRef<typeof SelectTrigger>>(null)
 	const fallbackId = useId()
 
-	const control = useControl(meta as any)
+	const control = useControl(meta)
 	const id = meta.id ?? fallbackId
 	const errorId = meta.errors?.length ? `${id}-error` : undefined
 
@@ -91,7 +91,7 @@ function SelectFieldControl({
 				className,
 				orientation === 'horizontal' && 'flex flex-row items-center justify-between'
 			)}
-			orientation={orientation as any}
+			orientation={orientation}
 		>
 			{/* Native hidden select for form submission */}
 			<select
@@ -147,7 +147,7 @@ function SelectFieldControl({
 									) : selectedOption.icon ? (
 										<Avatar className="size-7 border-none bg-transparent">
 											<AvatarImage src={selectedOption.icon} className="object-contain" />
-											<AvatarFallback className="bg-transparent text-[10px]">
+											<AvatarFallback className="bg-transparent text-body-2xs">
 												{selectedOption.label.substring(0, 2)}
 											</AvatarFallback>
 										</Avatar>
@@ -169,7 +169,7 @@ function SelectFieldControl({
 										) : option.icon ? (
 											<Avatar className="size-7 border-none bg-transparent">
 												<AvatarImage src={option.icon} className="object-contain" />
-												<AvatarFallback className="bg-transparent text-[10px]">
+												<AvatarFallback className="bg-transparent text-body-2xs">
 													{option.label.substring(0, 2)}
 												</AvatarFallback>
 											</Avatar>

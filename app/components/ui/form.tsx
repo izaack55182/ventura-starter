@@ -8,7 +8,7 @@ import { cn } from '@/utils/misc'
 // COMPONENTS
 import { Button } from './button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './collapsible'
-import { Icon } from './icon'
+import { Icon, type IconName } from './icon'
 
 const formContentVariants = cva('flex flex-col w-full gap-4 pt-6', {
 	variants: {
@@ -110,7 +110,7 @@ export interface SectionProps
 		VariantProps<typeof sectionVariants> {
 	title?: string
 	description?: string
-	icon?: string
+	icon?: IconName
 	iconClassName?: string
 }
 
@@ -129,10 +129,7 @@ export const Section = forwardRef<HTMLDivElement, SectionProps>(
 					>
 						{icon && (
 							<div className="flex size-9 items-center justify-center rounded-lg bg-muted border border-border shrink-0">
-								<Icon
-									name={icon as any}
-									className={cn('size-5 text-muted-foreground', iconClassName)}
-								/>
+								<Icon name={icon} className={cn('size-5 text-muted-foreground', iconClassName)} />
 							</div>
 						)}
 						<div className="flex flex-col gap-0.5">

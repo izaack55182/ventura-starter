@@ -57,8 +57,6 @@ const InputOTPSlot = ({
 }
 
 const InputOTPSeparator = ({ className, ...props }: React.ComponentProps<'div'>) => (
-	// biome-ignore lint/a11y/useSemanticElements: <explanation>
-	// biome-ignore lint/a11y/useFocusableInteractive: <explanation>
 	<div
 		data-slot="input-otp-separator"
 		className={cn('flex items-center justify-center px-2 text-muted-foreground', className)}

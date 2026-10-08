@@ -31,7 +31,13 @@ type DATA_TABLE_ITEM = {
 }
 
 const ACTION = {
-	EDIT: { type: ACTION_TYPE.EDIT, label: 'Editar', icon: 'pencil', to: '/edit', prefetch: true },
+	EDIT: {
+		type: ACTION_TYPE.EDIT,
+		label: 'Editar',
+		icon: 'pencil',
+		to: '/edit',
+		prefetch: true,
+	},
 	NEW_TAB: {
 		type: ACTION_TYPE.NEW_TAB,
 		label: 'Abrir en pestaña nueva',
@@ -74,12 +80,6 @@ export const DATA_TABLE_TYPE = {
 		title: 'Miembro',
 		editPermission: 'members.edit',
 	},
-	SERVICE: {
-		value: 'service',
-		basePath: '/c/services/',
-		title: 'Servicio',
-		editPermission: 'services.edit',
-	},
 	COMPANY: { value: 'company', basePath: '/m/companies/', title: 'Empresa' },
 	USER: { value: 'user', basePath: '/m/users/', title: 'Usuario' },
 	// ADMIN
@@ -94,7 +94,6 @@ export const DATA_TABLE_TYPE = {
 export const DATA_TABLE_ACTIONS = {
 	CLIENT_USER: [ACTION.EDIT],
 	AGENCY_MEMBER: [ACTION.EDIT],
-	SERVICE: [ACTION.EDIT, ACTION.DELETE],
 	COMPANY: [ACTION.EDIT, ACTION.DELETE],
 	USER: [ACTION.EDIT],
 	ADMIN_USER: [ACTION.EDIT],

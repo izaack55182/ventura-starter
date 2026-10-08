@@ -82,7 +82,6 @@ function DataTable<TData, TValue>({
 	data,
 	rowCount,
 	defaultColumnFilters = [],
-	filterFields = [],
 	getRowCanExpand,
 	exportPath,
 	renderSubComponent,

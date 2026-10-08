@@ -26,10 +26,10 @@ let env: ServerEnv
  * Initializes and parses given environment variables using zod
  */
 export function initEnv(runtimeEnv?: unknown) {
-	const source = {
+	const source: Record<string, unknown> = {
 		...(typeof process !== 'undefined' ? process.env : {}),
 		...(runtimeEnv && typeof runtimeEnv === 'object' ? runtimeEnv : {}),
-	} as any
+	}
 
 	const parsed = envSchema.safeParse(source)
 

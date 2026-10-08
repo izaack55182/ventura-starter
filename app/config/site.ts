@@ -48,11 +48,11 @@ export const SITE_PAGES = [
 		path: '/',
 		changefreq: 'weekly' as const,
 		priority: 1,
-		lastmod: '2025-05-01',
+		lastmod: undefined,
 	},
 ] satisfies Array<{
 	path: string
 	changefreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
 	priority: 0 | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 | 1
-	lastmod: string
+	lastmod?: string
 }>
