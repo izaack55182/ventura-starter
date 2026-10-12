@@ -6,6 +6,19 @@
 @plugin "tailwindcss-animate";
 @plugin "tailwindcss-radix";
 
+/*
+ * Radix Select locks the document scroll while its menu is open. Reserve the
+ * scrollbar gutter so that lock does not change the layout width, and avoid
+ * its margin-based fallback creating horizontal overflow.
+ */
+html {
+	scrollbar-gutter: stable;
+}
+
+body[data-scroll-locked] {
+	margin-right: 0 !important;
+}
+
 ::selection {
 	background-color: #2b8ef0 !important;
 	color: #ffffff !important;
