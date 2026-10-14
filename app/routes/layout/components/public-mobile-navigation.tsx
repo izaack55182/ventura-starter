@@ -8,10 +8,7 @@ import { useOptionalUser } from '@/features/user/utils'
 import { cn } from '@/utils/misc'
 import Logo from './logo'
 
-const PUBLIC_NAVIGATION = [
-	{ label: 'Fundas', to: '/cases' },
-	{ label: 'Audifonos', to: '/headphones' },
-] as const
+const PUBLIC_NAVIGATION = [{ label: 'PROXIAMENTE', to: '/' }] as const
 
 export function MobileNavigation() {
 	const [open, setOpen] = useState(false)
@@ -33,7 +30,7 @@ export function MobileNavigation() {
 					<SheetHeader className="border-b border-border px-6 py-6 text-left">
 						<Logo variant="long" className="w-32" />
 						<p className="mt-4 text-xs font-semibold tracking-[0.14em] text-muted-foreground">
-							EXPLORA SMART MOBILE
+							EXPLORA VENTURA STACK
 						</p>
 					</SheetHeader>
 

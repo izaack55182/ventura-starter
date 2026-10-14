@@ -260,7 +260,7 @@ function PasskeyLogin({ redirectTo }: { redirectTo: string | null }) {
 }
 
 export const meta: Route.MetaFunction = () => {
-	return [{ title: 'Iniciar Sesión | Smart Mobile' }]
+	return [{ title: 'Iniciar Sesión | Ventura Stack' }]
 }
 
 export function ErrorBoundary() {
