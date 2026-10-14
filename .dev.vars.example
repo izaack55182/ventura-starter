@@ -23,5 +23,7 @@ ALLOW_INDEXING=false
 COOKIE_SECRET=dev_cookie_secret_change_me
 SESSION_SECRET=dev_session_secret_change_me
 HONEYPOT_SECRET=dev_honeypot_secret_change_me
-DATABASE_URL="postgres://postgres:postgres@localhost:5432/codenity_db"
+# Neon/PostgreSQL URL used only by `bun run dev:cloudflare`.
+# Keep the local Docker URL in `.env` for Drizzle Kit and `bun run dev`.
+DATABASE_URL="postgresql://USER:PASSWORD@HOST.neon.tech/DATABASE?sslmode=require"
 RESEND_API_KEY="MOCK_re_123456789"

@@ -6,7 +6,7 @@ import { defineConfig } from 'vite'
 import { iconsSpritesheet } from 'vite-plugin-icons-spritesheet'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
 	ssr: {
 		noExternal: ['react-tweet'],
 	},
@@ -28,7 +28,7 @@ export default defineConfig({
 		assetsDir: 'assets',
 	},
 	plugins: [
-		cloudflare({ viteEnvironment: { name: 'ssr' } }),
+		...(mode === 'cloudflare' ? [cloudflare({ viteEnvironment: { name: 'ssr' } })] : []),
 		reactRouter(),
 		{
 			name: 'css-hmr-fix',
@@ -60,4 +60,4 @@ export default defineConfig({
 			'@': path.resolve(__dirname, './app'),
 		},
 	},
-})
+}))

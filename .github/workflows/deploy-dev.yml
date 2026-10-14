@@ -32,7 +32,7 @@ jobs:
       # El entorno se fija en BUILD time (plugin de Vite de Cloudflare). El build
       # genera la config aplanada del entorno `dev` que luego despliega wrangler.
       - name: 🏗️ Build (env dev)
-        run: bun run build
+        run: bun run build:cloudflare
         env:
           CLOUDFLARE_ENV: dev
 

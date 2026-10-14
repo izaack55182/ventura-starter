@@ -44,6 +44,41 @@ La adopción se deja intencionalmente para una fase posterior, cuando haya carga
 3. Usar `env.HYPERDRIVE.connectionString` en producción.
 4. Mantener `DATABASE_URL` para desarrollo local, Drizzle Kit y migraciones.
 
+### Local database and migration workflow
+
+The project intentionally separates its two development environments:
+
+- `.env` uses PostgreSQL in Docker. It is consumed by `bun run dev` and Drizzle Kit.
+- `.dev.vars` contains the Cloudflare runtime variables, including the Neon URL. It is consumed by `bun run dev:cloudflare`.
+
+```bash
+# First run: create .env and .dev.vars without overwriting existing files
+bun run setup
+
+# Normal development with local PostgreSQL
+bun run db:up
+bun run db:migrate
+bun run dev
+
+# Cloudflare Workers and Neon integration test
+bun run dev:cloudflare
+```
+
+Schema changes in `app/drizzle/schema/` are incremental:
+
+```bash
+# Creates only the next schema delta
+bun run db:generate -- --name add-invoices
+
+# Verifies migration snapshots and the journal
+bun run db:check
+
+# Applies only migrations that are still pending
+bun run db:migrate
+```
+
+Do not delete `app/drizzle/migrations/` or `meta/_journal.json`: Drizzle uses that history to generate the next delta, and PostgreSQL records which migrations have already run. `db:push:local` is only for disposable local experiments; it must not replace versioned migrations or be used against Neon/production.
+
 ---
 
 ## Estructura del Proyecto
@@ -248,15 +283,16 @@ export default defineConfig({
 });
 ```
 
-> El `@cloudflare/vite-plugin` hace que `dev`/`preview` corran en **workerd**
-> (runtime real de Workers), sirviendo los assets como en producción.
+> El plugin de Cloudflare se activa solo con el modo `cloudflare`. Docker es el flujo normal de desarrollo y workerd queda disponible para validar Cloudflare y Neon.
 
 ### Comandos
 
 | Comando              | Uso                                        |
 | -------------------- | ------------------------------------------ |
-| `bun run dev`        | Dev server (SSR en workerd, HMR)           |
-| `bun run build`      | Build de producción (`build/client` + worker) |
+| `bun run dev`        | Desarrollo local con Node/Bun y PostgreSQL en Docker |
+| `bun run dev:cloudflare` | Desarrollo en workerd con `.dev.vars` (Cloudflare/Neon) |
+| `bun run build`      | Build local sin runtime de Cloudflare |
+| `bun run build:cloudflare` | Build para Cloudflare Workers |
 | `bun run preview`    | Build + `vite preview` (worker en local)   |
 | `bun run deploy`     | Build + `wrangler deploy` (manual)         |
 | `bun run typecheck`  | `wrangler types` + `react-router typegen` + `tsc` |

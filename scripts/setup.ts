@@ -85,16 +85,16 @@ function writeFile(relPath: string, content: string) {
 	ok(`Actualizado ${relPath}`)
 }
 
-function createDevVars() {
-	const examplePath = join(ROOT, '.dev.vars.example')
-	const targetPath = join(ROOT, '.dev.vars')
+function createEnvironmentFile(templateName: string, targetName: string) {
+	const examplePath = join(ROOT, templateName)
+	const targetPath = join(ROOT, targetName)
 
 	if (existsSync(targetPath)) {
-		info('.dev.vars ya existe — no se sobrescribe.')
+		info(`${targetName} ya existe — no se sobrescribe.`)
 		return
 	}
 	if (!existsSync(examplePath)) {
-		info('.dev.vars.example no encontrado — se omite la creación de .dev.vars.')
+		info(`${templateName} no encontrado — se omite la creación de ${targetName}.`)
 		return
 	}
 
@@ -104,7 +104,7 @@ function createDevVars() {
 		.replace('dev_honeypot_secret_change_me', genSecret())
 
 	writeFileSync(targetPath, content)
-	ok('Creado .dev.vars con secrets aleatorios.')
+	ok(`Creado ${targetName} con secrets aleatorios.`)
 }
 
 function renameProject() {
@@ -181,8 +181,9 @@ function renameProject() {
 function main() {
 	log(`\n${c.bold}${c.cyan}⚡ Ventura Stack — setup${c.reset}\n`)
 
-	// 1. Secrets + .dev.vars
-	createDevVars()
+	// 1. Secrets + entornos local y Cloudflare
+	createEnvironmentFile('.env.example', '.env')
+	createEnvironmentFile('.dev.vars.example', '.dev.vars')
 
 	// 2. Renombrado del proyecto. Corre si es interactivo, o si se pasó --name
 	//    (permite renombrar sin prompts: bun run setup --name "Mi App").

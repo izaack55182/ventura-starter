@@ -30,7 +30,7 @@ jobs:
         run: bun run test
 
       - name: 🏗️ Build
-        run: bun run build
+        run: bun run build:cloudflare
 
       # El deploy corre en el MISMO job que el build para que wrangler encuentre
       # la config redirigida (.wrangler/deploy/config.json + build/server/wrangler.json)

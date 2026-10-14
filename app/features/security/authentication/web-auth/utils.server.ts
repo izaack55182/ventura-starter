@@ -3,13 +3,19 @@ import { createCookie } from 'react-router'
 import { z } from 'zod'
 import { getDomainUrl } from '@/utils/misc.tsx'
 
+const sessionSecret = process.env.SESSION_SECRET
+
+if (!sessionSecret) {
+	throw new Error('SESSION_SECRET must be configured to use passkeys.')
+}
+
 export const passkeyCookie = createCookie('web-challenge', {
 	path: '/',
 	sameSite: 'lax',
 	httpOnly: true,
 	maxAge: 60 * 60 * 2,
 	secure: process.env.NODE_ENV === 'production',
-	secrets: [process.env.SESSION_SECRET],
+	secrets: [sessionSecret],
 })
 
 export const PasskeyCookieSchema = z.object({
